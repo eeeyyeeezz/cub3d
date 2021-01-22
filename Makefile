@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/01/20 16:20:26 by gmorra           ###   ########.fr        #
+#    Updated: 2021/01/22 15:44:44 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,4 +17,4 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 RUN:
-	$(CC) -g main.c parser/*.c src/get_next_line/*.c libft/*.c -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) && ./cub3D
+	$(CC) -g main.c parser/*.c src/get_next_line/*.c src/libft/*.c -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) && ./cub3D map.cub

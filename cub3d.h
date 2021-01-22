@@ -6,15 +6,14 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/20 17:57:32 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/22 17:03:45 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 # include "src/get_next_line/get_next_line.h"
-# include "libft/libft.h"
-// # include "src/get_next_line/get_next_line_bonus.h"
+# include "src/libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <mlx.h>
@@ -48,5 +47,8 @@ typedef		struct s_whole
 }					t_struct;
 
 void		pars(t_struct *global, char *line);
+void		pars_resolution(char *line, t_struct *global);
+void		pars_ceilling(char *line, t_struct *global);
+
 
 #endif
