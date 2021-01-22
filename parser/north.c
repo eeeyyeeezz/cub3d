@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   north.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/28 20:28:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 20:07:12 by gmorra           ###   ########.fr       */
+/*   Created: 2021/01/22 21:16:08 by gmorra            #+#    #+#             */
+/*   Updated: 2021/01/22 22:17:56 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../cub3D.h"
 
-int		ft_strchr(char *line, char c)
+void		pars_north(char *line, t_struct *global)
 {
-	int		i;
+	int i;
 
 	i = 0;
-	while (!(line[i] == c && line[i + 1] == ' ') && line[i] != '\0')
+	if (ft_ft_strnstr(line, "./"))
 	{
-		if (line[i] != ' ')
-			return (-1);
-		i++;
+		while (line[i] != '.')
+			i++;
+		global->textures->north = (char *)&line[i];
 	}
-	return (1);
+	else
+	{
+		write(1, "ERROR", 5);
+		exit(0);
+	}
 }

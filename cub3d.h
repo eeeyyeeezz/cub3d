@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 17:03:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/22 21:23:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,26 @@ typedef		struct s_colors
 	int		b_cell;
 }					t_colors;
 
+typedef		struct s_textures
+{
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+}					t_textures;
+
 typedef		struct s_whole
 {
-	t_map_res  *map;
-	t_colors *colors;
+	t_map_res	*map;
+	t_colors	*colors;
+	t_textures	*textures;
 }					t_struct;
 
 void		pars(t_struct *global, char *line);
 void		pars_resolution(char *line, t_struct *global);
 void		pars_ceilling(char *line, t_struct *global);
+void		pars_floor(char *line, t_struct *global);
+void		pars_north(char *line, t_struct *global);
 
 
 #endif

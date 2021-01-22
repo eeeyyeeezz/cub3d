@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ceilling.c                                         :+:      :+:    :+:   */
+/*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/22 16:46:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 20:07:58 by gmorra           ###   ########.fr       */
+/*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
+/*   Updated: 2021/01/22 20:09:19 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	 	skip_spaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] == ' ' && line[i] != 'C' && line[i])
+	while (line[i] == ' ' && line[i] != 'F' && line[i])
 		i++;
-	if (line[i] != ' ' && line[i] != 'C')
+	if (line[i] != ' ' && line[i] != 'F')
 			return (-1);
 	else
 		return (i);
@@ -55,28 +55,28 @@ static int		check_count(char *line)
 	return (count);
 }
 
-void		pars_ceilling(char *line, t_struct *global)
+void		pars_floor(char *line, t_struct *global)
 {
 	int count;
 	int i;
 
 	i = skip_spaces(line);
 	count = check_count(line);
-	global->colors->r_cell = 0;
-	global->colors->g_cell = 0;
-	global->colors->b_cell = 0;
+	global->colors->r_floor = 0;
+	global->colors->g_floor = 0;
+	global->colors->b_floor = 0;
 	if (skip_spaces(line) != -1 && count == 3)
 	{
 		while (!(ft_isdigit(line[i]) && line[i] != '\0'))
 			i++;
 		if (line[i] != '\0')
-			global->colors->r_cell = ft_atoi((char *)&line[i]);
+			global->colors->r_floor = ft_atoi((char *)&line[i]);
 		i += skip_digits((char *)&line[i]) + 1;
 		if (line[i] != '\0')
-			global->colors->g_cell = ft_atoi((char *)&line[i]);
+			global->colors->g_floor = ft_atoi((char *)&line[i]);
 		i += skip_digits((char *)&line[i]) + 1;
 		if (line[i] != '\0')
-			global->colors->b_cell = ft_atoi((char *)&line[i]);
+			global->colors->b_floor = ft_atoi((char *)&line[i]);
 	}
 	else
 	{

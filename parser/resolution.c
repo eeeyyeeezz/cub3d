@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 17:21:01 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/22 19:46:15 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+#include "../cub3D.h"
 
 static int		skip_digits(char *line)
 {
@@ -75,7 +75,7 @@ void		pars_resolution(char *line, t_struct *global)
 	}
 	else
 	{
-		write(1, "ERROR\nSome shit happened\n", 32);
+		write(1, "ERROR\nSome shit happened\n", 36);
 		exit(0);
 	}
 }
