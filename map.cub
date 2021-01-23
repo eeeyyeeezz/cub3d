@@ -1,7 +1,10 @@
-R  1805   700
-  C    255,150,75
+  R  1805   700
+  C 255    ,      150,75
   F    350,250,100
-   NO	./here_we_go
+   NO   ./textures/here_we_go
+   SO	./there_we_go
+   WE	./then_we_go
+   EA	./why_we_go
 
 
           111111111

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 20:28:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 20:07:12 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/23 17:47:13 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_strchr(char *line, char c)
 	while (!(line[i] == c && line[i + 1] == ' ') && line[i] != '\0')
 	{
 		if (line[i] != ' ')
-			return (-1);
+			return (0);
 		i++;
 	}
 	return (1);

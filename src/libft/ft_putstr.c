@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 19:37:22 by gmorra           ###   ########.fr       */
+/*   Created: 2020/10/31 21:26:29 by gmorra            #+#    #+#             */
+/*   Updated: 2020/11/04 14:46:57 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "libft.h"
 
-void		pars(t_struct *global, char *line)
+void		ft_putstr(char *s)
 {
-	if (ft_strnstr(line, "R"))
-		pars_resolution(line, global);
-	else if (ft_strnstr(line, "C"))
-		pars_ceilling(line, global);
-	else if (ft_strnstr(line, "F"))
-		pars_floor(line, global);
-	else if (ft_strnstr(line, "NO"))
-		pars_textures(line, global);
-
+	if (s == NULL)
+		return ;
+	while (*s)
+		write(1, &*s++, 1);
 }

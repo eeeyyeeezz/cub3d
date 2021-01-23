@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/22 20:09:19 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/23 18:43:58 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	 	skip_spaces(char *line)
 		i++;
 	if (line[i] != ' ' && line[i] != 'F')
 			return (-1);
+	if (line[i] == 'C' && line[i + 1] == 'F')
+		return (-1);
 	else
 		return (i);
 }
@@ -51,36 +53,57 @@ static int		check_count(char *line)
 		while (ft_isdigit(line[i]))
 			i++;
 	}
-	// printf("eto count [%d]\n", count);
 	return (count);
 }
 
-void		pars_floor(char *line, t_struct *global)
+static int		coma_and_space(char *line)
 {
-	int count;
 	int i;
+	int coma;
+
+	i = 1;
+	coma = 0;
+	while (line[i] == ' ' || line[i] == ',')
+	{
+		if (line[i] == ',')
+			coma++;
+		i++;
+	}
+	if (coma != 1)
+	{
+		ft_putstr("ERROR\nMore/less commas that required\n");
+		exit(0);
+	}
+	return (i);
+}
+
+void			pars_floor(char *line, t_struct *global)
+{
+	static	int		times = 0;
+	int				count;
+	int				i;
 
 	i = skip_spaces(line);
 	count = check_count(line);
-	global->colors->r_floor = 0;
-	global->colors->g_floor = 0;
-	global->colors->b_floor = 0;
-	if (skip_spaces(line) != -1 && count == 3)
+	times++;
+	if (skip_spaces(line) != -1 && count == 3 && times == 1)
 	{
-		while (!(ft_isdigit(line[i]) && line[i] != '\0'))
+		while (line[i + 1] == ' ' && line[i] != '\0')
 			i++;
 		if (line[i] != '\0')
 			global->colors->r_floor = ft_atoi((char *)&line[i]);
-		i += skip_digits((char *)&line[i]) + 1;
+		i += skip_digits((char *)&line[i + 1]);
+		i += coma_and_space((char *)&line[i]);
 		if (line[i] != '\0')
 			global->colors->g_floor = ft_atoi((char *)&line[i]);
-		i += skip_digits((char *)&line[i]) + 1;
+		i += skip_digits((char *)&line[i + 1]);
+		i += coma_and_space((char *)&line[i]);
 		if (line[i] != '\0')
 			global->colors->b_floor = ft_atoi((char *)&line[i]);
 	}
 	else
 	{
-		write(1, "ERROR\nVvedi normalno argumenty pops\n", 36);
+		ft_putstr("Error\nFloor arguments wrong\n");
 		exit(0);
 	}
 }
