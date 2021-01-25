@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 18:43:58 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 15:14:17 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	 	skip_spaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] == ' ' && line[i] != 'F' && line[i])
+	while (ft_isspaces(line[i]) && line[i] != 'F' && line[i])
 		i++;
-	if (line[i] != ' ' && line[i] != 'F')
+	if (!ft_isspaces(line[i]) && line[i] != 'F')
 			return (-1);
-	if (line[i] == 'C' && line[i + 1] == 'F')
+	if (line[i] == 'F' && line[i + 1] == 'F')
 		return (-1);
 	else
 		return (i);
@@ -63,7 +63,7 @@ static int		coma_and_space(char *line)
 
 	i = 1;
 	coma = 0;
-	while (line[i] == ' ' || line[i] == ',')
+	while (ft_isspaces(line[i]) || line[i] == ',')
 	{
 		if (line[i] == ',')
 			coma++;
@@ -88,7 +88,7 @@ void			pars_floor(char *line, t_struct *global)
 	times++;
 	if (skip_spaces(line) != -1 && count == 3 && times == 1)
 	{
-		while (line[i + 1] == ' ' && line[i] != '\0')
+		while (ft_isspaces(line[i + 1]) && line[i] != '\0')
 			i++;
 		if (line[i] != '\0')
 			global->colors->r_floor = ft_atoi((char *)&line[i]);

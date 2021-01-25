@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 19:37:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 16:59:35 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void		pars(t_struct *global, char *line)
+static	void	diff_pars(char *line, t_struct *global)
 {
 	if (ft_strnstr(line, "R"))
 		pars_resolution(line, global);
@@ -20,7 +20,30 @@ void		pars(t_struct *global, char *line)
 		pars_ceilling(line, global);
 	else if (ft_strnstr(line, "F"))
 		pars_floor(line, global);
-	else if (ft_strnstr(line, "NO"))
-		pars_textures(line, global);
+	else if (ft_strnstr(line, "NO") || ft_strnstr(line, "SO"))
+		pars_north_south(line, global);
+	else if (ft_strnstr(line, "WE") || ft_strnstr(line, "EA"))
+		pars_west_east(line, global);
+	else if (ft_ft_strnstr(line, "1") || ft_ft_strnstr(line, "0"))
+		pars_map(line, global);
+}
+
+void		pars(t_struct *global, char **argv)
+{
+	int i;
+	int fd;
+	char *line;
+
+	line = NULL;
+	i = 0;
+	fd = open(argv[1], O_RDONLY);
+	while (get_next_line(fd, &line) == 1)
+	{
+		printf("line [%s] \n", line);
+		diff_pars(line, global);
+		i++;
+		if (i == 7)
+			break ;
+	}
 
 }

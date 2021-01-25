@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 14:42:47 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 18:04:46 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 16:26:14 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int					ft_ft_strnstr(char *big, char *little);
 int					ft_strncmp(char *s1, char *s2, unsigned int n);
 int					ft_atoi(const char *str);
 int					ft_isdigit(int c);
+int					ft_isspaces(char word);
+int					ft_isalpha(int c);
 
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *str);

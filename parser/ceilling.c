@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:46:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 18:35:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 14:41:49 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	 	skip_spaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] == ' ' && line[i] != 'C' && line[i])
+	while (ft_isspaces(line[i]) && line[i] != 'C' && line[i])
 		i++;
-	if (line[i] != ' ' && line[i] != 'C')
+	if (!ft_isspaces(line[i]) && line[i] != 'C')
 			return (-1);
 	if (line[i] == 'C' && line[i + 1] == 'C')
 		return (-1);
@@ -64,7 +64,7 @@ static int		coma_and_space(char *line)
 	i = 1;
 	coma = 0;
 	// printf("here [%s]\n", line);
-	while (line[i] == ' ' || line[i] == ',')
+	while (ft_isspaces(line[i]) || line[i] == ',')
 	{
 		if (line[i] == ',')
 			coma++;
@@ -89,7 +89,7 @@ void			pars_ceilling(char *line, t_struct *global)
 	times++;
 	if (skip_spaces(line) != -1 && count == 3 && times == 1)
 	{
-		while (line[i + 1] == ' ' && line[i] != '\0')
+		while (ft_isspaces(line[i + 1]) && line[i] != '\0')
 			i++;
 		if (line[i] != '\0')
 			global->colors->r_cell = ft_atoi((char *)&line[i]);

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/23 19:16:59 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 14:40:51 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	 	skip_spaces(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] == ' ' && line[i] != 'R' && line[i])
+	while (ft_isspaces(line[i]) && line[i] != 'R' && line[i])
 		i++;
-	if (line[i] != ' ' && line[i] != 'R')	// && line[i] ?
+	if (!ft_isspaces(line[i]) && line[i] != 'R')	// && line[i] ?
 			return (-1);
 	else
 		return (i);
@@ -65,7 +65,7 @@ void		pars_resolution(char *line, t_struct *global)
 	times++;
 	if (skip_spaces(line) != -1 && count == 2 && times == 1)
 	{
-		while (line[i + 1] == ' ' && line[i] != '\0')
+		while (ft_isspaces(line[i + 1]) && line[i] != '\0')
 			i++;
 		if (line[i] != '\0')
 			global->map->width = ft_atoi((char *)&line[i]);
