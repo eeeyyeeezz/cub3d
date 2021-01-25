@@ -1,6 +1,7 @@
   R  1805   700
   C			 255  ,      150  ,   75
  	 F    350,250,100
+
    NO   ./textures/north
    SO	./textures/south
    WE	./textures/west

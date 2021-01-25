@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 16:53:57 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 20:36:45 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void		get_zero(t_struct *global)
 	global->colors->r_cell = 0;
 	global->colors->g_cell = 0;
 	global->colors->b_cell = 0;
+
 }
 
 int			main(int argc, char **argv)
@@ -70,5 +71,6 @@ int			main(int argc, char **argv)
 1) С запятыми штуку фикс
 2) Проверку на лишнее/недостающее в мапе
 3) Проверить на правильно введенные аргументы (RGB >= 0 && RGB <= 255)
+4) Проверить что мапа точно в конце 
 
 */

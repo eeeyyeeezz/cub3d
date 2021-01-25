@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 17:03:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/25 20:07:53 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void		pars(t_struct *global, char **argv);
 void		pars_resolution(char *line, t_struct *global);
 void		pars_ceilling(char *line, t_struct *global);
 void		pars_floor(char *line, t_struct *global);
-void		pars_north_south(char *line, t_struct *global);
-void		pars_west_east(char *line, t_struct *global);
-void		pars_map(char *line, t_struct *global);
+void		pars_north(char *line, t_struct *global);
+void		pars_south(char *line, t_struct *global);
+void		pars_west(char *line, t_struct *global);
+void		pars_east(char *line, t_struct *global);
+void		pars_map(char *line, t_struct *global, int fd);
 
 
 #endif
