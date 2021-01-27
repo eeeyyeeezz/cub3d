@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/27 14:25:29 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/27 20:27:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void		get_zero(t_struct *global)
 {
 	global->map->width = 0;
 	global->map->height = 0;
+	global->map->position_x = 0;
+	global->map->position_y = 0;
 	global->textures->east = 0;
 	global->textures->west = 0;
 	global->textures->south = 0;
@@ -47,6 +49,8 @@ int			main(int argc, char **argv)
 	get_zero(&global);
 	pars(&global, argv);
 	ft_mlx(&global);
+	// printf("eto y [%d]\n", global.map->position_y);
+	// printf("eto x [%d]\n", global.map->position_x);
 	// printf("\nwidth [%d] height [%d]\n", global.map->width, global.map->height);
 	// printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global.colors->r_cell, global.colors->g_cell, global.colors->b_cell);
 	// printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global.colors->r_floor, global.colors->g_floor, global.colors->b_floor);

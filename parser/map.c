@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/27 14:30:28 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/27 20:26:41 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,37 @@
 
 void		pars_map(char *line, t_struct *global, int fd)
 {
-	char **whole_map;
+	char *new_line;
 	int i;
+	int a;
 
-	i = 1;
-	whole_map = malloc(sizeof(char *) * 20);
-	(void)global;
-	whole_map[0] = line;
+	a = 0;
+	i = -1;
+	new_line = line;
+	new_line = ft_strjoin(new_line, "*");
 	while (get_next_line(fd, &line))
 	{
-		whole_map[i] = line;
-		i++;
+		new_line = ft_strjoin(new_line, line);
+		new_line = ft_strjoin(new_line, "*");
 	}
+	// printf("eto line\n %s \n", new_line);
+	global->cub_map = ft_split(new_line, '*');
+	// while (global->cub_map[++i] != '\0')
+		// printf("eto mapa [%s]\n", global->cub_map[i]);
 	i = 0;
-	global->cub_map = whole_map;
-	while (whole_map[i])
+	while (global->cub_map[i])
 	{
-		// printf("eto map [%s]\n", global->cub_map[i]);
+		a = 0;
+		while (global->cub_map[i][a] != '\0')
+		{
+			if (global->cub_map[i][a] == 'N' || global->cub_map[i][a] == 'S' ||
+			global->cub_map[i][a] == 'W' || global->cub_map[i][a] == 'E')
+			{
+				global->map->position_y = i;
+				global->map->position_x = a;
+			}
+			a++;
+		}
 		i++;
 	}
 }
