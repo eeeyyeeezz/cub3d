@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 20:38:05 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/27 14:30:28 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void		pars_map(char *line, t_struct *global, int fd)
 		i++;
 	}
 	i = 0;
-	// global->cub_map = whole_map;
+	global->cub_map = whole_map;
 	while (whole_map[i])
 	{
-		printf("eto map [%s]\n", whole_map[i]);
+		// printf("eto map [%s]\n", global->cub_map[i]);
 		i++;
 	}
 }

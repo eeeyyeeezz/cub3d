@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 20:36:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/27 14:25:29 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ int			main(int argc, char **argv)
 	global.textures = &texures;
 	get_zero(&global);
 	pars(&global, argv);
-	printf("\nwidth [%d] height [%d]\n", global.map->width, global.map->height);
-	printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global.colors->r_cell, global.colors->g_cell, global.colors->b_cell);
-	printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global.colors->r_floor, global.colors->g_floor, global.colors->b_floor);
-	printf("North [%s]\n", global.textures->north);
-	printf("South [%s]\n", global.textures->south);
-	printf("West  [%s]\n", global.textures->west);
-	printf("East  [%s]\n", global.textures->east);
+	ft_mlx(&global);
+	// printf("\nwidth [%d] height [%d]\n", global.map->width, global.map->height);
+	// printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global.colors->r_cell, global.colors->g_cell, global.colors->b_cell);
+	// printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global.colors->r_floor, global.colors->g_floor, global.colors->b_floor);
+	// printf("North [%s]\n", global.textures->north);
+	// printf("South [%s]\n", global.textures->south);
+	// printf("West  [%s]\n", global.textures->west);
+	// printf("East  [%s]\n", global.textures->east);
 	// printf("check C [%d]\n", ft_strchr("  C    255,150,75", 'C'));
 	// printf("check F [%d]\n", ft_strchr("  F    350,250,100", 'F'));
 }
@@ -71,6 +72,6 @@ int			main(int argc, char **argv)
 1) С запятыми штуку фикс
 2) Проверку на лишнее/недостающее в мапе
 3) Проверить на правильно введенные аргументы (RGB >= 0 && RGB <= 255)
-4) Проверить что мапа точно в конце 
+4) Проверить что мапа точно в конце
 
 */

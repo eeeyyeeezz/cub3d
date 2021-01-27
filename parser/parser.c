@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 20:37:27 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/27 14:25:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		pars(t_struct *global, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
-		printf("line [%s] \n", line);
+		// printf("line [%s] \n", line);
 		diff_pars(line, global, fd);
 	}
 
