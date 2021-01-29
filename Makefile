@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/01/27 15:36:15 by gmorra           ###   ########.fr        #
+#    Updated: 2021/01/29 14:49:45 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-COMPILE_SRC = -g *.c parser/*.c src/get_next_line/*.c src/libft/*.c
+COMPILE_SRC = -g *.c parser/*.c src/get_next_line_cub/*.c src/libft/*.c
 
 FRAMEWORK = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
