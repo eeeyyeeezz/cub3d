@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 18:53:00 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 19:36:53 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,17 @@
 # include <string.h>
 # include <math.h>
 
-typedef		struct s_map
+typedef		struct s_data
 {
-	void *mlx;
-	void *mlx_win;
+	void 		*mlx;
+	void 		*mlx_win;
 	void		*img;
 	char		*addr;
 	int			bpp;
 	int			length;
 	int			end;
-	int			width;
-	int			height;
-	int			position_x;
-	int			position_y;
 }
-					t_map_res;
+					t_data;
 
 typedef		struct s_colors
 {
@@ -57,11 +53,23 @@ typedef		struct s_textures
 	char	*east;
 }					t_textures;
 
+typedef		struct s_map
+{
+	int			width;
+	int			height;
+	int			position_x;
+	int			position_y;
+}					t_map_res;
+
+
 typedef		struct s_whole
 {
 	t_map_res	*map;
+	t_data		*data;
 	t_colors	*colors;
 	t_textures	*textures;
+	void 		*mlx;
+	void 		*mlx_win;
 	char		**cub_map;
 }					t_struct;
 

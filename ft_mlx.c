@@ -6,24 +6,18 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:17:10 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 18:59:12 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 19:38:54 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #define SCALE 20
 
-typedef struct  s_vars {
-	void		*mlx;
-	void		*win;
-}				t_vars;
-
-
 static	void		my_mlx_pixel_put(t_struct *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->map->addr + (y * data->map->length + x * (data->map->bpp / 8));
+	dst = data->data->addr + (y * data->data->length + x * (data->data->bpp / 8));
 	*(unsigned int*)dst = color;
 }
 
@@ -49,35 +43,32 @@ static	void		draw_all_pixels(int x, int y, t_struct img, char **map, t_struct *g
 	}
 }
 
-int			key_hook(t_vars *vars)
-{
-	printf("fuck me!\n");
-	return (0);
-}
+// int			key_hook(t_vars *vars)
+// {
+// 	printf("fuck me!\n");
+// 	return (0);
+// }
 
-int			ft_close(t_vars *vars)
-{
-	mlx_destroy_window(vars->mlx, vars->win);
-	return (1);
-}
+// int			ft_close(t_vars *vars)
+// {
+// 	mlx_destroy_window(vars->mlx, vars->win);
+// 	return (1);
+// }
 
 void		ft_mlx(t_struct *global)
 {
 	int x;
 	int y;
 	char **map;
-	void *mlx;
-	void *mlx_win;
 	t_struct img;
- 	t_vars	vars;
 
 	y = 0;
 	x = 0;
-	if (!(mlx = mlx_init()))
+	if (!(global->mlx = mlx_init()))
 		return ;
-	mlx_win = mlx_new_window(mlx, 2000, 900, "cub3D");
-	img.map->img = mlx_new_image(mlx, 2000, 900);
-	img.map->addr = mlx_get_data_addr(img.map->img, &img.map->bpp, &img.map->length, &img.map->end);
+	global->mlx_win = mlx_new_window(global->mlx, 2000, 900, "cub3D");
+	img.data->img = mlx_new_image(global->mlx, 2000, 900);
+	img.data->addr = mlx_get_data_addr(img.data->img, &img.data->bpp, &img.data->length, &img.data->end);
 	// mlx_key_hook(vars.win, key_hook, &vars);
 	while (global->cub_map[y] != NULL)
 	{
@@ -90,10 +81,9 @@ void		ft_mlx(t_struct *global)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(mlx, mlx_win, img.map->img, 600, 300);
-	write(1, "1", 1);
-	mlx_loop(mlx);
-	write(1, "1", 1);
+	mlx_put_image_to_window(global->mlx, global->mlx_win, img.data->img, 600, 300);
+	write(1, "open", 4);
+	mlx_loop(global->mlx);
 }
 
 // while (j < y * SCALE + SCALE)
