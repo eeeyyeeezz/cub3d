@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:17:10 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 19:38:54 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 23:09:55 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,46 +43,47 @@ static	void		draw_all_pixels(int x, int y, t_struct img, char **map, t_struct *g
 	}
 }
 
-// int			key_hook(t_vars *vars)
-// {
-// 	printf("fuck me!\n");
-// 	return (0);
-// }
+int			key_hook(t_struct *global)
+{
+	printf("fuck me!\n");
+	return (0);
+}
 
-// int			ft_close(t_vars *vars)
-// {
-// 	mlx_destroy_window(vars->mlx, vars->win);
-// 	return (1);
-// }
+int			ft_close(t_struct *global)
+{
+	mlx_destroy_window(global->mlx, global->mlx_win);
+	return (1);
+}
 
 void		ft_mlx(t_struct *global)
 {
 	int x;
 	int y;
 	char **map;
-	t_struct img;
+	t_struct data_s;
 
 	y = 0;
 	x = 0;
 	if (!(global->mlx = mlx_init()))
 		return ;
 	global->mlx_win = mlx_new_window(global->mlx, 2000, 900, "cub3D");
-	img.data->img = mlx_new_image(global->mlx, 2000, 900);
-	img.data->addr = mlx_get_data_addr(img.data->img, &img.data->bpp, &img.data->length, &img.data->end);
-	// mlx_key_hook(vars.win, key_hook, &vars);
+	data_s.data->img = mlx_new_image(global->mlx, 2000, 900);
+	data_s.data->addr = mlx_get_data_addr(data_s.data->img, &data_s.data->bpp, &data_s.data->length, &data_s.data->end);
+	mlx_key_hook(global->mlx_win, key_hook, global);
+	// mlx_hook(global->mlx_win, 2, 1L<<0, ft_close, global);
 	while (global->cub_map[y] != NULL)
 	{
 		x = 0;
 		while (global->cub_map[y][x] != '\0')
 		{
 			if (global->cub_map[y][x] == '1')
-				draw_all_pixels(x, y, img, map, global);
+				draw_all_pixels(x, y, data_s, map, global);
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(global->mlx, global->mlx_win, img.data->img, 600, 300);
-	write(1, "open", 4);
+	mlx_put_image_to_window(global->mlx, global->mlx_win, data_s.data->img, 600, 300);
+	write(1, "open\n", 5);
 	mlx_loop(global->mlx);
 }
 

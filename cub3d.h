@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 19:36:53 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 22:56:47 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <mlx.h>
-# include <mlx.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
@@ -25,8 +24,8 @@
 
 typedef		struct s_data
 {
-	void 		*mlx;
-	void 		*mlx_win;
+	void 		*mlx_mlx_mlx;
+	// void 		*mlx_win;
 	void		*img;
 	char		*addr;
 	int			bpp;
