@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 18:58:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 23:17:53 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,17 @@ int			main(int argc, char **argv)
 	t_map_res 	map_res;
 	t_colors	colors;
 	t_textures	texures;
+	t_data		data;
 
 	(void)argc;
 	i = 0;
 	global.map = &map_res;
 	global.colors = &colors;
 	global.textures = &texures;
+	global.data = &data;
 	get_zero(&global);
 	pars(&global, argv);
+	// return (0);
 	ft_mlx(&global);
 	// func_func_baby(global);
 	// printf("check C [%d]\n", ft_strchr("  C    255,150,75", 'C'));

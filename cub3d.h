@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 22:56:47 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 23:25:39 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 
 typedef		struct s_data
 {
-	void 		*mlx_mlx_mlx;
-	// void 		*mlx_win;
 	void		*img;
 	char		*addr;
 	int			bpp;

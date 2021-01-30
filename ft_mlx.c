@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:17:10 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 23:09:55 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 23:25:23 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static	void		my_mlx_pixel_put(t_struct *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-static	void		draw_all_pixels(int x, int y, t_struct img, char **map, t_struct *global)
+static	void		draw_all_pixels(int x, int y, char **map, t_struct *global)
 {
 	int	i;
 	int j;
@@ -30,13 +30,13 @@ static	void		draw_all_pixels(int x, int y, t_struct img, char **map, t_struct *g
 	j = y * SCALE;
 	save = j;
 
-	my_mlx_pixel_put(&img, global->map->position_x * SCALE, global->map->position_y * SCALE, 0xFF0000);
+	my_mlx_pixel_put(global, global->map->position_x * SCALE, global->map->position_y * SCALE, 0xFF0000);
 	while (j < y * SCALE + SCALE)
 	{
 		i = x * SCALE;
 		while (i < x * SCALE + SCALE)
 		{
-			my_mlx_pixel_put(&img, i, j, 0xFFFFFF);
+			my_mlx_pixel_put(global, i, j, 0xFFFFFF);
 			i++;
 		}
 		j++;
@@ -60,16 +60,17 @@ void		ft_mlx(t_struct *global)
 	int x;
 	int y;
 	char **map;
-	t_struct data_s;
+	// t_struct data_s;
 
 	y = 0;
 	x = 0;
 	if (!(global->mlx = mlx_init()))
 		return ;
 	global->mlx_win = mlx_new_window(global->mlx, 2000, 900, "cub3D");
-	data_s.data->img = mlx_new_image(global->mlx, 2000, 900);
-	data_s.data->addr = mlx_get_data_addr(data_s.data->img, &data_s.data->bpp, &data_s.data->length, &data_s.data->end);
+	global->data->img = mlx_new_image(global->mlx, 2000, 900);
+	global->data->addr = mlx_get_data_addr(global->data->img, &global->data->bpp, &global->data->length, &global->data->end);
 	mlx_key_hook(global->mlx_win, key_hook, global);
+
 	// mlx_hook(global->mlx_win, 2, 1L<<0, ft_close, global);
 	while (global->cub_map[y] != NULL)
 	{
@@ -77,12 +78,12 @@ void		ft_mlx(t_struct *global)
 		while (global->cub_map[y][x] != '\0')
 		{
 			if (global->cub_map[y][x] == '1')
-				draw_all_pixels(x, y, data_s, map, global);
+				draw_all_pixels(x, y, map, global);
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(global->mlx, global->mlx_win, data_s.data->img, 600, 300);
+	mlx_put_image_to_window(global->mlx, global->mlx_win, global->data->img, 600, 300);
 	write(1, "open\n", 5);
 	mlx_loop(global->mlx);
 }
