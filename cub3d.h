@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/27 17:26:31 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/30 18:53:00 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# include "src/get_next_line/get_next_line.h"
+# include "src/get_next_line_cub/get_next_line.h"
 # include "src/libft/libft.h"
 # include <stdlib.h>
 # include <stdio.h>
@@ -25,11 +25,13 @@
 
 typedef		struct s_map
 {
+	void *mlx;
+	void *mlx_win;
 	void		*img;
 	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
+	int			bpp;
+	int			length;
+	int			end;
 	int			width;
 	int			height;
 	int			position_x;
@@ -72,7 +74,8 @@ void		pars_south(char *line, t_struct *global);
 void		pars_west(char *line, t_struct *global);
 void		pars_east(char *line, t_struct *global);
 void		pars_map(char *line, t_struct *global, int fd);
-void        ft_mlx(t_struct *global);
+int			get_next_line(int fd, char **line);
+void		ft_mlx(t_struct *global);
 
 
 #endif
