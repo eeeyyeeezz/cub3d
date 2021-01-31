@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 23:25:39 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/31 17:00:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef		struct s_map
 	int			height;
 	int			position_x;
 	int			position_y;
+	float		dir_x;
+	float		dir_y;
 }					t_map_res;
 
 
@@ -63,6 +65,7 @@ typedef		struct s_whole
 {
 	t_map_res	*map;
 	t_data		*data;
+	t_data		cube;
 	t_colors	*colors;
 	t_textures	*textures;
 	void 		*mlx;

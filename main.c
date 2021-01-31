@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 23:17:53 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/31 16:29:20 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int			main(int argc, char **argv)
 	get_zero(&global);
 	pars(&global, argv);
 	// return (0);
-	ft_mlx(&global);
 	// func_func_baby(global);
+	ft_mlx(&global);
 	// printf("check C [%d]\n", ft_strchr("  C    255,150,75", 'C'));
 	// printf("check F [%d]\n", ft_strchr("  F    350,250,100", 'F'));
 }
