@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 17:13:47 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/31 20:44:59 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/31 22:22:19 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ typedef		struct data
 {
 	void		*img;
 	char		*addr;
-	int			bpp;
-	int			length;
-	int			end;
+	int 		bpp;
+	int 		length;
+	int 		end;
 }
 					data;
 
@@ -54,10 +54,36 @@ int			main(void)
 {
 	void 	*mlx;
 	void	*mlx_win;
+	data	data;
 
-	mlx_win = mlx_new_window(mlx, 2000, 900, "cub3D");
-	data->img = mlx_new_image(mlx, 20, 20);
-
-	fill_image(global, 20, 20);
-
+	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, 500, 500, "image3D");
+	data.img = mlx_new_image(mlx, 500, 500);
+	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.length, &data.end);
+	mlx_put_image_to_window(mlx, mlx_win, data.img, 50, 50);
+	fill_image(&data, 20, 20);
+	mlx_loop(mlx);
 }
+
+// typedef struct  s_data {
+//     void        *img;
+//     char        *addr;
+//     int         bits_per_pixel;
+//     int         line_length;
+//     int         endian;
+// }               t_data;
+
+// int             main(void)
+// {
+//     void    *mlx;
+//     void    *mlx_win;
+//     t_data  img;
+
+//     mlx = mlx_init();
+//     mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+//     img.img = mlx_new_image(mlx, 1920, 1080);
+//     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+//                                  &img.endian);
+//     mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+//     mlx_loop(mlx);
+// }

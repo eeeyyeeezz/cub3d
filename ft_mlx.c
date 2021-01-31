@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:17:10 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/31 20:55:52 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/01/31 21:42:18 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int			key_hook(int keycode, t_struct *global)
 {
 	printf("%d!\n", keycode);
 	if (keycode == 53) // esc
-		exit(1);
-	if (keycode == 126)
+		exit(0);
+	if (keycode == 125)				// почему так?
 		global->map->position_y += 1;
-	if (keycode == 125)
+	if (keycode == 126)
 		global->map->position_y -= 1;
 	if (keycode == 124)
 		global->map->position_x += 1;
