@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/31 16:29:20 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/07 18:04:36 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void		get_zero(t_struct *global)
 
 static	void	func_func_baby(t_struct global)
 {
-	printf("eto y [%d]\n", global.map->position_y);
-	printf("eto x [%d]\n", global.map->position_x);
+	printf("eto y [%f]\n", global.map->position_y);
+	printf("eto x [%f]\n", global.map->position_x);
 	printf("\nwidth [%d] height [%d]\n", global.map->width, global.map->height);
 	printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global.colors->r_cell, global.colors->g_cell, global.colors->b_cell);
 	printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global.colors->r_floor, global.colors->g_floor, global.colors->b_floor);
@@ -48,8 +48,6 @@ static	void	func_func_baby(t_struct global)
 int			main(int argc, char **argv)
 {
 	int i;
-	// int fd;
-	// char *line;
 	t_struct	global;
 	t_map_res 	map_res;
 	t_colors	colors;
@@ -57,6 +55,7 @@ int			main(int argc, char **argv)
 	t_data		data;
 
 	(void)argc;
+	global.angle_player = 90;
 	i = 0;
 	global.map = &map_res;
 	global.colors = &colors;
@@ -64,7 +63,6 @@ int			main(int argc, char **argv)
 	global.data = &data;
 	get_zero(&global);
 	pars(&global, argv);
-	// return (0);
 	// func_func_baby(global);
 	ft_mlx(&global);
 	// printf("check C [%d]\n", ft_strchr("  C    255,150,75", 'C'));

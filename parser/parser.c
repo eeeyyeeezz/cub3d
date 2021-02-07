@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 16:29:46 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/07 18:04:01 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ void		pars(t_struct *global, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 		diff_pars(line, global, fd);
-	// map_without_pars(global);
+	// printf("one [%d] two [%d]\n", global->map->position_x, global->map->position_y);
 }
