@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:52:43 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/07 18:04:36 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/07 19:49:25 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,31 @@ int			main(int argc, char **argv)
 4) Проверить что мапа точно в конце
 
 */
+
+
+
+// static void		ft_raycast(t_struct *global)
+// {
+// 	float x;
+// 	float y;
+// 	float start;
+// 	float end;
+// 	t_map_res ray = *global->map;
+
+// 	x = ray.position_x;
+// 	y = ray.position_y;
+// 	global->map->start_rays = global->angle_player - (global->angle_player / 2);
+// 	global->map->end_rays = global->angle_player + (global->angle_player / 2);
+// 	while (global->map->start_rays <= global->map->end_rays)
+// 	{
+// 		ray.position_x = global->map->position_x; 
+// 		ray.position_y = global->map->position_y;
+// 		while (global->cub_map[(int)ray.position_x][(int)ray.position_y] != '1')
+// 		{
+// 			ray.position_x += cos(90);
+// 			ray.position_y = sin(90);
+// 			my_mlx_pixel_put(global->data, ray.position_x, ray.position_y, 0xFFF000);
+// 		}
+// 		global->map->start_rays += 90 / 10;
+// 	}
+// }

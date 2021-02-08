@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/07 15:45:15 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/07 19:00:42 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef		struct s_map
 	int			height;
 	float		position_x;
 	float		position_y;
+	float		start_rays;
+	float		end_rays;
 	float		dir_x;
 	float		dir_y;
 }					t_map_res;
@@ -72,8 +74,6 @@ typedef		struct s_whole
 	void 		*mlx_win;
 	char		**cub_map;
 	float		angle_player;
-	int			start_rays;
-	int			end_rays;
 }					t_struct;
 
 void		pars(t_struct *global, char **argv);

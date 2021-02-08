@@ -6,12 +6,14 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:17:10 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/07 18:28:48 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/07 19:53:49 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #define SCALE 30
+#define FOV 60 * (M_PI / 180)
+
 
 static	void		my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -92,18 +94,27 @@ static void		ft_raycast(t_struct *global)
 {
 	float x;
 	float y;
+	float min_angle;
+	float max_angle;
 	t_map_res ray = *global->map;
 
+	max_angle = global->angle_player - (FOV / 2);
+	min_angle = global->angle_player + (FOV / 2);
 	x = ray.position_x;
 	y = ray.position_y;
-	// global->start_rays = global->angle_player - (global->angle_player / 2);
-	// global->end_rays = global->angle_player + (global->angle_player / 2);
-	while (global->cub_map[(int)ray.position_y][(int)ray.position_x] != '1')
+	global->map->start_rays = global->angle_player - (global->angle_player / 2);
+	global->map->end_rays = global->angle_player + (global->angle_player / 2);
+	while (min_angle > max_angle)
 	{
-		ray.position_x += cos(90);
-		ray.position_y += sin(0);
-		my_mlx_pixel_put(global->data, ray.position_x * SCALE, ray.position_y * SCALE, 0xFFF000);
-		// y -= 0.01;
+		ray.position_x = global->map->position_x;
+		ray.position_y = global->map->position_y;
+		while (global->cub_map[(int)ray.position_y][(int)ray.position_x] != '1')
+		{
+			ray.position_x += cos(min_angle) * 0.01;
+			ray.position_y += sin(min_angle) * 0.01;
+			my_mlx_pixel_put(global->data, ray.position_x * SCALE, ray.position_y * SCALE, 0xFFF000);
+		}
+		min_angle -= FOV / 900;
 	}
 	// mlx_put_image_to_window(global->mlx, global->mlx_win, global->data->img, 0, 0);
 }
@@ -113,14 +124,21 @@ int			key_hook(int keycode, t_struct *global)
 	printf("%d!\n", keycode);
 	if (keycode == 53) // esc
 		exit(0);
-	if (keycode == 125)				// почему так?
+	if (keycode == 1)				// почему так?
 		global->map->position_y += 0.5;
-	if (keycode == 126)
+	if (keycode == 13)
 		global->map->position_y -= 0.5;
-	if (keycode == 124)
+	if (keycode == 2)
 		global->map->position_x += 0.5;
-	if (keycode == 123)
+	if (keycode == 0)
 		global->map->position_x -= 0.5;
+	// if (keycode == 126)
+	if (keycode == 124)
+		global->angle_player += 0.25;
+	// if (keycode == 125)
+	if (keycode == 123)
+		global->angle_player -= 0.25;
+
 	// mlx_clear_window(global->mlx, global->mlx_win);
 	mlx_destroy_image(global->mlx, global->data->img);		// destroy_image segfault
 	global->data->img = mlx_new_image(global->mlx, 1600, 900);
