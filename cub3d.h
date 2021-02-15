@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/15 17:33:55 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/15 18:17:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ typedef		struct s_whole
 	t_data		data;
 	t_data		textures_north;
 	t_data		textures_south;
+	t_data		textures_west;
+	t_data		textures_east;
 	t_map_res	map;
 	t_draw		draw;
 	void 		*mlx;
