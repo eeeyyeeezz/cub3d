@@ -1,60 +1,23 @@
-# include <stdlib.h>
-# include <stdio.h>
-# include <mlx.h>
-# include <fcntl.h>
-# include <errno.h>
-# include <string.h>
-# include <math.h>
-# include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
+/*   Updated: 2021/02/15 17:35:48 by gmorra           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "cub3D.h"
 
 #define screenWidth 1920
 #define screenHeight 1080
-#define mapWidth 24
-#define mapHeight 24
 #define texWidth 64
 #define texHeight 64
-
-typedef		struct s_data
-{
-	void		*img;
-	char		*addr;
-	int			bpp;
-	int			length;
-	int			end;
-}
-					t_data;
-
-typedef		struct s_map
-{
-	int			width;
-	int			height;
-	char		side;
-	float		position_x;
-	float		position_y;
-	float		start_rays;
-	float		end_rays;
-	float		pos_x;
-	float		pos_y;
-
-}					t_map_res;
-
-typedef		struct s_whole
-{
-	t_data		data;
-	t_data		textures_data;
-	t_map_res	map;
-	void 		*mlx;
-	void 		*mlx_win;
-	int			step_x;
-	int			step_y;
-	float		dir_x;
-	float		dir_y;
-	float		plane_x;
-	float		plane_y;
-
-}					t_struct;
-
+#define mapWidth  24
+#define mapHeight  24
 
 int worldMap[mapWidth][mapHeight]=
 {
@@ -92,15 +55,106 @@ static	void		my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void			textures_draw(t_struct *global)
+static	unsigned int		my_mlx_pixel_take(t_data *data, int x, int y)
 {
-	global->textures_data.img = mlx_xpm_file_to_image(global->mlx, "textures/south.xpm", 10, 10);
-	
+	char	*dst;
 
-
+	dst = data->addr + (y * data->length + x * (data->bpp / 8));
+	return (*(unsigned int*)dst);
 }
 
-void			draw(t_struct *global)
+static	void			textures_draw(t_struct *global)
+{
+	int width;
+	int height;
+
+	global->textures_north.img = mlx_xpm_file_to_image(global->mlx, "textures/north.xpm", &width, &height);
+	global->textures_north.addr = mlx_get_data_addr(global->textures_north.img, &global->textures_north.bpp,
+		&global->textures_north.length, &global->textures_north.end);
+	global->textures_south.img = mlx_xpm_file_to_image(global->mlx, "textures/south.xpm", &width, &height);
+	global->textures_south.addr = mlx_get_data_addr(global->textures_south.img, &global->textures_south.bpp,
+		&global->textures_south.length, &global->textures_south.end);
+}
+
+void			left_rotate(t_struct *global, int keycode)
+{
+	double speed = global->draw.rot_speed;
+	double oldDirX = global->dir_x;
+	if (keycode == 123)
+	{
+		global->dir_x = global->dir_x * cos(speed) - global->dir_y * sin(speed);
+		global->dir_y = oldDirX * sin(speed) + global->dir_y * cos(speed);
+		double oldPlaneX = global->plane_x;
+		global->plane_x = global->plane_x * cos(speed) - global->plane_y * sin(speed);
+		global->plane_y = oldPlaneX * sin(speed) + global->plane_y * cos(speed);
+	}
+}
+
+void			right_rotate(t_struct *global, int keycode)
+{
+	double speed = global->draw.rot_speed;
+	double oldDirX = global->dir_x;
+
+	if (keycode == 124)
+	{
+		global->dir_x = global->dir_x * cos(-speed) - global->dir_y * sin(-speed);
+		global->dir_y = oldDirX * sin(-speed) + global->dir_y * cos(-speed);
+		double oldPlaneX = global->plane_x;
+		global->plane_x = global->plane_x * cos(-speed) - global->plane_y * sin(-speed);
+		global->plane_y = oldPlaneX * sin(-speed) + global->plane_y * cos(-speed);
+	}
+}
+
+void			up_down(t_struct *global, int keycode)
+{
+	double moveSpeed = global->draw.move_speed;
+
+	if (keycode == 13)		// up
+	{
+		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x += global->dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
+			global->map.pos_y += global->dir_y * moveSpeed;
+	}
+	if (keycode == 1)		// down
+	{
+		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x -= global->dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
+			global->map.pos_y -= global->dir_y * moveSpeed;
+	}
+}
+
+void			right_left(t_struct *global, int keycode)
+{
+	double moveSpeed = global->draw.move_speed;
+
+	if (keycode == 2)
+	{
+		if(worldMap[(int)(global->map.pos_x + global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x += global->dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y - global->dir_x * moveSpeed)] == 0)
+			global->map.pos_y -= global->dir_x * moveSpeed;
+
+	}
+	if (keycode == 0)
+	{
+		if(worldMap[(int)(global->map.pos_x - global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x -= global->dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y + global->dir_x * moveSpeed)] == 0)
+			global->map.pos_y += global->dir_x * moveSpeed;
+	}
+}
+
+void			go_fast(t_struct *global, int keycode)
+{
+	if (keycode == 12)
+		global->draw.move_speed += + 0.1;
+	if (keycode == 14)
+		global->draw.move_speed -= 0.1;
+}
+
+static	void			draw(t_struct *global)
 {
 	int x;
 
@@ -194,18 +248,17 @@ void			draw(t_struct *global)
 		double wallX; //where exactly the wall was hit
 
 		if(side == 0)
-			wallX = global->map.position_x + perpWallDist * rayDirY;
+			wallX = global->map.pos_x + perpWallDist * rayDirY;
 		else
-			wallX = global->map.position_y + perpWallDist * rayDirX;
+			wallX = global->map.pos_y + perpWallDist * rayDirX;
 		wallX -= floor((wallX));
 
-		//x coordinate on the texture
-		int texX = (int)wallX * (double)texWidth;
+		// x coordinate on the texture
+		int texX = (int)(wallX * (double)(texWidth));
 		if(side == 0 && rayDirX > 0)
 			texX = texWidth - texX - 1;
 		if(side == 1 && rayDirY < 0)
-				texX = texWidth - texX - 1;
-
+			texX = texWidth - texX - 1;
 		// TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
 		// How much to increase the texture coordinate per screen pixel
 		double step = 1.0 * texHeight / lineHeight;
@@ -214,23 +267,37 @@ void			draw(t_struct *global)
 
 		while (y < screenHeight)
 		{
+			if (y >= 0 && y <= drawStart)
+				my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
 			if (y >= drawStart && y <= drawEnd)
 			{
+				int texY = (int)texPos & (texHeight - 1);
+				texPos += step;
+
 				if (side == 0)				// S N
 				{
 					if (global->step_x > 0)
-						my_mlx_pixel_put(&global->data, x, y, 0xFF0000);
+					{
+						unsigned int color = my_mlx_pixel_take(&global->textures_north, texX, texY);
+						my_mlx_pixel_put(&global->data, x, y, color);
+					}
 					else if (global->step_x < 0)
-						my_mlx_pixel_put(&global->data, x, y, 0x00FF00);
+					{
+						unsigned int color = my_mlx_pixel_take(&global->textures_south, texX, texY);
+						my_mlx_pixel_put(&global->data, x, y, color);
+
+					}
 				}
 				if (side == 1)				// W E
 				{
 					if (global->step_y > 0)
 						my_mlx_pixel_put(&global->data, x, y, 0x0000FF);
 					else if (global->step_y < 0)
-						my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
+						my_mlx_pixel_put(&global->data, x, y, 0x123456);
 				}
 			}
+			if (y >= drawEnd && y <= screenHeight)
+				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
 			y++;
 		}
 		x++;
@@ -239,81 +306,15 @@ void			draw(t_struct *global)
 
 int			key_hook(int keycode, t_struct *global)
 {
-	float moveSpeed = 0.5;
-	float rotationSpeed = 0.1;
-	double rotSpeed = 0.2;
-
 	mlx_destroy_image(global->mlx, global->data.img);
 	printf("%d!\n", keycode);
 	if (keycode == 53) // esc
 		exit(0);
-	if (keycode == 13)		// up
-	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->map.pos_y += global->dir_y * moveSpeed;
-	}
-	if (keycode == 1)		// down
-	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->map.pos_y -= global->dir_y * moveSpeed;
-	}
-	if (keycode == 2)		// right
-	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y - global->dir_x * moveSpeed)] == 0)
-			global->map.pos_y -= global->dir_x * moveSpeed;
-
-	}
-	if (keycode == 0)		// left
-	{
-		if(worldMap[(int)(global->map.pos_x - global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y + global->dir_x * moveSpeed)] == 0)
-			global->map.pos_y += global->dir_x * moveSpeed;
-	}
-	if (keycode == 40)				// 'k'
-	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->dir_x += global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->dir_y += global->dir_y * moveSpeed;
-	}
-	if (keycode == 37)			// 'l'
-	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->dir_x -= global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->dir_y -= global->dir_y * moveSpeed;
-	}
-	if (keycode == 123)		// left rotate
-	{
-		//   both camera direction and camera plane must be rotated
-		double oldDirX = global->dir_x;
-		global->dir_x = global->dir_x * cos(rotSpeed) - global->dir_y * sin(rotSpeed);
-		global->dir_y = oldDirX * sin(rotSpeed) + global->dir_y * cos(rotSpeed);
-		double oldPlaneX = global->plane_x;
-		global->plane_x = global->plane_x * cos(rotSpeed) - global->plane_y * sin(rotSpeed);
-		global->plane_y = oldPlaneX * sin(rotSpeed) + global->plane_y * cos(rotSpeed);
-	}
-	if (keycode == 124)		// right rotate
-	{
-		//  both camera direction and camera plane must be rotated
-		double oldDirX = global->dir_x;
-		global->dir_x = global->dir_x * cos(-rotSpeed) - global->dir_y * sin(-rotSpeed);
-		global->dir_y = oldDirX * sin(-rotSpeed) + global->dir_y * cos(-rotSpeed);
-		double oldPlaneX = global->plane_x;
-		global->plane_x = global->plane_x * cos(-rotSpeed) - global->plane_y * sin(-rotSpeed);
-		global->plane_y = oldPlaneX * sin(-rotSpeed) + global->plane_y * cos(-rotSpeed);
-	}
-	if (keycode == 12)			// q
-		moveSpeed += 0.1;
-	if (keycode == 14)			// e
-		moveSpeed -= 0.1;
+	up_down(global, keycode);
+	right_left(global, keycode);
+	left_rotate(global, keycode);
+	right_rotate(global, keycode);
+	go_fast(global, keycode);
 	global->data.img = mlx_new_image(global->mlx, screenWidth, screenHeight);
 	global->data.addr = mlx_get_data_addr(global->data.img, &global->data.bpp, &global->data.length, &global->data.end);
 	draw(global);
@@ -332,32 +333,21 @@ int		main(int argc, char **argv)
 	global.dir_y = 0;
 	global.plane_x = 0;
 	global.plane_y = 0.66;
+	global.draw.move_speed = 0.5;
+	global.draw.rotation_speed = 0.1;
+	global.draw.rot_speed = 0.2;
 	double time = 0;
 	double oldTime = 0;
 
-	if (global.map.side == 'N')
-		global.dir_x = -1;
-	if (global.map.side == 'S')
-		global.dir_x = -1;
-	if (global.map.side == 'W')
-		global.dir_x = -1;
-	if (global.map.side == 'W')
-		global.dir_x = -1;
-
+	// pars(&global, &argv[1]);
 	global.mlx = mlx_init();
 	global.mlx_win = mlx_new_window(global.mlx, screenWidth, screenHeight, "cub3D");
 	global.data.img = mlx_new_image(global.mlx, screenWidth, screenHeight);
 	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
+	textures_draw(&global);
 	draw(&global);
 	mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
 	mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 30);
 	mlx_loop(global.mlx);
 }
-
-
-	// if (keycode == 2)		// right
-	// {
-	// 	if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-	// 		global->dir_x -= global->dir_x * moveSpeed;
-	// }			rofl

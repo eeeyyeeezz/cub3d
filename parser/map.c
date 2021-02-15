@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/30 16:49:19 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/15 17:08:15 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ void		pars_map(char *line, t_struct *global, int fd)
 	}
 	free(line);
 	global->cub_map = ft_split(new_line, '*');
-	// printf("eto line\n %s \n", new_line);
-	// while (global->cub_map[++i] != '\0')
-		// printf("eto mapa [%s]\n", global->cub_map[i]);
-
 
 	i = 0;
 	while (global->cub_map[i])
@@ -45,8 +41,8 @@ void		pars_map(char *line, t_struct *global, int fd)
 			if (global->cub_map[i][a] == 'N' || global->cub_map[i][a] == 'S' ||
 			global->cub_map[i][a] == 'W' || global->cub_map[i][a] == 'E')
 			{
-				global->map->position_y = i;
-				global->map->position_x = a;
+				global->map->pos_y = i;
+				global->map->pos_x = a;
 			}
 			a++;
 		}

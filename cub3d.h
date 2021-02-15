@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/07 19:00:42 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/15 17:33:55 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <string.h>
 # include <math.h>
+# include <unistd.h>
 
 typedef		struct s_data
 {
@@ -32,48 +33,43 @@ typedef		struct s_data
 }
 					t_data;
 
-typedef		struct s_colors
-{
-	int		r_floor;
-	int		g_floor;
-	int		b_floor;
-	int		r_cell;
-	int		g_cell;
-	int		b_cell;
-}					t_colors;
-
-typedef		struct s_textures
-{
-	char	*north;
-	char	*south;
-	char	*west;
-	char	*east;
-}					t_textures;
-
 typedef		struct s_map
 {
 	int			width;
 	int			height;
+	char		side;
 	float		position_x;
 	float		position_y;
 	float		start_rays;
 	float		end_rays;
-	float		dir_x;
-	float		dir_y;
+	float		pos_x;
+	float		pos_y;
+
 }					t_map_res;
 
+typedef		struct	s_draw
+{
+	double move_speed;
+	double rotation_speed;
+	double rot_speed;
+}					t_draw;
 
 typedef		struct s_whole
 {
-	t_map_res	*map;
-	t_data		*data;
-	t_data		cube;
-	t_colors	*colors;
-	t_textures	*textures;
+	t_data		data;
+	t_data		textures_north;
+	t_data		textures_south;
+	t_map_res	map;
+	t_draw		draw;
 	void 		*mlx;
 	void 		*mlx_win;
+	int			step_x;
+	int			step_y;
+	float		dir_x;
+	float		dir_y;
+	float		plane_x;
+	float		plane_y;
 	char		**cub_map;
-	float		angle_player;
 }					t_struct;
 
 void		pars(t_struct *global, char **argv);
@@ -86,7 +82,10 @@ void		pars_west(char *line, t_struct *global);
 void		pars_east(char *line, t_struct *global);
 void		pars_map(char *line, t_struct *global, int fd);
 int			get_next_line(int fd, char **line);
-void		ft_mlx(t_struct *global);
-
+void		up_down(t_struct *global, int keycode);
+void		right_left(t_struct *global, int keycode);
+void		left_rotate(t_struct *global, int keycode);
+void		right_rotate(t_struct *global, int keycode);
+void		go_fast(t_struct *global, int keycode);
 
 #endif
