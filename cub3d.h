@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/15 18:17:07 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 12:35:28 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,30 @@ typedef		struct s_map
 
 typedef		struct	s_draw
 {
+	int hit;
+	int side;
+	int map_x;
+	int map_y;
+	int step_x;
+	int step_y;
+	int line_height;
+	int screen_height;
+	double dir_x;
+	double dir_y;
+	double plane_x;
+	double plane_y;
 	double move_speed;
 	double rotation_speed;
 	double rot_speed;
+	double camera_x;
+	double ray_dir_x;
+	double ray_dir_y;
+	double side_dist_x;
+	double side_dist_y;
+	double delta_dist_x;
+	double delta_dist_y;
+	double perp_wall_dist;
+
 }					t_draw;
 
 typedef		struct s_whole
@@ -65,12 +86,6 @@ typedef		struct s_whole
 	t_draw		draw;
 	void 		*mlx;
 	void 		*mlx_win;
-	int			step_x;
-	int			step_y;
-	float		dir_x;
-	float		dir_y;
-	float		plane_x;
-	float		plane_y;
 	char		**cub_map;
 }					t_struct;
 

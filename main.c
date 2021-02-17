@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/15 18:25:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 12:43:56 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,29 +85,29 @@ static	void			textures_draw(t_struct *global)
 void			left_rotate(t_struct *global, int keycode)
 {
 	double speed = global->draw.rot_speed;
-	double oldDirX = global->dir_x;
+	double oldDirX = global->draw.dir_x;
 	if (keycode == 123)
 	{
-		global->dir_x = global->dir_x * cos(speed) - global->dir_y * sin(speed);
-		global->dir_y = oldDirX * sin(speed) + global->dir_y * cos(speed);
-		double oldPlaneX = global->plane_x;
-		global->plane_x = global->plane_x * cos(speed) - global->plane_y * sin(speed);
-		global->plane_y = oldPlaneX * sin(speed) + global->plane_y * cos(speed);
+		global->draw.dir_x = global->draw.dir_x * cos(speed) - global->draw.dir_y * sin(speed);
+		global->draw.dir_y = oldDirX * sin(speed) + global->draw.dir_y * cos(speed);
+		double oldPlaneX = global->draw.plane_x;
+		global->draw.plane_x = global->draw.plane_x * cos(speed) - global->draw.plane_y * sin(speed);
+		global->draw.plane_y = oldPlaneX * sin(speed) + global->draw.plane_y * cos(speed);
 	}
 }
 
 void			right_rotate(t_struct *global, int keycode)
 {
 	double speed = global->draw.rot_speed;
-	double oldDirX = global->dir_x;
+	double oldDirX = global->draw.dir_x;
 
 	if (keycode == 124)
 	{
-		global->dir_x = global->dir_x * cos(-speed) - global->dir_y * sin(-speed);
-		global->dir_y = oldDirX * sin(-speed) + global->dir_y * cos(-speed);
-		double oldPlaneX = global->plane_x;
-		global->plane_x = global->plane_x * cos(-speed) - global->plane_y * sin(-speed);
-		global->plane_y = oldPlaneX * sin(-speed) + global->plane_y * cos(-speed);
+		global->draw.dir_x = global->draw.dir_x * cos(-speed) - global->draw.dir_y * sin(-speed);
+		global->draw.dir_y = oldDirX * sin(-speed) + global->draw.dir_y * cos(-speed);
+		double oldPlaneX = global->draw.plane_x;
+		global->draw.plane_x = global->draw.plane_x * cos(-speed) - global->draw.plane_y * sin(-speed);
+		global->draw.plane_y = oldPlaneX * sin(-speed) + global->draw.plane_y * cos(-speed);
 	}
 }
 
@@ -117,17 +117,17 @@ void			up_down(t_struct *global, int keycode)
 
 	if (keycode == 13)
 	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->map.pos_y += global->dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x + global->draw.dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x += global->draw.dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)] == 0)
+			global->map.pos_y += global->draw.dir_y * moveSpeed;
 	}
 	if (keycode == 1)
 	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->dir_y * moveSpeed)] == 0)
-			global->map.pos_y -= global->dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x + global->draw.dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x -= global->draw.dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)] == 0)
+			global->map.pos_y -= global->draw.dir_y * moveSpeed;
 	}
 }
 
@@ -137,18 +137,18 @@ void			right_left(t_struct *global, int keycode)
 
 	if (keycode == 2)
 	{
-		if(worldMap[(int)(global->map.pos_x + global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y - global->dir_x * moveSpeed)] == 0)
-			global->map.pos_y -= global->dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x += global->draw.dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y - global->draw.dir_x * moveSpeed)] == 0)
+			global->map.pos_y -= global->draw.dir_x * moveSpeed;
 
 	}
 	if (keycode == 0)
 	{
-		if(worldMap[(int)(global->map.pos_x - global->dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y + global->dir_x * moveSpeed)] == 0)
-			global->map.pos_y += global->dir_x * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x - global->draw.dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
+			global->map.pos_x -= global->draw.dir_y * moveSpeed;
+		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y + global->draw.dir_x * moveSpeed)] == 0)
+			global->map.pos_y += global->draw.dir_x * moveSpeed;
 	}
 }
 
@@ -160,6 +160,67 @@ void			go_fast(t_struct *global, int keycode)
 		global->draw.move_speed -= 0.1;
 }
 
+static	void			init_all(t_struct *global, int x)
+{
+	global->draw.camera_x = 2 * x / (double)screenWidth - 1;
+	global->draw.ray_dir_x = global->draw.dir_x + global->draw.plane_x * global->draw.camera_x;
+	global->draw.ray_dir_y = global->draw.dir_y + global->draw.plane_y * global->draw.camera_x;
+	global->draw.map_x = (int)global->map.pos_x;
+	global->draw.map_y = (int)global->map.pos_y;
+	global->draw.delta_dist_x = sqrt(1 + (global->draw.ray_dir_y * global->draw.ray_dir_y) / (global->draw.ray_dir_x * global->draw.ray_dir_x));
+	global->draw.delta_dist_y = sqrt(1 + (global->draw.ray_dir_x * global->draw.ray_dir_x) / (global->draw.ray_dir_y * global->draw.ray_dir_y));
+	global->draw.hit = 0;
+}
+
+static	void			first_ifs(t_struct *global)
+{
+	if(global->draw.ray_dir_x < 0)
+	{
+		global->draw.step_x = -1;
+		global->draw.side_dist_x = (global->map.pos_x - global->draw.map_x) * global->draw.delta_dist_x;
+	}
+	else
+	{
+		global->draw.step_x = 1;
+		global->draw.side_dist_x = (global->draw.map_x + 1.0 - global->map.pos_x) * global->draw.delta_dist_x;
+	}
+	if(global->draw.ray_dir_y < 0)
+	{
+		global->draw.step_y = -1;
+		global->draw.side_dist_y = (global->map.pos_y - global->draw.map_y) * global->draw.delta_dist_y;
+	}
+	else
+	{
+		global->draw.step_y = 1;
+		global->draw.side_dist_y = (global->draw.map_y + 1.0 - global->map.pos_y) * global->draw.delta_dist_y;
+	}
+}
+
+static	void			second_ifs(t_struct *global)
+{
+	while (global->draw.hit == 0)
+	{
+		if(global->draw.side_dist_x < global->draw.side_dist_y)
+		{
+			global->draw.side_dist_x += global->draw.delta_dist_x;
+			global->draw.map_x += global->draw.step_x;
+			global->draw.side = 0;
+		}
+	else
+	{
+		global->draw.side_dist_y += global->draw.delta_dist_y;
+		global->draw.map_y += global->draw.step_y;
+		global->draw.side = 1;
+	}
+	if(worldMap[global->draw.map_x][global->draw.map_y] > 0)
+		global->draw.hit = 1;
+	}
+	if(global->draw.side == 0)
+		global->draw.perp_wall_dist = (global->draw.map_x - global->map.pos_x + (1 - global->draw.step_x) / 2) / global->draw.ray_dir_x;
+	else
+		global->draw.perp_wall_dist = (global->draw.map_y - global->map.pos_y + (1 - global->draw.step_y) / 2) / global->draw.ray_dir_y;
+}
+
 static	void			draw(t_struct *global)
 {
 	int x;
@@ -167,90 +228,34 @@ static	void			draw(t_struct *global)
 	x = 0;
 	while(x < screenWidth)
 	{
-		double cameraX = 2 * x / (double)screenWidth - 1;
-		double rayDirX = global->dir_x + global->plane_x * cameraX;
-		double rayDirY = global->dir_y + global->plane_y * cameraX;
-		int mapX = (int)global->map.pos_x;
-		int mapY = (int)global->map.pos_y;
+		init_all(global, x);
+		first_ifs(global);
+		second_ifs(global);
+		global->draw.line_height = (int)(screenHeight / global->draw.perp_wall_dist);
 
-		double sideDistX;
-		double sideDistY;
-
-		double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-		double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-
-		double perpWallDist;
-
-		int hit = 0;
-		int side;
-
-		if(rayDirX < 0)
-		{
-			global->step_x = -1;
-			sideDistX = (global->map.pos_x - mapX) * deltaDistX;
-		}
-		else
-		{
-			global->step_x = 1;
-			sideDistX = (mapX + 1.0 - global->map.pos_x) * deltaDistX;
-		}
-		if(rayDirY < 0)
-		{
-			global->step_y = -1;
-			sideDistY = (global->map.pos_y - mapY) * deltaDistY;
-		}
-		else
-		{
-			global->step_y = 1;
-			sideDistY = (mapY + 1.0 - global->map.pos_y) * deltaDistY;
-		}
-		while (hit == 0)
-		{
-			if(sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += global->step_x;
-				side = 0;
-			}
-		else
-		{
-			sideDistY += deltaDistY;
-			mapY += global->step_y;
-			side = 1;
-		}
-		if(worldMap[mapX][mapY] > 0)
-			hit = 1;
-		}
-		if(side == 0)
-			perpWallDist = (mapX - global->map.pos_x + (1 - global->step_x) / 2) / rayDirX;
-		else
-			perpWallDist = (mapY - global->map.pos_y + (1 - global->step_y) / 2) / rayDirY;
-
-		int lineHeight = (int)(screenHeight / perpWallDist);
-
-		int drawStart = -lineHeight / 2 + screenHeight / 2;
+		int drawStart = -global->draw.line_height / 2 + screenHeight / 2;
 		if(drawStart < 0)
 			drawStart = 0;
-		int drawEnd = lineHeight / 2 + screenHeight / 2;
+		int drawEnd = global->draw.line_height / 2 + screenHeight / 2;
 		if(drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 		int y = 0;
 
 		double wallX;
 
-		if(side == 0)
-			wallX = global->map.pos_x + perpWallDist * rayDirY;
+		if(global->draw.side == 0)
+			wallX = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_y;
 		else
-			wallX = global->map.pos_y + perpWallDist * rayDirX;
+			wallX = global->map.pos_y + global->draw.perp_wall_dist * global->draw.ray_dir_x;
 		wallX -= floor((wallX));
 
 		int texX = (int)(wallX * (double)(texWidth));
-		if(side == 0 && rayDirX > 0)
+		if(global->draw.side == 0 && global->draw.ray_dir_x > 0)
 			texX = texWidth - texX - 1;
-		if(side == 1 && rayDirY < 0)
+		if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
 			texX = texWidth - texX - 1;
-		double step = 1.0 * texHeight / lineHeight;
-		double texPos = (drawStart - screenHeight / 2 + lineHeight / 2) * step;
+		double step = 1.0 * texHeight / global->draw.line_height;
+		double texPos = (drawStart - screenHeight / 2 + global->draw.line_height / 2) * step;
 
 		while (y < screenHeight)
 		{
@@ -261,28 +266,28 @@ static	void			draw(t_struct *global)
 				int texY = (int)texPos & (texHeight - 1);
 				texPos += step;
 
-				if (side == 0)
+				if (global->draw.side == 0)
 				{
-					if (global->step_x > 0)
+					if (global->draw.step_x > 0)
 					{
 						unsigned int color = my_mlx_pixel_take(&global->textures_north, texX, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
-					else if (global->step_x < 0)
+					else if (global->draw.step_x < 0)
 					{
 						unsigned int color = my_mlx_pixel_take(&global->textures_south, texX, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 
 					}
 				}
-				if (side == 1)
+				if (global->draw.side == 1)
 				{
-					if (global->step_y > 0)
+					if (global->draw.step_y > 0)
 					{
 						unsigned int color = my_mlx_pixel_take(&global->textures_west, texX, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
-					else if (global->step_y < 0)
+					else if (global->draw.step_y < 0)
 					{
 						unsigned int color = my_mlx_pixel_take(&global->textures_east, texX, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
@@ -322,10 +327,10 @@ int		main(int argc, char **argv)
 
 	global.map.pos_x = 22;
 	global.map.pos_y = 12;
-	global.dir_x = -1;
-	global.dir_y = 0;
-	global.plane_x = 0;
-	global.plane_y = 0.66;
+	global.draw.dir_x = -1;
+	global.draw.dir_y = 0;
+	global.draw.plane_x = 0;
+	global.draw.plane_y = 0.66;
 	global.draw.move_speed = 0.5;
 	global.draw.rotation_speed = 0.1;
 	global.draw.rot_speed = 0.2;
