@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 13:06:23 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 16:21:32 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ typedef		struct s_map
 	float		pos_y;
 
 }					t_map_res;
+
+typedef		struct s_colors
+{
+	int		r_floor;
+	int		g_floor;
+	int		b_floor;
+	int		r_cell;
+	int		g_cell;
+	int		b_cell;
+}					t_colors;
+
+typedef		struct s_textures
+{
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+}					t_textures;
 
 typedef		struct	s_draw
 {
@@ -88,6 +106,8 @@ typedef		struct s_whole
 	t_data		textures_south;
 	t_data		textures_west;
 	t_data		textures_east;
+	t_colors	*colors;
+	t_textures	*textures;
 	t_map_res	map;
 	t_draw		draw;
 	void 		*mlx;

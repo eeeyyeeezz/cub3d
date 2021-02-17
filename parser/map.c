@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 13:09:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 17:50:38 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@ void		pars_map(char *line, t_struct *global, int fd)
 	int a;
 
 	a = 0;
-	i = 0;
-	new_line = ft_strdup(line);
+	i = -1;
+	new_line = line;
 	new_line = ft_strjoin_new(new_line, "*");
-	while (line[0] == '1' || line[0] == ' ')
+	while (get_next_line(fd, &line))
 	{
-		free(line);
-		get_next_line(fd, &line);
 		new_line = ft_strjoin_new(new_line, line);
 		new_line = ft_strjoin_new(new_line, "*");
 	}
-	free(line);
+	// printf("eto line\n %s \n", new_line);
 	global->cub_map = ft_split(new_line, '*');
-
+	// while (global->cub_map[++i] != '\0')
+	// 	printf("eto mapa [%s]\n", global->cub_map[i]);
 	i = 0;
 	while (global->cub_map[i])
 	{

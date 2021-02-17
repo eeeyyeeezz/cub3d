@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/15 17:04:58 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 18:59:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	map_without_pars(t_struct *global)
 			if (global->cub_map[i][a] == 'N' || global->cub_map[i][a] == 'S' ||
 				global->cub_map[i][a] == 'W' || global->cub_map[i][a] == 'E')
 			{
-				global->map->pos_y = i;
-				global->map->pos_x = a;
+				global->map.pos_y = i;
+				global->map.pos_x = a;
 			}
 			a++;
 		}
@@ -78,8 +78,10 @@ void		pars(t_struct *global, char **argv)
 	line = NULL;
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
-	map_without_pars(global);
-	// while (get_next_line(fd, &line) == 1)
-	// 	diff_pars(line, global, fd);
-	printf("one [%f] two [%f]\n", global->map->position_x, global->map->position_y);
+	// map_without_pars(global);
+	write(1, "1", 1);
+	while (get_next_line(fd, &line) == 1)
+		diff_pars(line, global, fd);
+	write(1, "2", 1);
+	// printf("one [%f] two [%f]\n", global->map.pos_x, global->map.pos_y);
 }

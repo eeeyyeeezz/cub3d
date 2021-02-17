@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/02/17 15:34:41 by gmorra           ###   ########.fr        #
+#    Updated: 2021/02/17 16:08:36 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-COMPILE_SRC =  src/get_next_line_cub/*.c parser/*.c src/libft/*.c src/*.c
+COMPILE_SRC =  src/get_next_line_cub/*.c parser/*.c src/libft/*.c
 
 FRAMEWORK = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
@@ -38,7 +38,7 @@ NORMAL = "\033[0m"
 
 RUN:
 	@echo $(RED)"Compiling $(NAME)..."$(NORMAL)
-	@${CC} -g main.c libmlx.dylib -o $(NAME)
+	@${CC} -g main.c $(COMPILE_SRC) libmlx.dylib -o $(NAME)
 	@echo $(YELLOW)"Compile Completed!"$(NORMAL)
 	@./cub3D map.cub
 

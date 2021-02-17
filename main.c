@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 15:34:44 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 18:57:36 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,40 @@ int worldMap[mapWidth][mapHeight]=
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+
+static void		get_zero(t_struct *global)
+{
+	global->map.width = 0;
+	global->map.height = 0;
+	global->map.pos_x = 0;
+	global->map.pos_y = 0;
+	global->textures->east = 0;
+	global->textures->west = 0;
+	global->textures->south = 0;
+	global->textures->north = 0;
+	global->colors->r_floor = 0;
+	global->colors->g_floor = 0;
+	global->colors->b_floor = 0;
+	global->colors->r_cell = 0;
+	global->colors->g_cell = 0;
+	global->colors->b_cell = 0;
+}
+
+
+static	void	func_func_baby(t_struct *global)
+{
+	printf("eto y [%f]\n", global->map.position_y);
+	printf("eto x [%f]\n", global->map.position_x);
+	printf("\nwidth [%d] height [%d]\n", global->map.width, global->map.height);
+	printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global->colors->r_cell, global->colors->g_cell, global->colors->b_cell);
+	// printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global->colors->r_floor, global->colors->g_floor, global->colors->b_floor);
+	// printf("North [%s]\n", global->textures->north);
+	// printf("South [%s]\n", global->textures->south);
+	// printf("West  [%s]\n", global->textures->west);
+	// printf("East  [%s]\n", global->textures->east);
+	// for (int i = 0; global->cub_map[i] != '\0'; i++)
+	// 	printf("eto map [%s]\n", global->cub_map[i]);
+}
 
 static	void		my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -326,28 +360,27 @@ int		main(int argc, char **argv)
 {
 	t_struct global;
 
-	global.map.pos_x = 22;
-	global.map.pos_y = 12;
-	global.draw.dir_x = -1;
-	global.draw.dir_y = 0;
-	global.draw.plane_x = 0;
-	global.draw.plane_y = 0.66;
-	global.draw.move_speed = 0.5;
-	global.draw.rotation_speed = 0.1;
-	global.draw.rot_speed = 0.2;
-	double time = 0;
-	double oldTime = 0;
-	global.draw.screen_height = 1080;
+	// get_zero(&global);
+	pars(&global, &argv[1]);
+	func_func_baby(&global);
+	// global.map.pos_x = 10;
+	// global.map.pos_y = 12;
+	// global.draw.dir_x = -1;
+	// global.draw.dir_y = 0;
+	// global.draw.plane_x = 0;
+	// global.draw.plane_y = 0.66;
+	// global.draw.move_speed = 0.5;
+	// global.draw.rot_speed = 0.05;
+	// global.draw.screen_height = 1080;
 
-	// pars(&global, &argv[1]);
-	global.mlx = mlx_init();
-	global.mlx_win = mlx_new_window(global.mlx, screenWidth, global.draw.screen_height, "cub3D");
-	global.data.img = mlx_new_image(global.mlx, screenWidth, global.draw.screen_height);
-	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
-	textures_draw(&global);
-	draw(&global);
-	mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
-	mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
-	write(1, "\033[0;32mcub3D open!\033[0m\n", 30);
-	mlx_loop(global.mlx);
+	// global.mlx = mlx_init();
+	// global.mlx_win = mlx_new_window(global.mlx, screenWidth, global.draw.screen_height, "cub3D");
+	// global.data.img = mlx_new_image(global.mlx, screenWidth, global.draw.screen_height);
+	// global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
+	// textures_draw(&global);
+	// draw(&global);
+	// mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
+	// mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
+	// write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
+	// mlx_loop(global.mlx);
 }
