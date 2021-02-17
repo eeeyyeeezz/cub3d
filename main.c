@@ -6,14 +6,14 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 12:43:56 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 15:34:44 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 #define screenWidth 1920
-#define screenHeight 1080
+// #define screenHeight 1080
 #define texWidth 64
 #define texHeight 64
 #define mapWidth  24
@@ -156,7 +156,7 @@ void			go_fast(t_struct *global, int keycode)
 {
 	if (keycode == 12)
 		global->draw.move_speed += + 0.1;
-	if (keycode == 14)
+	if (keycode == 14 && global->draw.move_speed >= 0.1)
 		global->draw.move_speed -= 0.1;
 }
 
@@ -219,63 +219,64 @@ static	void			second_ifs(t_struct *global)
 		global->draw.perp_wall_dist = (global->draw.map_x - global->map.pos_x + (1 - global->draw.step_x) / 2) / global->draw.ray_dir_x;
 	else
 		global->draw.perp_wall_dist = (global->draw.map_y - global->map.pos_y + (1 - global->draw.step_y) / 2) / global->draw.ray_dir_y;
+	global->draw.line_height = (int)(global->draw.screen_height / global->draw.perp_wall_dist);
+	global->draw.draw_start = -global->draw.line_height / 2 + global->draw.screen_height / 2;
+}
+
+static	void			third_ifs(t_struct *global)
+{
+	if(global->draw.draw_start < 0)
+		global->draw.draw_start = 0;
+	global->draw.draw_end = global->draw.line_height / 2 + global->draw.screen_height / 2;
+	if(global->draw.draw_end >= global->draw.screen_height)
+		global->draw.draw_end = global->draw.screen_height - 1;
+	if(global->draw.side == 0)
+		global->draw.wall_x = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_y;
+	else
+		global->draw.wall_x = global->map.pos_y + global->draw.perp_wall_dist * global->draw.ray_dir_x;
+	global->draw.wall_x -= floor((global->draw.wall_x));
+	global->draw.tex_x = (int)(global->draw.wall_x * (double)(texWidth));
+	if(global->draw.side == 0 && global->draw.ray_dir_x > 0)
+		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
+	if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
+		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
+	global->draw.step = 1.0 * texHeight / global->draw.line_height;
+	global->draw.tex_pos = (global->draw.draw_start - global->draw.screen_height / 2 + global->draw.line_height / 2) * global->draw.step;
 }
 
 static	void			draw(t_struct *global)
 {
 	int x;
+	int y;
 
 	x = 0;
 	while(x < screenWidth)
 	{
+		y = 0;
 		init_all(global, x);
 		first_ifs(global);
 		second_ifs(global);
-		global->draw.line_height = (int)(screenHeight / global->draw.perp_wall_dist);
+		third_ifs(global);
 
-		int drawStart = -global->draw.line_height / 2 + screenHeight / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		int drawEnd = global->draw.line_height / 2 + screenHeight / 2;
-		if(drawEnd >= screenHeight)
-			drawEnd = screenHeight - 1;
-		int y = 0;
-
-		double wallX;
-
-		if(global->draw.side == 0)
-			wallX = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_y;
-		else
-			wallX = global->map.pos_y + global->draw.perp_wall_dist * global->draw.ray_dir_x;
-		wallX -= floor((wallX));
-
-		int texX = (int)(wallX * (double)(texWidth));
-		if(global->draw.side == 0 && global->draw.ray_dir_x > 0)
-			texX = texWidth - texX - 1;
-		if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
-			texX = texWidth - texX - 1;
-		double step = 1.0 * texHeight / global->draw.line_height;
-		double texPos = (drawStart - screenHeight / 2 + global->draw.line_height / 2) * step;
-
-		while (y < screenHeight)
+		while (y < global->draw.screen_height)
 		{
-			if (y >= 0 && y <= drawStart)
+			if (y >= 0 && y <= global->draw.draw_start)
 				my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
-			if (y >= drawStart && y <= drawEnd)
+			if (y >= global->draw.draw_start && y <= global->draw.draw_end)
 			{
-				int texY = (int)texPos & (texHeight - 1);
-				texPos += step;
+				int texY = (int)global->draw.tex_pos & (texHeight - 1);
+				global->draw.tex_pos += global->draw.step;
 
 				if (global->draw.side == 0)
 				{
 					if (global->draw.step_x > 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_north, texX, texY);
+						unsigned int color = my_mlx_pixel_take(&global->textures_north, global->draw.tex_x, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 					else if (global->draw.step_x < 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_south, texX, texY);
+						unsigned int color = my_mlx_pixel_take(&global->textures_south, global->draw.tex_x, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 
 					}
@@ -284,17 +285,17 @@ static	void			draw(t_struct *global)
 				{
 					if (global->draw.step_y > 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_west, texX, texY);
+						unsigned int color = my_mlx_pixel_take(&global->textures_west, global->draw.tex_x, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 					else if (global->draw.step_y < 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_east, texX, texY);
+						unsigned int color = my_mlx_pixel_take(&global->textures_east, global->draw.tex_x, texY);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 				}
 			}
-			if (y >= drawEnd && y <= screenHeight)
+			if (y >= global->draw.draw_end && y <= global->draw.screen_height)
 				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
 			y++;
 		}
@@ -313,7 +314,7 @@ int			key_hook(int keycode, t_struct *global)
 	left_rotate(global, keycode);
 	right_rotate(global, keycode);
 	go_fast(global, keycode);
-	global->data.img = mlx_new_image(global->mlx, screenWidth, screenHeight);
+	global->data.img = mlx_new_image(global->mlx, screenWidth, global->draw.screen_height);
 	global->data.addr = mlx_get_data_addr(global->data.img, &global->data.bpp, &global->data.length, &global->data.end);
 	draw(global);
 	mlx_put_image_to_window(global->mlx, global->mlx_win, global->data.img, 0, 0);
@@ -336,10 +337,12 @@ int		main(int argc, char **argv)
 	global.draw.rot_speed = 0.2;
 	double time = 0;
 	double oldTime = 0;
+	global.draw.screen_height = 1080;
 
+	// pars(&global, &argv[1]);
 	global.mlx = mlx_init();
-	global.mlx_win = mlx_new_window(global.mlx, screenWidth, screenHeight, "cub3D");
-	global.data.img = mlx_new_image(global.mlx, screenWidth, screenHeight);
+	global.mlx_win = mlx_new_window(global.mlx, screenWidth, global.draw.screen_height, "cub3D");
+	global.data.img = mlx_new_image(global.mlx, screenWidth, global.draw.screen_height);
 	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
 	textures_draw(&global);
 	draw(&global);

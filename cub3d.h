@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 12:35:28 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/17 13:06:23 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,18 @@ typedef		struct	s_draw
 {
 	int hit;
 	int side;
+	int tex_x;
 	int map_x;
 	int map_y;
 	int step_x;
 	int step_y;
+	int draw_start;
+	int draw_end;
 	int line_height;
 	int screen_height;
+	double step;
+	double tex_pos;
+	double wall_x;
 	double dir_x;
 	double dir_y;
 	double plane_x;
