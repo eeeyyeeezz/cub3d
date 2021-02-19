@@ -6,14 +6,12 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 18:50:11 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/19 19:45:46 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-#define screenWidth 1920
-// #define screenHeight 1080
 #define texWidth 64
 #define texHeight 64
 #define mapWidth  24
@@ -66,6 +64,15 @@ static void		get_zero(t_struct *global)
 	global->colors->b_cell = 0;
 }
 
+static	void	get_not_zero(t_struct *global)
+{
+	global->draw.plane_x = 0;
+	global->draw.plane_y = 0.66;
+	global->draw.move_speed = 0.5;
+	global->draw.rot_speed = 0.3;
+	global->draw.dir_x = -1;
+	global->draw.dir_y = 0;
+}
 
 static	void	func_func_baby(t_struct *global)
 {
@@ -209,7 +216,7 @@ void			go_fast(t_struct *global, int keycode)
 
 static	void			init_all(t_struct *global, int x)
 {
-	global->draw.camera_x = 2 * x / (double)screenWidth - 1;
+	global->draw.camera_x = 2 * x / (double)global->map.width - 1;
 	global->draw.ray_dir_x = global->draw.dir_x + global->draw.plane_x * global->draw.camera_x;
 	global->draw.ray_dir_y = global->draw.dir_y + global->draw.plane_y * global->draw.camera_x;
 	global->draw.map_x = (int)global->map.pos_x;
@@ -268,17 +275,17 @@ static	void			second_ifs(t_struct *global)
 		global->draw.perp_wall_dist = (global->draw.map_x - global->map.pos_x + (1 - global->draw.step_x) / 2) / global->draw.ray_dir_x;
 	else
 		global->draw.perp_wall_dist = (global->draw.map_y - global->map.pos_y + (1 - global->draw.step_y) / 2) / global->draw.ray_dir_y;
-	global->draw.line_height = (int)(global->draw.screen_height / global->draw.perp_wall_dist);
-	global->draw.draw_start = -global->draw.line_height / 2 + global->draw.screen_height / 2;
+	global->draw.line_height = (int)(global->map.height / global->draw.perp_wall_dist);
+	global->draw.draw_start = -global->draw.line_height / 2 + global->map.height / 2;
 }
 
 static	void			third_ifs(t_struct *global)
 {
 	if(global->draw.draw_start < 0)
 		global->draw.draw_start = 0;
-	global->draw.draw_end = global->draw.line_height / 2 + global->draw.screen_height / 2;
-	if(global->draw.draw_end >= global->draw.screen_height)
-		global->draw.draw_end = global->draw.screen_height - 1;
+	global->draw.draw_end = global->draw.line_height / 2 + global->map.height / 2;
+	if(global->draw.draw_end >= global->map.height)
+		global->draw.draw_end = global->map.height - 1;
 	if(global->draw.side == 0)
 		global->draw.wall_x = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_y;
 	else
@@ -290,7 +297,7 @@ static	void			third_ifs(t_struct *global)
 	if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
 		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
 	global->draw.step = 1.0 * texHeight / global->draw.line_height;
-	global->draw.tex_pos = (global->draw.draw_start - global->draw.screen_height / 2 + global->draw.line_height / 2) * global->draw.step;
+	global->draw.tex_pos = (global->draw.draw_start - global->map.height / 2 + global->draw.line_height / 2) * global->draw.step;
 }
 
 #pragma endregion ifs
@@ -301,7 +308,7 @@ static	void			draw(t_struct *global)
 	int y;
 
 	x = 0;
-	while (x < screenWidth)
+	while (x < global->map.width)
 	{
 		y = 0;
 		init_all(global, x);
@@ -309,7 +316,7 @@ static	void			draw(t_struct *global)
 		second_ifs(global);
 		third_ifs(global);
 
-		while (y < global->draw.screen_height)
+		while (y < global->map.height)
 		{
 			if (y >= 0 && y <= global->draw.draw_start)
 				my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
@@ -346,7 +353,7 @@ static	void			draw(t_struct *global)
 					}
 				}
 			}
-			if (y >= global->draw.draw_end && y <= global->draw.screen_height)
+			if (y >= global->draw.draw_end && y <= global->map.height)
 				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
 			y++;
 		}
@@ -377,7 +384,7 @@ static	void			draw(t_struct *global)
       double transformX = invDet * (global->draw.dir_y * spriteX - global->draw.dir_x * spriteY);
       double transformY = invDet * (-global->draw.plane_y * spriteX + global->draw.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
 
-      int spriteScreenX = (int)((screenWidth / 2) * (1 + transformX / transformY));
+      int spriteScreenX = (int)((global->map.width / 2) * (1 + transformX / transformY));
 
       //parameters for scaling and moving the sprites
       #define uDiv 1
@@ -386,19 +393,19 @@ static	void			draw(t_struct *global)
       int vMoveScreen = (int)(vMove / transformY);
 
       //calculate height of the sprite on screen
-      int spriteHeight = abs((int)(global->draw.screen_height / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+      int spriteHeight = abs((int)(global->map.height / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
       //calculate lowest and highest pixel to fill in current stripe
-      int drawStartY = -spriteHeight / 2 + global->draw.screen_height / 2 + vMoveScreen;
+      int drawStartY = -spriteHeight / 2 + global->map.height / 2 + vMoveScreen;
       if(drawStartY < 0) drawStartY = 0;
-      int drawEndY = spriteHeight / 2 + global->draw.screen_height / 2 + vMoveScreen;
-      if(drawEndY >= global->draw.screen_height) drawEndY = global->draw.screen_height - 1;
+      int drawEndY = spriteHeight / 2 + global->map.height / 2 + vMoveScreen;
+      if(drawEndY >= global->map.height) drawEndY = global->map.height - 1;
 
       //calculate width of the sprite
-      int spriteWidth = abs((int)(global->draw.screen_height / (transformY))) / uDiv;
+      int spriteWidth = abs((int)(global->map.height / (transformY))) / uDiv;
       int drawStartX = -spriteWidth / 2 + spriteScreenX;
       if(drawStartX < 0) drawStartX = 0;
       int drawEndX = spriteWidth / 2 + spriteScreenX;
-      if(drawEndX >= screenWidth) drawEndX = screenWidth - 1;
+      if(drawEndX >= global->map.width) drawEndX = global->map.width - 1;
 
       //loop through every vertical stripe of the sprite on screen
       for(int stripe = drawStartX; stripe < drawEndX; stripe++)
@@ -409,11 +416,11 @@ static	void			draw(t_struct *global)
         //2) it's on the screen (left)
         //3) it's on the screen (right)
         //4) ZBuffer, with perpendicular distance
-        if(transformY > 0 && stripe > 0 && stripe < screenWidth)//&& transformY < ZBuffer[stripe])
+        if(transformY > 0 && stripe > 0 && stripe < global->map.width)//&& transformY < ZBuffer[stripe])
 		{
 	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
 	        {
-	          int d = (y-vMoveScreen) * 256 - global->draw.screen_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+	          int d = (y-vMoveScreen) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
 	          int texY = ((d * texHeight) / spriteHeight) / 256;
 	          unsigned int color = my_mlx_pixel_take(&global->sprite, texX, texY);/*texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX];*/ //get current color from the texture
 	          my_mlx_pixel_put(&global->sprite, texX, texY, color);
@@ -437,7 +444,7 @@ int			key_hook(int keycode, t_struct *global)
 	left_rotate(global, keycode);
 	right_rotate(global, keycode);
 	go_fast(global, keycode);
-	global->data.img = mlx_new_image(global->mlx, screenWidth, global->draw.screen_height);
+	global->data.img = mlx_new_image(global->mlx, global->map.width, global->map.height);
 	global->data.addr = mlx_get_data_addr(global->data.img, &global->data.bpp, &global->data.length, &global->data.end);
 	draw(global);
 	mlx_put_image_to_window(global->mlx, global->mlx_win, global->data.img, 0, 0);
@@ -452,30 +459,25 @@ int		main(int argc, char **argv)
 	t_map_res 	map_res;
 	t_colors	colors;
 	t_textures	texures;
-	// global.map.pos_x = 10;
-	// global.map.pos_y = 12;
-	// global.draw.dir_x = -1;
-	// global.draw.dir_y = 0;
-	// global.draw.plane_x = 0;
-	// global.draw.plane_y = 0.66;
-	// global.draw.move_speed = 0.5;
-	// global.draw.rot_speed = 0.3;
-	// global.draw.screen_height = 1080;
-
 	global.map = map_res;
 	global.colors = &colors;
 	global.textures = &texures;
+
+	get_not_zero(&global);
 	get_zero(&global);
 	pars(&global, argv);
-	func_func_baby(&global);
-	// global.mlx = mlx_init();
-	// global.mlx_win = mlx_new_window(global.mlx, screenWidth, global.draw.screen_height, "cub3D");
-	// global.data.img = mlx_new_image(global.mlx, screenWidth, global.draw.screen_height);
-	// global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
-	// textures_draw(&global);
-	// draw(&global);
-	// mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
-	// mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
-	// write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
-	// mlx_loop(global.mlx);
+	func_func_baby(&global);			// prosto check
+	global.map.pos_x = 10;
+	global.map.pos_y = 12;
+
+	global.mlx = mlx_init();
+	global.mlx_win = mlx_new_window(global.mlx, global.map.width, global.map.height, "cub3D");
+	global.data.img = mlx_new_image(global.mlx, global.map.width, global.map.height);
+	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
+	textures_draw(&global);
+	draw(&global);
+	mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
+	mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
+	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
+	mlx_loop(global.mlx);
 }
