@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 14:54:07 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/19 18:49:25 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef		struct s_map
 	float		end_rays;
 	float		pos_x;
 	float		pos_y;
-
+	char		is_player;
 }					t_map_res;
 
 typedef		struct s_colors

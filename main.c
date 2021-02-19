@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 18:34:08 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/19 18:50:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static void		get_zero(t_struct *global)
 	global->map.height = 0;
 	global->map.pos_x = 0;
 	global->map.pos_y = 0;
+	global->map.is_player = '!';
 	global->textures->east = 0;
 	global->textures->west = 0;
 	global->textures->south = 0;
@@ -70,6 +71,7 @@ static	void	func_func_baby(t_struct *global)
 {
 	printf("eto y [%f]\n", global->map.pos_y);
 	printf("eto x [%f]\n", global->map.pos_x);
+	printf("is player [%c]\n", global->map.is_player);
 	printf("\nwidth [%d] height [%d]\n", global->map.width, global->map.height);
 	printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global->colors->r_cell, global->colors->g_cell, global->colors->b_cell);
 	printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global->colors->r_floor, global->colors->g_floor, global->colors->b_floor);

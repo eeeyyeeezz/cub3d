@@ -6,13 +6,14 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 15:55:36 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/19 18:54:34 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 void		pars_map(char *line, t_struct *global, int fd)
 {
+	static	int num_player = 0;
 	char *new_line;
 	int i;
 	int a;
@@ -41,9 +42,16 @@ void		pars_map(char *line, t_struct *global, int fd)
 			{
 				global->map.pos_y = i;
 				global->map.pos_x = a;
+				num_player++;
+				global->map.is_player = global->cub_map[i][a];
 			}
 			a++;
 		}
 		i++;
+	}
+	if (global->map.is_player == '!' || num_player != 1)
+	{
+		write(1, "No player is on map or too many\n", 32);
+		exit(0);
 	}
 }
