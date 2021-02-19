@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/02/17 16:08:36 by gmorra           ###   ########.fr        #
+#    Updated: 2021/02/18 15:00:35 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,10 @@ NORMAL = "\033[0m"
 
 # RUN:
 # 	${CC} -g ${COMPILE_SRC} libmlx.dylib -o $(NAME) && ./cub3D map.cub
+
+DESTROY:
+	@rm -rf *.dSYM
+	@echo $(RED)"ALL DSYM IS DESTROYED"$(NORMAL)
 
 RUN:
 	@echo $(RED)"Compiling $(NAME)..."$(NORMAL)

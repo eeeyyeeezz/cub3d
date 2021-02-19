@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/17 18:57:36 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/19 18:34:08 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ static void		get_zero(t_struct *global)
 
 static	void	func_func_baby(t_struct *global)
 {
-	printf("eto y [%f]\n", global->map.position_y);
-	printf("eto x [%f]\n", global->map.position_x);
+	printf("eto y [%f]\n", global->map.pos_y);
+	printf("eto x [%f]\n", global->map.pos_x);
 	printf("\nwidth [%d] height [%d]\n", global->map.width, global->map.height);
 	printf("r_cell [%d] g_cell [%d] b_cell [%d]\n", global->colors->r_cell, global->colors->g_cell, global->colors->b_cell);
-	// printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global->colors->r_floor, global->colors->g_floor, global->colors->b_floor);
-	// printf("North [%s]\n", global->textures->north);
-	// printf("South [%s]\n", global->textures->south);
-	// printf("West  [%s]\n", global->textures->west);
-	// printf("East  [%s]\n", global->textures->east);
-	// for (int i = 0; global->cub_map[i] != '\0'; i++)
-	// 	printf("eto map [%s]\n", global->cub_map[i]);
+	printf("r_floor [%d] g_floor [%d] b_floor [%d]\n", global->colors->r_floor, global->colors->g_floor, global->colors->b_floor);
+	printf("North [%s]\n", global->textures->north);
+	printf("South [%s]\n", global->textures->south);
+	printf("West  [%s]\n", global->textures->west);
+	printf("East  [%s]\n", global->textures->east);
+	for (int i = 0; global->cub_map[i] != '\0'; i++)
+		printf("eto map [%s]\n", global->cub_map[i]);
 }
 
 static	void		my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -114,8 +114,13 @@ static	void			textures_draw(t_struct *global)
 	global->textures_west.img = mlx_xpm_file_to_image(global->mlx, "textures/west.xpm", &width, &height);
 	global->textures_west.addr = mlx_get_data_addr(global->textures_west.img, &global->textures_west.bpp,
 		&global->textures_west.length, &global->textures_west.end);
+
+	global->sprite.img = mlx_xpm_file_to_image(global->mlx, "textures/barrel.xpm", &width, &height);
+	global->sprite.addr = mlx_get_data_addr(global->sprite.img, &global->sprite.bpp,
+		&global->sprite.length, &global->sprite.end);
 }
 
+#pragma region ROTATE
 void			left_rotate(t_struct *global, int keycode)
 {
 	double speed = global->draw.rot_speed;
@@ -144,6 +149,11 @@ void			right_rotate(t_struct *global, int keycode)
 		global->draw.plane_y = oldPlaneX * sin(-speed) + global->draw.plane_y * cos(-speed);
 	}
 }
+#pragma endregion ROTATE
+
+
+#pragma region MOVE
+
 
 void			up_down(t_struct *global, int keycode)
 {
@@ -185,6 +195,7 @@ void			right_left(t_struct *global, int keycode)
 			global->map.pos_y += global->draw.dir_x * moveSpeed;
 	}
 }
+#pragma endregion MOVE
 
 void			go_fast(t_struct *global, int keycode)
 {
@@ -205,6 +216,8 @@ static	void			init_all(t_struct *global, int x)
 	global->draw.delta_dist_y = sqrt(1 + (global->draw.ray_dir_x * global->draw.ray_dir_x) / (global->draw.ray_dir_y * global->draw.ray_dir_y));
 	global->draw.hit = 0;
 }
+
+#pragma region ifs
 
 static	void			first_ifs(t_struct *global)
 {
@@ -278,13 +291,15 @@ static	void			third_ifs(t_struct *global)
 	global->draw.tex_pos = (global->draw.draw_start - global->draw.screen_height / 2 + global->draw.line_height / 2) * global->draw.step;
 }
 
+#pragma endregion ifs
+
 static	void			draw(t_struct *global)
 {
 	int x;
 	int y;
 
 	x = 0;
-	while(x < screenWidth)
+	while (x < screenWidth)
 	{
 		y = 0;
 		init_all(global, x);
@@ -333,8 +348,80 @@ static	void			draw(t_struct *global)
 				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
 			y++;
 		}
-		x++;
+	x++;
 	}
+	// for(int i = 0; i < numSprites; i++)
+    // {
+    //   spriteOrder[i] = i;
+    //   spriteDistance[i] = ((posX - sprite[i].x) * (posX - sprite[i].x) + (posY - sprite[i].y) * (posY - sprite[i].y)); //sqrt not taken, unneeded
+    // }
+    // sortSprites(spriteOrder, spriteDistance, numSprites);
+
+    //after sorting the sprites, do the projection and draw them
+	#pragma region Comment_Sprite
+    for(int i = 0; i < /*numSprites*/1; i++)
+    {
+      //translate sprite position to relative to camera
+      double spriteX = /*sprite[spriteOrder[i]].x*/5 - global->map.pos_x;
+      double spriteY = /*sprite[spriteOrder[i]].y*/3 - global->map.pos_y;
+
+      //transform sprite with the inverse camera matrix
+      // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
+      // [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
+      // [ planeY   dirY ]                                          [ -planeY  planeX ]
+
+      double invDet = 1.0 / (global->draw.plane_x * global->draw.dir_y - global->draw.dir_x * global->draw.plane_y); //required for correct matrix multiplication
+
+      double transformX = invDet * (global->draw.dir_y * spriteX - global->draw.dir_x * spriteY);
+      double transformY = invDet * (-global->draw.plane_y * spriteX + global->draw.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+
+      int spriteScreenX = (int)((screenWidth / 2) * (1 + transformX / transformY));
+
+      //parameters for scaling and moving the sprites
+      #define uDiv 1
+      #define vDiv 1
+      #define vMove 0.0
+      int vMoveScreen = (int)(vMove / transformY);
+
+      //calculate height of the sprite on screen
+      int spriteHeight = abs((int)(global->draw.screen_height / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+      //calculate lowest and highest pixel to fill in current stripe
+      int drawStartY = -spriteHeight / 2 + global->draw.screen_height / 2 + vMoveScreen;
+      if(drawStartY < 0) drawStartY = 0;
+      int drawEndY = spriteHeight / 2 + global->draw.screen_height / 2 + vMoveScreen;
+      if(drawEndY >= global->draw.screen_height) drawEndY = global->draw.screen_height - 1;
+
+      //calculate width of the sprite
+      int spriteWidth = abs((int)(global->draw.screen_height / (transformY))) / uDiv;
+      int drawStartX = -spriteWidth / 2 + spriteScreenX;
+      if(drawStartX < 0) drawStartX = 0;
+      int drawEndX = spriteWidth / 2 + spriteScreenX;
+      if(drawEndX >= screenWidth) drawEndX = screenWidth - 1;
+
+      //loop through every vertical stripe of the sprite on screen
+      for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+      {
+        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+        //the conditions in the if are:
+        //1) it's in front of camera plane so you don't see things behind you
+        //2) it's on the screen (left)
+        //3) it's on the screen (right)
+        //4) ZBuffer, with perpendicular distance
+        if(transformY > 0 && stripe > 0 && stripe < screenWidth)//&& transformY < ZBuffer[stripe])
+		{
+	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+	        {
+	          int d = (y-vMoveScreen) * 256 - global->draw.screen_height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+	          int texY = ((d * texHeight) / spriteHeight) / 256;
+	          unsigned int color = my_mlx_pixel_take(&global->sprite, texX, texY);/*texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX];*/ //get current color from the texture
+	          my_mlx_pixel_put(&global->sprite, texX, texY, color);
+			//   if((color & 0x00FFFFFF) != 0)
+			  	// buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
+	        }
+		}
+      }
+	}
+	#pragma endregion Comment_Sprite
 }
 
 int			key_hook(int keycode, t_struct *global)
@@ -360,9 +447,9 @@ int		main(int argc, char **argv)
 {
 	t_struct global;
 
-	// get_zero(&global);
-	pars(&global, &argv[1]);
-	func_func_baby(&global);
+	t_map_res 	map_res;
+	t_colors	colors;
+	t_textures	texures;
 	// global.map.pos_x = 10;
 	// global.map.pos_y = 12;
 	// global.draw.dir_x = -1;
@@ -370,9 +457,15 @@ int		main(int argc, char **argv)
 	// global.draw.plane_x = 0;
 	// global.draw.plane_y = 0.66;
 	// global.draw.move_speed = 0.5;
-	// global.draw.rot_speed = 0.05;
+	// global.draw.rot_speed = 0.3;
 	// global.draw.screen_height = 1080;
 
+	global.map = map_res;
+	global.colors = &colors;
+	global.textures = &texures;
+	get_zero(&global);
+	pars(&global, argv);
+	func_func_baby(&global);
 	// global.mlx = mlx_init();
 	// global.mlx_win = mlx_new_window(global.mlx, screenWidth, global.draw.screen_height, "cub3D");
 	// global.data.img = mlx_new_image(global.mlx, screenWidth, global.draw.screen_height);
