@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 18:49:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/23 20:01:52 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ typedef		struct s_data
 	int			end;
 }
 					t_data;
+
+typedef struct		s_sprites
+{
+	float x;
+	float y;
+}					t_sprites;
 
 typedef		struct s_map
 {
@@ -63,11 +69,25 @@ typedef		struct s_textures
 	char	*east;
 }					t_textures;
 
+typedef		struct s_key
+{
+	int w_key;
+	int s_key;
+	int a_key;
+	int d_key;
+	int	q_key;
+	int e_key;
+	int left;
+	int right;
+}					t_key;
+
+
 typedef		struct	s_draw
 {
 	int hit;
 	int side;
 	int tex_x;
+	int tex_y;
 	int map_x;
 	int map_y;
 	int step_x;
@@ -104,9 +124,11 @@ typedef		struct s_whole
 	t_data		textures_south;
 	t_data		textures_west;
 	t_data		textures_east;
-	t_data		sprite;
+	t_data		sprite_draw;
+	t_key		key;
 	t_colors	*colors;
 	t_textures	*textures;
+	t_sprites	*sprites;
 	t_map_res	map;
 	t_draw		draw;
 	void 		*mlx;
@@ -126,10 +148,13 @@ void		pars_west(char *line, t_struct *global);
 void		pars_east(char *line, t_struct *global);
 void		pars_map(char *line, t_struct *global, int fd);
 int			get_next_line(int fd, char **line);
-void		up_down(t_struct *global, int keycode);
-void		right_left(t_struct *global, int keycode);
-void		left_rotate(t_struct *global, int keycode);
-void		right_rotate(t_struct *global, int keycode);
-void		go_fast(t_struct *global, int keycode);
+void		up_down(t_struct *global);
+void		right_left(t_struct *global);
+void		left_rotate(t_struct *global);
+void		right_rotate(t_struct *global);
+void		go_fast(t_struct *global);
+void		first_ifs(t_struct *global);
+void		second_ifs(t_struct *global);
+void		third_ifs(t_struct *global);
 
 #endif

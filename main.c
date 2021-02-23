@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 19:45:46 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/23 20:01:36 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,6 @@
 #define texHeight 64
 #define mapWidth  24
 #define mapHeight  24
-
-int worldMap[mapWidth][mapHeight]=
-{
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
 
 static void		get_zero(t_struct *global)
 {
@@ -62,14 +34,22 @@ static void		get_zero(t_struct *global)
 	global->colors->r_cell = 0;
 	global->colors->g_cell = 0;
 	global->colors->b_cell = 0;
+	global->key.w_key = 0;
+	global->key.s_key = 0;
+	global->key.a_key = 0;
+	global->key.d_key = 0;
+	global->key.q_key = 0;
+	global->key.e_key = 0;
+	global->key.left = 0;
+	global->key.right = 0;
 }
 
 static	void	get_not_zero(t_struct *global)
 {
 	global->draw.plane_x = 0;
 	global->draw.plane_y = 0.66;
-	global->draw.move_speed = 0.5;
-	global->draw.rot_speed = 0.3;
+	global->draw.move_speed = 0.1;
+	global->draw.rot_speed = 0.1;
 	global->draw.dir_x = -1;
 	global->draw.dir_y = 0;
 }
@@ -90,20 +70,22 @@ static	void	func_func_baby(t_struct *global)
 		printf("eto map [%s]\n", global->cub_map[i]);
 }
 
+unsigned int	my_mlx_pixel_take(t_data *img, int x, int y)
+{
+	char			*addr;
+	unsigned int	color;
+
+	addr = img->addr + (y * img->length + x * (img->bpp / 8));
+	color = *(unsigned int*)addr;
+	return (color);
+}
+
 static	void		my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
 	dst = data->addr + (y * data->length + x * (data->bpp / 8));
 	*(unsigned int*)dst = color;
-}
-
-static	unsigned int		my_mlx_pixel_take(t_data *data, int x, int y)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->length + x * (data->bpp / 8));
-	return (*(unsigned int*)dst);
 }
 
 static	void			textures_draw(t_struct *global)
@@ -114,104 +96,31 @@ static	void			textures_draw(t_struct *global)
 	global->textures_north.img = mlx_xpm_file_to_image(global->mlx, "textures/north.xpm", &width, &height);
 	global->textures_north.addr = mlx_get_data_addr(global->textures_north.img, &global->textures_north.bpp,
 		&global->textures_north.length, &global->textures_north.end);
+
 	global->textures_south.img = mlx_xpm_file_to_image(global->mlx, "textures/south.xpm", &width, &height);
 	global->textures_south.addr = mlx_get_data_addr(global->textures_south.img, &global->textures_south.bpp,
 		&global->textures_south.length, &global->textures_south.end);
+
 	global->textures_east.img = mlx_xpm_file_to_image(global->mlx, "textures/east.xpm", &width, &height);
 	global->textures_east.addr = mlx_get_data_addr(global->textures_east.img, &global->textures_east.bpp,
 		&global->textures_east.length, &global->textures_east.end);
+
 	global->textures_west.img = mlx_xpm_file_to_image(global->mlx, "textures/west.xpm", &width, &height);
 	global->textures_west.addr = mlx_get_data_addr(global->textures_west.img, &global->textures_west.bpp,
 		&global->textures_west.length, &global->textures_west.end);
 
-	global->sprite.img = mlx_xpm_file_to_image(global->mlx, "textures/barrel.xpm", &width, &height);
-	global->sprite.addr = mlx_get_data_addr(global->sprite.img, &global->sprite.bpp,
-		&global->sprite.length, &global->sprite.end);
+	global->sprite_draw.img = mlx_xpm_file_to_image(global->mlx, "textures/barrel.xpm", &width, &height);
+	global->sprite_draw.addr = mlx_get_data_addr(global->sprite_draw.img, &global->sprite_draw.bpp,
+		&global->sprite_draw.length, &global->sprite_draw.end);
 }
 
-#pragma region ROTATE
-void			left_rotate(t_struct *global, int keycode)
+
+void			go_fast(t_struct *global)
 {
-	double speed = global->draw.rot_speed;
-	double oldDirX = global->draw.dir_x;
-	if (keycode == 123)
-	{
-		global->draw.dir_x = global->draw.dir_x * cos(speed) - global->draw.dir_y * sin(speed);
-		global->draw.dir_y = oldDirX * sin(speed) + global->draw.dir_y * cos(speed);
-		double oldPlaneX = global->draw.plane_x;
-		global->draw.plane_x = global->draw.plane_x * cos(speed) - global->draw.plane_y * sin(speed);
-		global->draw.plane_y = oldPlaneX * sin(speed) + global->draw.plane_y * cos(speed);
-	}
-}
-
-void			right_rotate(t_struct *global, int keycode)
-{
-	double speed = global->draw.rot_speed;
-	double oldDirX = global->draw.dir_x;
-
-	if (keycode == 124)
-	{
-		global->draw.dir_x = global->draw.dir_x * cos(-speed) - global->draw.dir_y * sin(-speed);
-		global->draw.dir_y = oldDirX * sin(-speed) + global->draw.dir_y * cos(-speed);
-		double oldPlaneX = global->draw.plane_x;
-		global->draw.plane_x = global->draw.plane_x * cos(-speed) - global->draw.plane_y * sin(-speed);
-		global->draw.plane_y = oldPlaneX * sin(-speed) + global->draw.plane_y * cos(-speed);
-	}
-}
-#pragma endregion ROTATE
-
-
-#pragma region MOVE
-
-
-void			up_down(t_struct *global, int keycode)
-{
-	double moveSpeed = global->draw.move_speed;
-
-	if (keycode == 13)
-	{
-		if(worldMap[(int)(global->map.pos_x + global->draw.dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->draw.dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)] == 0)
-			global->map.pos_y += global->draw.dir_y * moveSpeed;
-	}
-	if (keycode == 1)
-	{
-		if(worldMap[(int)(global->map.pos_x + global->draw.dir_x * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->draw.dir_x * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)] == 0)
-			global->map.pos_y -= global->draw.dir_y * moveSpeed;
-	}
-}
-
-void			right_left(t_struct *global, int keycode)
-{
-	double moveSpeed = global->draw.move_speed;
-
-	if (keycode == 2)
-	{
-		if(worldMap[(int)(global->map.pos_x + global->draw.dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x += global->draw.dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y - global->draw.dir_x * moveSpeed)] == 0)
-			global->map.pos_y -= global->draw.dir_x * moveSpeed;
-
-	}
-	if (keycode == 0)
-	{
-		if(worldMap[(int)(global->map.pos_x - global->draw.dir_y * moveSpeed)][(int)(global->map.pos_y)] == 0)
-			global->map.pos_x -= global->draw.dir_y * moveSpeed;
-		if(worldMap[(int)(global->map.pos_x)][(int)(global->map.pos_y + global->draw.dir_x * moveSpeed)] == 0)
-			global->map.pos_y += global->draw.dir_x * moveSpeed;
-	}
-}
-#pragma endregion MOVE
-
-void			go_fast(t_struct *global, int keycode)
-{
-	if (keycode == 12)
-		global->draw.move_speed += + 0.1;
-	if (keycode == 14 && global->draw.move_speed >= 0.1)
-		global->draw.move_speed -= 0.1;
+	if (global->key.q_key == 1)
+		global->draw.move_speed += + 0.05;
+	if (global->key.e_key == 1 && global->draw.move_speed >= 0.1)
+		global->draw.move_speed -= 0.05;
 }
 
 static	void			init_all(t_struct *global, int x)
@@ -226,82 +135,6 @@ static	void			init_all(t_struct *global, int x)
 	global->draw.hit = 0;
 }
 
-#pragma region ifs
-
-static	void			first_ifs(t_struct *global)
-{
-	if(global->draw.ray_dir_x < 0)
-	{
-		global->draw.step_x = -1;
-		global->draw.side_dist_x = (global->map.pos_x - global->draw.map_x) * global->draw.delta_dist_x;
-	}
-	else
-	{
-		global->draw.step_x = 1;
-		global->draw.side_dist_x = (global->draw.map_x + 1.0 - global->map.pos_x) * global->draw.delta_dist_x;
-	}
-	if(global->draw.ray_dir_y < 0)
-	{
-		global->draw.step_y = -1;
-		global->draw.side_dist_y = (global->map.pos_y - global->draw.map_y) * global->draw.delta_dist_y;
-	}
-	else
-	{
-		global->draw.step_y = 1;
-		global->draw.side_dist_y = (global->draw.map_y + 1.0 - global->map.pos_y) * global->draw.delta_dist_y;
-	}
-}
-
-static	void			second_ifs(t_struct *global)
-{
-	while (global->draw.hit == 0)
-	{
-		if(global->draw.side_dist_x < global->draw.side_dist_y)
-		{
-			global->draw.side_dist_x += global->draw.delta_dist_x;
-			global->draw.map_x += global->draw.step_x;
-			global->draw.side = 0;
-		}
-	else
-	{
-		global->draw.side_dist_y += global->draw.delta_dist_y;
-		global->draw.map_y += global->draw.step_y;
-		global->draw.side = 1;
-	}
-	if(worldMap[global->draw.map_x][global->draw.map_y] > 0)
-		global->draw.hit = 1;
-	}
-	if(global->draw.side == 0)
-		global->draw.perp_wall_dist = (global->draw.map_x - global->map.pos_x + (1 - global->draw.step_x) / 2) / global->draw.ray_dir_x;
-	else
-		global->draw.perp_wall_dist = (global->draw.map_y - global->map.pos_y + (1 - global->draw.step_y) / 2) / global->draw.ray_dir_y;
-	global->draw.line_height = (int)(global->map.height / global->draw.perp_wall_dist);
-	global->draw.draw_start = -global->draw.line_height / 2 + global->map.height / 2;
-}
-
-static	void			third_ifs(t_struct *global)
-{
-	if(global->draw.draw_start < 0)
-		global->draw.draw_start = 0;
-	global->draw.draw_end = global->draw.line_height / 2 + global->map.height / 2;
-	if(global->draw.draw_end >= global->map.height)
-		global->draw.draw_end = global->map.height - 1;
-	if(global->draw.side == 0)
-		global->draw.wall_x = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_y;
-	else
-		global->draw.wall_x = global->map.pos_y + global->draw.perp_wall_dist * global->draw.ray_dir_x;
-	global->draw.wall_x -= floor((global->draw.wall_x));
-	global->draw.tex_x = (int)(global->draw.wall_x * (double)(texWidth));
-	if(global->draw.side == 0 && global->draw.ray_dir_x > 0)
-		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
-	if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
-		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
-	global->draw.step = 1.0 * texHeight / global->draw.line_height;
-	global->draw.tex_pos = (global->draw.draw_start - global->map.height / 2 + global->draw.line_height / 2) * global->draw.step;
-}
-
-#pragma endregion ifs
-
 static	void			draw(t_struct *global)
 {
 	int x;
@@ -315,64 +148,61 @@ static	void			draw(t_struct *global)
 		first_ifs(global);
 		second_ifs(global);
 		third_ifs(global);
-
 		while (y < global->map.height)
 		{
-			if (y >= 0 && y <= global->draw.draw_start)
+			if (y < global->draw.draw_start)
 				my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
 			if (y >= global->draw.draw_start && y <= global->draw.draw_end)
 			{
-				int texY = (int)global->draw.tex_pos & (texHeight - 1);
+				global->draw.tex_y = (int)global->draw.tex_pos & (texHeight - 1);
 				global->draw.tex_pos += global->draw.step;
-
 				if (global->draw.side == 0)
 				{
 					if (global->draw.step_x > 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_north, global->draw.tex_x, texY);
+						int color = my_mlx_pixel_take(&global->textures_north, global->draw.tex_x, global->draw.tex_y);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 					else if (global->draw.step_x < 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_south, global->draw.tex_x, texY);
+						int color = my_mlx_pixel_take(&global->textures_south, global->draw.tex_x, global->draw.tex_y);
 						my_mlx_pixel_put(&global->data, x, y, color);
-
 					}
 				}
 				if (global->draw.side == 1)
 				{
 					if (global->draw.step_y > 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_west, global->draw.tex_x, texY);
+						int color = my_mlx_pixel_take(&global->textures_west, global->draw.tex_x, global->draw.tex_y);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 					else if (global->draw.step_y < 0)
 					{
-						unsigned int color = my_mlx_pixel_take(&global->textures_east, global->draw.tex_x, texY);
+						int color = my_mlx_pixel_take(&global->textures_east, global->draw.tex_x, global->draw.tex_y);
 						my_mlx_pixel_put(&global->data, x, y, color);
 					}
 				}
 			}
-			if (y >= global->draw.draw_end && y <= global->map.height)
+			if (y > global->draw.draw_end)
 				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
 			y++;
 		}
 	x++;
 	}
 	// for(int i = 0; i < numSprites; i++)
-    // {
-    //   spriteOrder[i] = i;
-    //   spriteDistance[i] = ((posX - sprite[i].x) * (posX - sprite[i].x) + (posY - sprite[i].y) * (posY - sprite[i].y)); //sqrt not taken, unneeded
-    // }
-    // sortSprites(spriteOrder, spriteDistance, numSprites);
+	// {
+	//   spriteOrder[i] = i;
+	//   spriteDistance[i] = ((posX - sprite[i].x) * (posX - sprite[i].x) + (posY - sprite[i].y) * (posY - sprite[i].y)); //sqrt not taken, unneeded
+	// }
+	// sortSprites(spriteOrder, spriteDistance, numSprites);
 
-    //after sorting the sprites, do the projection and draw them
+	//after sorting the sprites, do the projection and draw them
 	#pragma region Comment_Sprite
-    for(int i = 0; i < /*numSprites*/1; i++)
+	for(int i = 0; i < 1; i++)
     {
       //translate sprite position to relative to camera
-      double spriteX = /*sprite[spriteOrder[i]].x*/5 - global->map.pos_x;
-      double spriteY = /*sprite[spriteOrder[i]].y*/3 - global->map.pos_y;
+      double spriteX = 2 - global->map.pos_x;
+      double spriteY = 2 - global->map.pos_y;
 
       //transform sprite with the inverse camera matrix
       // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
@@ -387,21 +217,17 @@ static	void			draw(t_struct *global)
       int spriteScreenX = (int)((global->map.width / 2) * (1 + transformX / transformY));
 
       //parameters for scaling and moving the sprites
-      #define uDiv 1
-      #define vDiv 1
-      #define vMove 0.0
-      int vMoveScreen = (int)(vMove / transformY);
 
       //calculate height of the sprite on screen
-      int spriteHeight = abs((int)(global->map.height / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+      int spriteHeight = abs((int)(global->map.height / (transformY))); //using "transformY" instead of the real distance prevents fisheye
       //calculate lowest and highest pixel to fill in current stripe
-      int drawStartY = -spriteHeight / 2 + global->map.height / 2 + vMoveScreen;
+      int drawStartY = -spriteHeight / 2 + global->map.height / 2;
       if(drawStartY < 0) drawStartY = 0;
-      int drawEndY = spriteHeight / 2 + global->map.height / 2 + vMoveScreen;
+      int drawEndY = spriteHeight / 2 + global->map.height / 2;
       if(drawEndY >= global->map.height) drawEndY = global->map.height - 1;
 
       //calculate width of the sprite
-      int spriteWidth = abs((int)(global->map.height / (transformY))) / uDiv;
+      int spriteWidth = abs((int) (global->map.height / (transformY)));
       int drawStartX = -spriteWidth / 2 + spriteScreenX;
       if(drawStartX < 0) drawStartX = 0;
       int drawEndX = spriteWidth / 2 + spriteScreenX;
@@ -416,36 +242,77 @@ static	void			draw(t_struct *global)
         //2) it's on the screen (left)
         //3) it's on the screen (right)
         //4) ZBuffer, with perpendicular distance
-        if(transformY > 0 && stripe > 0 && stripe < global->map.width)//&& transformY < ZBuffer[stripe])
-		{
-	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-	        {
-	          int d = (y-vMoveScreen) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-	          int texY = ((d * texHeight) / spriteHeight) / 256;
-	          unsigned int color = my_mlx_pixel_take(&global->sprite, texX, texY);/*texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX];*/ //get current color from the texture
-	          my_mlx_pixel_put(&global->sprite, texX, texY, color);
-			//   if((color & 0x00FFFFFF) != 0)
-			  	// buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
-	        }
-		}
+        if(transformY > 0 && stripe > 0 && stripe < global->map.width /*&& transformY < ZBuffer[stripe]*/)
+        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+        {
+          int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+          int texY = ((d * texHeight) / spriteHeight) / 256;
+		  int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
+		  if (color)
+			my_mlx_pixel_put(&global->data, stripe, y, color);
+        }
       }
-	}
+    }
+
 	#pragma endregion Comment_Sprite
 }
 
-int			key_hook(int keycode, t_struct *global)
+int		press_key(int keycode, t_struct *global)
 {
-	mlx_destroy_image(global->mlx, global->data.img);
-	printf("%d!\n", keycode);
 	if (keycode == 53) // esc
 		exit(0);
-	up_down(global, keycode);
-	right_left(global, keycode);
-	left_rotate(global, keycode);
-	right_rotate(global, keycode);
-	go_fast(global, keycode);
+	if (keycode == 13)
+		global->key.w_key = 1;
+	if (keycode == 0)
+		global->key.a_key = 1;
+	if (keycode == 1)
+		global->key.s_key = 1;
+	if (keycode == 2)
+		global->key.d_key = 1;
+	if (keycode == 123)
+		global->key.left = 1;
+	if (keycode == 124)
+		global->key.right = 1;
+	if (keycode == 12)
+		global->key.q_key = 1;
+	if (keycode == 14)
+		global->key.e_key = 1;
+	return (1);
+}
+
+int		release_key(int keycode, t_struct *global)
+{
+	if (keycode == 13)
+		global->key.w_key = 0;
+	if (keycode == 0)
+		global->key.a_key = 0;
+	if (keycode == 1)
+		global->key.s_key = 0;
+	if (keycode == 2)
+		global->key.d_key = 0;
+	if (keycode == 123)
+		global->key.left = 0;
+	if (keycode == 124)
+		global->key.right = 0;
+	if (keycode == 12)
+		global->key.q_key = 0;
+	if (keycode == 14)
+		global->key.e_key = 0;
+	return (1);
+}
+
+
+int			key_hook(t_struct *global)
+{
+	mlx_destroy_image(global->mlx, global->data.img);
+	up_down(global);
+	right_left(global);
+	left_rotate(global);
+	right_rotate(global);
+	go_fast(global);
 	global->data.img = mlx_new_image(global->mlx, global->map.width, global->map.height);
 	global->data.addr = mlx_get_data_addr(global->data.img, &global->data.bpp, &global->data.length, &global->data.end);
+	textures_draw(global);
 	draw(global);
 	mlx_put_image_to_window(global->mlx, global->mlx_win, global->data.img, 0, 0);
 	return (1);
@@ -466,9 +333,9 @@ int		main(int argc, char **argv)
 	get_not_zero(&global);
 	get_zero(&global);
 	pars(&global, argv);
-	func_func_baby(&global);			// prosto check
-	global.map.pos_x = 10;
-	global.map.pos_y = 12;
+	// func_func_baby(&global);			// prosto check
+	// global.map.pos_x = 10;
+	// global.map.pos_y = 16;
 
 	global.mlx = mlx_init();
 	global.mlx_win = mlx_new_window(global.mlx, global.map.width, global.map.height, "cub3D");
@@ -476,7 +343,10 @@ int		main(int argc, char **argv)
 	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
 	textures_draw(&global);
 	draw(&global);
-	mlx_hook(global.mlx_win, 2, 1L<<0, key_hook, &global);
+	// printf("im here\n");
+	mlx_hook(global.mlx_win, 2, 1L << 0, &press_key, &global);
+	mlx_key_hook(global.mlx_win, &release_key, &global);
+	mlx_loop_hook(global.mlx, &key_hook, &global);
 	mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
 	mlx_loop(global.mlx);
