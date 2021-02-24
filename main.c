@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/23 20:01:36 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/24 17:26:27 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void		get_zero(t_struct *global)
 	global->map.pos_x = 0;
 	global->map.pos_y = 0;
 	global->map.is_player = '!';
+	global->map.num_sprites = 0;
 	global->textures->east = 0;
 	global->textures->west = 0;
 	global->textures->south = 0;
@@ -42,16 +43,41 @@ static void		get_zero(t_struct *global)
 	global->key.e_key = 0;
 	global->key.left = 0;
 	global->key.right = 0;
+	global->draw.dir_x = 0;
+	global->draw.dir_y = 0;
+	global->draw.plane_x = 0;
+	global->draw.plane_y = 0;
+}
+
+static	void	direction_sight(t_struct *global)
+{
+	if (global->map.is_player == 'N')
+	{
+		global->draw.dir_x = -1;
+		global->draw.plane_y = 0.66;
+	}
+	if (global->map.is_player == 'S')
+	{
+		global->draw.dir_x = 1;
+		global->draw.plane_y = -0.66;
+	}
+	if (global->map.is_player == 'W')
+	{
+		global->draw.dir_y = -1;
+		global->draw.plane_x = -0.66;
+	}
+	if (global->map.is_player == 'E')
+	{
+		global->draw.dir_y = 1;
+		global->draw.plane_x = 0.66;
+	}
 }
 
 static	void	get_not_zero(t_struct *global)
 {
-	global->draw.plane_x = 0;
-	global->draw.plane_y = 0.66;
 	global->draw.move_speed = 0.1;
 	global->draw.rot_speed = 0.1;
-	global->draw.dir_x = -1;
-	global->draw.dir_y = 0;
+	direction_sight(global);
 }
 
 static	void	func_func_baby(t_struct *global)
@@ -117,7 +143,7 @@ static	void			textures_draw(t_struct *global)
 
 void			go_fast(t_struct *global)
 {
-	if (global->key.q_key == 1)
+	if (global->key.q_key == 1 && global->draw.move_speed <= 1.0)
 		global->draw.move_speed += + 0.05;
 	if (global->key.e_key == 1 && global->draw.move_speed >= 0.1)
 		global->draw.move_speed -= 0.05;
@@ -135,6 +161,48 @@ static	void			init_all(t_struct *global, int x)
 	global->draw.hit = 0;
 }
 
+static	void			bubble_position_sprite(t_struct *global, int i, int j)
+{
+	float tmp;
+	float position;
+
+	tmp = 0;
+	position = 0;
+	tmp = global->sprites[j].distance;
+	global->sprites[j].distance = global->sprites[i].distance;
+	global->sprites[i].distance = tmp;
+	position = global->sprites[i].x;
+	global->sprites[i].x = global->sprites[j].x;
+	global->sprites[j].x = position;
+	position = global->sprites[i].y;
+	global->sprites[i].y = global->sprites[j].y;
+	global->sprites[j].y = position;
+
+}
+
+static	void			sort_sprites(t_struct *global)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < global->map.num_sprites)
+	{
+		while (j < global->map.num_sprites)
+		{
+			if (global->sprites[i].distance
+					> global->sprites[j].distance)
+			{
+				bubble_position_sprite(global, i, j);
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
 static	void			draw(t_struct *global)
 {
 	int x;
@@ -146,7 +214,7 @@ static	void			draw(t_struct *global)
 		y = 0;
 		init_all(global, x);
 		first_ifs(global);
-		second_ifs(global);
+		second_ifs(global, x);
 		third_ifs(global);
 		while (y < global->map.height)
 		{
@@ -189,20 +257,22 @@ static	void			draw(t_struct *global)
 		}
 	x++;
 	}
-	// for(int i = 0; i < numSprites; i++)
-	// {
+	for(int i = 0; i < global->map.num_sprites; i++)
+	{
 	//   spriteOrder[i] = i;
-	//   spriteDistance[i] = ((posX - sprite[i].x) * (posX - sprite[i].x) + (posY - sprite[i].y) * (posY - sprite[i].y)); //sqrt not taken, unneeded
-	// }
+	  global->sprites[i].distance = ((global->map.pos_x - global->sprites[i].x) * (global->map.pos_x - global->sprites[i].x) +
+	  	(global->map.pos_y - global->sprites[i].y) * (global->map.pos_y - global->sprites[i].y)); //sqrt not taken, unneeded
+	}
+	sort_sprites(global);
 	// sortSprites(spriteOrder, spriteDistance, numSprites);
 
 	//after sorting the sprites, do the projection and draw them
 	#pragma region Comment_Sprite
-	for(int i = 0; i < 1; i++)
+	for(int i = 0; i < global->map.num_sprites; i++)
     {
       //translate sprite position to relative to camera
-      double spriteX = 2 - global->map.pos_x;
-      double spriteY = 2 - global->map.pos_y;
+      double spriteX = global->sprites[i].x - global->map.pos_x;
+      double spriteY = global->sprites[i].y - global->map.pos_y;
 
       //transform sprite with the inverse camera matrix
       // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
@@ -242,15 +312,17 @@ static	void			draw(t_struct *global)
         //2) it's on the screen (left)
         //3) it's on the screen (right)
         //4) ZBuffer, with perpendicular distance
-        if(transformY > 0 && stripe > 0 && stripe < global->map.width /*&& transformY < ZBuffer[stripe]*/)
-        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-        {
-          int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-          int texY = ((d * texHeight) / spriteHeight) / 256;
-		  int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
-		  if (color)
-			my_mlx_pixel_put(&global->data, stripe, y, color);
-        }
+        if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
+		{
+	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of  the current stripe
+	        {
+	          int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+	          int texY = ((d * texHeight) / spriteHeight) / 256;
+			  int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
+			  if (color)
+				my_mlx_pixel_put(&global->data, stripe, y, color);
+	        }
+		}
       }
     }
 
@@ -326,17 +398,22 @@ int		main(int argc, char **argv)
 	t_map_res 	map_res;
 	t_colors	colors;
 	t_textures	texures;
+	t_sprites	sprites_pars;
+
 	global.map = map_res;
 	global.colors = &colors;
 	global.textures = &texures;
+	global.sprites = &sprites_pars;
 
-	get_not_zero(&global);
+
 	get_zero(&global);
 	pars(&global, argv);
+	get_not_zero(&global);
 	// func_func_baby(&global);			// prosto check
 	// global.map.pos_x = 10;
 	// global.map.pos_y = 16;
 
+	global.map.every_dist = malloc(sizeof(double) * global.map.width);
 	global.mlx = mlx_init();
 	global.mlx_win = mlx_new_window(global.mlx, global.map.width, global.map.height, "cub3D");
 	global.data.img = mlx_new_image(global.mlx, global.map.width, global.map.height);

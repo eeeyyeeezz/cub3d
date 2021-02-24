@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/23 20:01:52 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/24 17:17:47 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ typedef struct		s_sprites
 {
 	float x;
 	float y;
+	float distance;
 }					t_sprites;
 
 typedef		struct s_map
 {
 	int			width;
 	int			height;
+	int			num_sprites;
 	char		side;
+	double		*every_dist;
 	float		start_rays;
 	float		end_rays;
 	float		pos_x;
@@ -114,7 +117,6 @@ typedef		struct	s_draw
 	double delta_dist_x;
 	double delta_dist_y;
 	double perp_wall_dist;
-
 }					t_draw;
 
 typedef		struct s_whole
@@ -154,7 +156,7 @@ void		left_rotate(t_struct *global);
 void		right_rotate(t_struct *global);
 void		go_fast(t_struct *global);
 void		first_ifs(t_struct *global);
-void		second_ifs(t_struct *global);
+void		second_ifs(t_struct *global, int x);
 void		third_ifs(t_struct *global);
 
 #endif

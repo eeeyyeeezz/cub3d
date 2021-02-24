@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 19:50:24 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/23 19:52:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/24 17:18:00 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void			first_ifs(t_struct *global)
 	}
 }
 
-void			second_ifs(t_struct *global)
+void			second_ifs(t_struct *global, int x)
 {
 	while (global->draw.hit == 0)
 	{
@@ -62,6 +62,7 @@ void			second_ifs(t_struct *global)
 		global->draw.perp_wall_dist = (global->draw.map_x - global->map.pos_x + (1 - global->draw.step_x) / 2) / global->draw.ray_dir_x;
 	else
 		global->draw.perp_wall_dist = (global->draw.map_y - global->map.pos_y + (1 - global->draw.step_y) / 2) / global->draw.ray_dir_y;
+	global->map.every_dist[x] = global->draw.perp_wall_dist;
 	global->draw.line_height = (int)(global->map.height / global->draw.perp_wall_dist);
 	global->draw.draw_start = -global->draw.line_height / 2 + global->map.height / 2;
 }

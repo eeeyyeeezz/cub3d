@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/23 20:10:11 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/24 16:46:04 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-int		sprite_parser_count(t_struct *global);
+void	sprite_parser_count(t_struct *global);
 void	sprite_parser(t_struct *global);
 
 
@@ -61,7 +61,7 @@ void		pars_map(char *line, t_struct *global, int fd)
 	global->cub_map = ft_split(new_line, '*');
 	num_player = to_find_player(global);
 	sprite_parser_count(global);
-	// sprite_parser(global);
+	sprite_parser(global);
 	if (global->map.is_player == '!' || num_player != 1)
 	{
 		write(1, "No player is on map or too many\n", 32);
@@ -69,38 +69,36 @@ void		pars_map(char *line, t_struct *global, int fd)
 	}
 }
 
-int		sprite_parser_count(t_struct *global)
+void		sprite_parser_count(t_struct *global)
 {
 	int x;
 	int y;
-	int count;
 
 	y = 0;
-	count = 0;
 	while (global->cub_map[y])
 	{
 		x = 0;
 		while(global->cub_map[y][x])
 		{
 			if (global->cub_map[y][x] == '2')
-				count++;
+				global->map.num_sprites++;
 			x++;
 		}
 		y++;
 	}
-	return (count);
 }
 
 void	sprite_parser(t_struct *global)
 {
 	int x;
 	int y;
+	int num_sprites;
 	int count;
 
 	y = 0;
-	count = sprite_parser_count(global);
-	printf("eto count [%d]\n", count);
-	global->sprites = malloc(sizeof(t_sprites) * count + 1);
+	count = 0;
+	num_sprites = global->map.num_sprites;
+	global->sprites = malloc(sizeof(t_sprites) * num_sprites);
 	while (global->cub_map[y])
 	{
 		x = 0;
@@ -108,12 +106,14 @@ void	sprite_parser(t_struct *global)
 		{
 			if (global->cub_map[y][x] == '2')
 			{
-				global->sprites[count].x = x;
-				global->sprites[count].y = y;
+				global->sprites[count].y = (float)x + 0.5f;
+				global->sprites[count].x = (float)y + 0.5f;
 				count++;
 			}
 			x++;
 		}
 		y++;
 	}
+	// printf("first y [%f] and x [%f]\n", global->sprites[0].y, global->sprites[0].x);
+
 }
