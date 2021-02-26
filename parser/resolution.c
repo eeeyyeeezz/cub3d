@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/19 17:52:32 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 16:18:04 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ static int		skip_digits(char *line)
 	return (i);
 }
 
-static int	 	skip_spaces(char *line)
-{
-	int i;
+// static int	 	skip_spaces(char *line)
+// {
+// 	int i;
 
-	i = 0;
-	while (ft_isspaces(line[i]) && line[i] != 'R' && line[i])
-		i++;
-	if ((!ft_isspaces(line[i]) && line[i] != 'R') ||
-			(!ft_isspaces(line[i]) && line[i] == '\0'))	// && line[i] == '\0' ?
-			return (-1);
-	else
-		return (i);
-}
+// 	i = 0;
+// 	while (ft_isspaces(line[i]) && line[i] != 'R' && line[i])
+// 		i++;
+// 	if ((!ft_isspaces(line[i]) && line[i] != 'R') ||
+// 			(!ft_isspaces(line[i]) && line[i] == '\0'))	// && line[i] == '\0' ?
+// 			return (-1);
+// 	else
+// 		return (i);
+// }
 
 static int		check_count(char *line)
 {
@@ -61,12 +61,13 @@ void		pars_resolution(char *line, t_struct *global)
 	int 			count;
 	int 			i;
 
-	i = skip_spaces(line);
-	count = check_count(line);
+	i = 1;
 	times++;
-	if (skip_spaces(line) != -1 && count == 2 && times == 1)
+	count = check_count(line);
+	global->map.map_to_pars++;
+	if (count == 2 && times == 1 && line[0] == 'R')
 	{
-		while (ft_isspaces(line[i + 1]) && line[i] != '\0')
+		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
 		if (line[i] != '\0')
 			global->map.width = ft_atoi((char *)&line[i]);
@@ -78,6 +79,11 @@ void		pars_resolution(char *line, t_struct *global)
 	else
 	{
 		ft_putstr("ERROR\nWrong resolution arguments\n");
+		exit(0);
+	}
+	if (global->map.width <= 0 || global->map.height <= 0)
+	{
+		ft_putstr("ERROR\nResolution params wrong\n");
 		exit(0);
 	}
 }

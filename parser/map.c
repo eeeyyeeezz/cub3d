@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/24 16:46:04 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:36:21 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static	int		to_find_player(t_struct *global)
 			if (global->cub_map[i][a] == 'N' || global->cub_map[i][a] == 'S' ||
 			global->cub_map[i][a] == 'W' || global->cub_map[i][a] == 'E')
 			{
-				global->map.pos_y = i;
-				global->map.pos_x = a;
+				global->map.pos_y = (float)i + 0.5;
+				global->map.pos_x = (float)a + 0.5;
 				num_player++;
 				global->map.is_player = global->cub_map[i][a];
 			}

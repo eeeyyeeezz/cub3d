@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 15:14:17 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 17:29:17 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,6 @@ static int		skip_digits(char *line)
 	while (ft_isdigit(line[i]))
 		i++;
 	return (i);
-}
-
-static int	 	skip_spaces(char *line)
-{
-	int i;
-
-	i = 0;
-	while (ft_isspaces(line[i]) && line[i] != 'F' && line[i])
-		i++;
-	if (!ft_isspaces(line[i]) && line[i] != 'F')
-			return (-1);
-	if (line[i] == 'F' && line[i + 1] == 'F')
-		return (-1);
-	else
-		return (i);
 }
 
 static int		check_count(char *line)
@@ -63,15 +48,14 @@ static int		coma_and_space(char *line)
 
 	i = 1;
 	coma = 0;
-	while (ft_isspaces(line[i]) || line[i] == ',')
+	while (line[i] == ',')
 	{
-		if (line[i] == ',')
-			coma++;
+		coma++;
 		i++;
 	}
-	if (coma != 1)
+	if (coma != 1 || (line[i] != ',' && !(ft_isdigit(line[i]))))
 	{
-		ft_putstr("ERROR\nMore/less commas that required\n");
+		ft_putstr("ERROR\nMore/less commas that required or spaces beetween arguments\n");
 		exit(0);
 	}
 	return (i);
@@ -83,10 +67,11 @@ void			pars_floor(char *line, t_struct *global)
 	int				count;
 	int				i;
 
-	i = skip_spaces(line);
-	count = check_count(line);
+	i = 1;
 	times++;
-	if (skip_spaces(line) != -1 && count == 3 && times == 1)
+	global->map.map_to_pars++;
+	count = check_count(line);
+	if (count == 3 && times == 1 && line[0] == 'F')
 	{
 		while (ft_isspaces(line[i + 1]) && line[i] != '\0')
 			i++;
@@ -103,7 +88,20 @@ void			pars_floor(char *line, t_struct *global)
 	}
 	else
 	{
-		ft_putstr("Error\nFloor arguments wrong\n");
+		ft_putstr("Error\nCeilling arguments wrong\n");
 		exit(0);
 	}
+	if (global->colors->r_floor < 0 || global->colors->r_floor > 255 ||
+	global->colors->g_floor < 0 || global->colors->g_floor > 255 ||
+	global->colors->b_floor < 0 || global->colors->b_floor > 255 )
+	{
+		ft_putstr("Error\nRGB arguments wrong\n");
+		exit(0);
+	}
+	// i += skip_digits((char *)&line[i + 1]);
+	// if (line[i + 1] != '\0' && !(ft_isspaces(line[i + 1])))
+	// {
+	// 	ft_putstr("Error\nSome trash in the end of the string\n");
+	// 	exit(0);
+	// }
 }

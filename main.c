@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/24 17:26:27 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:30:02 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 static void		get_zero(t_struct *global)
 {
+	global->map.map_to_pars = 0;
 	global->map.width = 0;
 	global->map.height = 0;
 	global->map.pos_x = 0;
@@ -51,6 +52,8 @@ static void		get_zero(t_struct *global)
 
 static	void	direction_sight(t_struct *global)
 {
+	global->draw.move_speed = 0.1;
+	global->draw.rot_speed = 0.1;
 	if (global->map.is_player == 'N')
 	{
 		global->draw.dir_x = -1;
@@ -71,13 +74,6 @@ static	void	direction_sight(t_struct *global)
 		global->draw.dir_y = 1;
 		global->draw.plane_x = 0.66;
 	}
-}
-
-static	void	get_not_zero(t_struct *global)
-{
-	global->draw.move_speed = 0.1;
-	global->draw.rot_speed = 0.1;
-	direction_sight(global);
 }
 
 static	void	func_func_baby(t_struct *global)
@@ -259,72 +255,51 @@ static	void			draw(t_struct *global)
 	}
 	for(int i = 0; i < global->map.num_sprites; i++)
 	{
-	//   spriteOrder[i] = i;
-	  global->sprites[i].distance = ((global->map.pos_x - global->sprites[i].x) * (global->map.pos_x - global->sprites[i].x) +
-	  	(global->map.pos_y - global->sprites[i].y) * (global->map.pos_y - global->sprites[i].y)); //sqrt not taken, unneeded
+		global->sprites[i].distance = ((global->map.pos_x - global->sprites[i].x) * (global->map.pos_x - global->sprites[i].x) +
+			(global->map.pos_y - global->sprites[i].y) * (global->map.pos_y - global->sprites[i].y));
 	}
 	sort_sprites(global);
-	// sortSprites(spriteOrder, spriteDistance, numSprites);
 
-	//after sorting the sprites, do the projection and draw them
 	#pragma region Comment_Sprite
 	for(int i = 0; i < global->map.num_sprites; i++)
-    {
-      //translate sprite position to relative to camera
-      double spriteX = global->sprites[i].x - global->map.pos_x;
-      double spriteY = global->sprites[i].y - global->map.pos_y;
+	{
+	double spriteX = global->sprites[i].x - global->map.pos_x;
+	double spriteY = global->sprites[i].y - global->map.pos_y;
+	double invDet = 1.0 / (global->draw.plane_x * global->draw.dir_y - global->draw.dir_x * global->draw.plane_y);
 
-      //transform sprite with the inverse camera matrix
-      // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-      // [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-      // [ planeY   dirY ]                                          [ -planeY  planeX ]
+	double transformX = invDet * (global->draw.dir_y * spriteX - global->draw.dir_x * spriteY);
+	double transformY = invDet * (-global->draw.plane_y * spriteX + global->draw.plane_x * spriteY);
 
-      double invDet = 1.0 / (global->draw.plane_x * global->draw.dir_y - global->draw.dir_x * global->draw.plane_y); //required for correct matrix multiplication
+	int spriteScreenX = (int)((global->map.width / 2) * (1 + transformX / transformY));
 
-      double transformX = invDet * (global->draw.dir_y * spriteX - global->draw.dir_x * spriteY);
-      double transformY = invDet * (-global->draw.plane_y * spriteX + global->draw.plane_x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+	int spriteHeight = abs((int)(global->map.height / (transformY)));
+	int drawStartY = -spriteHeight / 2 + global->map.height / 2;
+	if(drawStartY < 0) drawStartY = 0;
+	int drawEndY = spriteHeight / 2 + global->map.height / 2;
+	if(drawEndY >= global->map.height) drawEndY = global->map.height - 1;
 
-      int spriteScreenX = (int)((global->map.width / 2) * (1 + transformX / transformY));
+	int spriteWidth = abs((int) (global->map.height / (transformY)));
+	int drawStartX = -spriteWidth / 2 + spriteScreenX;
+	if(drawStartX < 0) drawStartX = 0;
+	int drawEndX = spriteWidth / 2 + spriteScreenX;
+	if(drawEndX >= global->map.width) drawEndX = global->map.width - 1;
 
-      //parameters for scaling and moving the sprites
-
-      //calculate height of the sprite on screen
-      int spriteHeight = abs((int)(global->map.height / (transformY))); //using "transformY" instead of the real distance prevents fisheye
-      //calculate lowest and highest pixel to fill in current stripe
-      int drawStartY = -spriteHeight / 2 + global->map.height / 2;
-      if(drawStartY < 0) drawStartY = 0;
-      int drawEndY = spriteHeight / 2 + global->map.height / 2;
-      if(drawEndY >= global->map.height) drawEndY = global->map.height - 1;
-
-      //calculate width of the sprite
-      int spriteWidth = abs((int) (global->map.height / (transformY)));
-      int drawStartX = -spriteWidth / 2 + spriteScreenX;
-      if(drawStartX < 0) drawStartX = 0;
-      int drawEndX = spriteWidth / 2 + spriteScreenX;
-      if(drawEndX >= global->map.width) drawEndX = global->map.width - 1;
-
-      //loop through every vertical stripe of the sprite on screen
-      for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-      {
-        int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
-        //the conditions in the if are:
-        //1) it's in front of camera plane so you don't see things behind you
-        //2) it's on the screen (left)
-        //3) it's on the screen (right)
-        //4) ZBuffer, with perpendicular distance
-        if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
+		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
 		{
-	        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of  the current stripe
-	        {
-	          int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-	          int texY = ((d * texHeight) / spriteHeight) / 256;
-			  int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
-			  if (color)
-				my_mlx_pixel_put(&global->data, stripe, y, color);
-	        }
+		int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+			if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
+			{
+				for(int y = drawStartY; y < drawEndY; y++)
+				{
+					int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128;
+					int texY = ((d * texHeight) / spriteHeight) / 256;
+					int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
+					if (color)
+						my_mlx_pixel_put(&global->data, stripe, y, color);
+				}
+			}
 		}
-      }
-    }
+	}
 
 	#pragma endregion Comment_Sprite
 }
@@ -408,8 +383,8 @@ int		main(int argc, char **argv)
 
 	get_zero(&global);
 	pars(&global, argv);
-	get_not_zero(&global);
-	// func_func_baby(&global);			// prosto check
+	direction_sight(&global);
+	func_func_baby(&global);			// prosto check
 	// global.map.pos_x = 10;
 	// global.map.pos_y = 16;
 
@@ -428,3 +403,45 @@ int		main(int argc, char **argv)
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
 	mlx_loop(global.mlx);
 }
+
+// 1111111111111111111111111
+// 1000000000000000000000001
+// 1011000000000000000000001
+// 1001000000000N00000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000101001
+// 1000000000000000000000001
+// 1111111111111111111111111
+
+// 1111111111111111111111111
+// 1000000000000000000000001
+// 1000000000020000002000001
+// 1000000000000000000000001
+// 1000000000020000002000001
+// 1000000N00000000000000001
+// 1000000000000001000000001
+// 1000000000000000000000001
+// 1000011110000000000000001
+// 1000011110000000002000001
+// 1000000000000000000000011
+// 1111111111111111111111111
+
+
+// 1111111111111111111111111
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000N00000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1000000000000000000000001
+// 1111111111111111111111111

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:16:08 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 20:35:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 19:31:58 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ static int			check_error(char *line, t_struct *global)
 
 	i = 0;
 	count = 0;
-	path = get_path(line, global);
 	fd = open(path, O_RDONLY);
+	path = get_path(line, global);
+	printf("eto fd [%d] eto path [%s]\n", fd, line);
 	if (fd < 0)		// Error: Texture does not exist or more than 2 arguments
 		return (0);
 	return (1);
@@ -45,25 +46,17 @@ static int			check_error(char *line, t_struct *global)
 
 void			pars_north(char *line, t_struct *global)
 {
-	static int 	times = 0;
 	int 		check;
 	int 		i;
 
 	i = 0;
-	times++;
 	check = 1;
-	if (times == 1)
-	{
-		while (line[i] != '.')
-			i++;
-		global->textures->north = (char *)&line[i];
-		check = check_error(line, global);
-	}
-	else if (ft_ft_strnstr(line, "./") && ft_strnstr(line, "NO") && (!check || times != 1))
-	{
-		ft_putstr("ERROR\nWrong north textures\n");
-		exit(0);
-	}
+	global->map.map_to_pars++;
+	while (line[i] != '.')
+		i++;
+	global->textures->north = (char *)&line[i];
+	check = check_error(global->textures->north, global);
+	printf("a eto check [%d]\n", check);
 }
 
 void			pars_south(char *line, t_struct *global)
@@ -75,6 +68,7 @@ void			pars_south(char *line, t_struct *global)
 	i = 0;
 	times++;
 	check = 1;
+	global->map.map_to_pars++;
 	if (times == 1)
 	{
 		while (line[i] != '.')
@@ -82,14 +76,14 @@ void			pars_south(char *line, t_struct *global)
 		global->textures->south = (char *)&line[i];
 		check = check_error(line, global);
 	}
-	else if (!check || times != 1)
+	if (ft_ft_strnstr(line, "./") && ft_strnstr(line, "NO") && (!check || times != 1))
 	{
 		ft_putstr("ERROR\nWrong south textures\n");
 		exit(0);
 	}
 }
 
-void		pars_west(char *line, t_struct *global)
+void			pars_west(char *line, t_struct *global)
 {
 	static int 	times = 0;
 	int 		check;
@@ -98,6 +92,7 @@ void		pars_west(char *line, t_struct *global)
 	i = 0;
 	times++;
 	check = 1;
+	global->map.map_to_pars++;
 	if (times == 1)
 	{
 		while (line[i] != '.')
@@ -105,7 +100,7 @@ void		pars_west(char *line, t_struct *global)
 		global->textures->west = (char *)&line[i];
 		check = check_error(line, global);
 	}
-	if (!check || times != 1)
+	if (ft_ft_strnstr(line, "./") && ft_strnstr(line, "NO") && (!check || times != 1))
 	{
 		ft_putstr("ERROR\nWrong west textures\n");
 		exit(0);
@@ -121,14 +116,15 @@ void			pars_east(char *line, t_struct *global)
 	i = 0;
 	times++;
 	check = 1;
-	if (check && times == 1)
+	global->map.map_to_pars++;
+	if (times == 1)
 	{
 		while (line[i] != '.')
 			i++;
 		global->textures->east = (char *)&line[i];
 		check = check_error(line, global);
 	}
-	else if (!check || times != 1)
+	if (ft_ft_strnstr(line, "./") && ft_strnstr(line, "NO") && (!check || times != 1))
 	{
 		ft_putstr("ERROR\nWrong east textures\n");
 		exit(0);
