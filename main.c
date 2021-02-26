@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 19:30:02 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 20:43:12 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static	void	func_func_baby(t_struct *global)
 	printf("South [%s]\n", global->textures->south);
 	printf("West  [%s]\n", global->textures->west);
 	printf("East  [%s]\n", global->textures->east);
+	printf("Sprite[%s]\n", global->textures->sprite);
 	for (int i = 0; global->cub_map[i] != '\0'; i++)
 		printf("eto map [%s]\n", global->cub_map[i]);
 }
@@ -115,23 +116,43 @@ static	void			textures_draw(t_struct *global)
 	int width;
 	int height;
 
-	global->textures_north.img = mlx_xpm_file_to_image(global->mlx, "textures/north.xpm", &width, &height);
+	if (!(global->textures_north.img = mlx_xpm_file_to_image(global->mlx, global->textures->north, &width, &height)))
+	{
+		ft_putstr("\nError\nWrong north texture\n");
+		exit(0);
+	}
 	global->textures_north.addr = mlx_get_data_addr(global->textures_north.img, &global->textures_north.bpp,
 		&global->textures_north.length, &global->textures_north.end);
 
-	global->textures_south.img = mlx_xpm_file_to_image(global->mlx, "textures/south.xpm", &width, &height);
+	if (!(global->textures_south.img = mlx_xpm_file_to_image(global->mlx, global->textures->south, &width, &height)))
+	{
+		ft_putstr("\nError\nWrong south texture\n");
+		exit(0);
+	}
 	global->textures_south.addr = mlx_get_data_addr(global->textures_south.img, &global->textures_south.bpp,
 		&global->textures_south.length, &global->textures_south.end);
 
-	global->textures_east.img = mlx_xpm_file_to_image(global->mlx, "textures/east.xpm", &width, &height);
+	if (!(global->textures_east.img = mlx_xpm_file_to_image(global->mlx, global->textures->east, &width, &height)))
+	{
+		ft_putstr("\nError\nWrong east texture\n");
+		exit(0);
+	}
 	global->textures_east.addr = mlx_get_data_addr(global->textures_east.img, &global->textures_east.bpp,
 		&global->textures_east.length, &global->textures_east.end);
 
-	global->textures_west.img = mlx_xpm_file_to_image(global->mlx, "textures/west.xpm", &width, &height);
+	if (!(global->textures_west.img = mlx_xpm_file_to_image(global->mlx, global->textures->west, &width, &height)))
+	{
+		ft_putstr("\nError\nWrong west texture\n");
+		exit(0);
+	}
 	global->textures_west.addr = mlx_get_data_addr(global->textures_west.img, &global->textures_west.bpp,
 		&global->textures_west.length, &global->textures_west.end);
 
-	global->sprite_draw.img = mlx_xpm_file_to_image(global->mlx, "textures/barrel.xpm", &width, &height);
+	if (!(global->sprite_draw.img = mlx_xpm_file_to_image(global->mlx, global->textures->sprite, &width, &height)))
+	{
+		ft_putstr("\nError\nWrong sprite texture\n");
+		exit(0);
+	}
 	global->sprite_draw.addr = mlx_get_data_addr(global->sprite_draw.img, &global->sprite_draw.bpp,
 		&global->sprite_draw.length, &global->sprite_draw.end);
 }
@@ -274,9 +295,11 @@ static	void			draw(t_struct *global)
 
 	int spriteHeight = abs((int)(global->map.height / (transformY)));
 	int drawStartY = -spriteHeight / 2 + global->map.height / 2;
-	if(drawStartY < 0) drawStartY = 0;
+	if(drawStartY < 0)
+		drawStartY = 0;
 	int drawEndY = spriteHeight / 2 + global->map.height / 2;
-	if(drawEndY >= global->map.height) drawEndY = global->map.height - 1;
+	if(drawEndY >= global->map.height)
+		drawEndY = global->map.height - 1;
 
 	int spriteWidth = abs((int) (global->map.height / (transformY)));
 	int drawStartX = -spriteWidth / 2 + spriteScreenX;

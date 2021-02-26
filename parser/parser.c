@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 19:21:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 20:21:31 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,9 @@ static	void	diff_pars(char *line, t_struct *global, int fd)
 		pars_ceilling(line, global);
 	else if (ft_strnstr(line, "F"))
 		pars_floor(line, global);
-	else if (ft_strnstr(line, "NO"))
-		pars_north(line, global);
-	// else if (ft_strnstr(line, "SO"))
-	// 	pars_south(line, global);
-	// else if (ft_strnstr(line, "WE"))
-	// 	pars_west(line, global);
-	// else if (ft_strnstr(line, "EA"))
-	// 	pars_east(line, global);
+	else if (ft_strnstr(line, "NO") || ft_strnstr(line, "SO") ||
+	ft_strnstr(line, "WE") || ft_strnstr(line, "EA") || ft_strnstr(line, "S"))
+		pars_textures(line, global);
 	else if (ft_ft_strnstr(line, "1") || ft_ft_strnstr(line, "0"))
 		pars_map(line, global, fd);
 }

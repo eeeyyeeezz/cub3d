@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 15:29:34 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 20:22:05 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef		struct s_colors
 
 typedef		struct s_textures
 {
+	char	*sprite;
 	char	*north;
 	char	*south;
 	char	*west;
@@ -145,10 +146,11 @@ void		pars(t_struct *global, char **argv);
 void		pars_resolution(char *line, t_struct *global);
 void		pars_ceilling(char *line, t_struct *global);
 void		pars_floor(char *line, t_struct *global);
-void		pars_north(char *line, t_struct *global);
-void		pars_south(char *line, t_struct *global);
-void		pars_west(char *line, t_struct *global);
-void		pars_east(char *line, t_struct *global);
+void		pars_textures(char *line, t_struct *global);
+// void		pars_north(char *line, t_struct *global);
+// void		pars_south(char *line, t_struct *global);
+// void		pars_west(char *line, t_struct *global);
+// void		pars_east(char *line, t_struct *global);
 void		pars_map(char *line, t_struct *global, int fd);
 int			get_next_line(int fd, char **line);
 void		up_down(t_struct *global);

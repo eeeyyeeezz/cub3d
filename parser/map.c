@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 19:36:21 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/26 20:30:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,11 @@ void		pars_map(char *line, t_struct *global, int fd)
 	}
 	free(line);
 	global->cub_map = ft_split(new_line, '*');
+	free(new_line);
 	num_player = to_find_player(global);
 	sprite_parser_count(global);
 	sprite_parser(global);
-	if (global->map.is_player == '!' || num_player != 1)
+	if (global->map.is_player == '!' || num_player != 1 || global->map.map_to_pars != 8)
 	{
 		write(1, "No player is on map or too many\n", 32);
 		exit(0);
@@ -114,6 +115,4 @@ void	sprite_parser(t_struct *global)
 		}
 		y++;
 	}
-	// printf("first y [%f] and x [%f]\n", global->sprites[0].y, global->sprites[0].x);
-
 }
