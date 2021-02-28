@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 16:18:04 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 13:16:22 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@ static int		skip_digits(char *line)
 		i++;
 	return (i);
 }
-
-// static int	 	skip_spaces(char *line)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (ft_isspaces(line[i]) && line[i] != 'R' && line[i])
-// 		i++;
-// 	if ((!ft_isspaces(line[i]) && line[i] != 'R') ||
-// 			(!ft_isspaces(line[i]) && line[i] == '\0'))	// && line[i] == '\0' ?
-// 			return (-1);
-// 	else
-// 		return (i);
-// }
 
 static int		check_count(char *line)
 {
@@ -77,13 +63,7 @@ void		pars_resolution(char *line, t_struct *global)
 			global->map.height = ft_atoi((char *)&line[i]);
 	}
 	else
-	{
-		ft_putstr("ERROR\nWrong resolution arguments\n");
-		exit(0);
-	}
+		ft_error(1);
 	if (global->map.width <= 0 || global->map.height <= 0)
-	{
-		ft_putstr("ERROR\nResolution params wrong\n");
-		exit(0);
-	}
+		ft_error(2);
 }

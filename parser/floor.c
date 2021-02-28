@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 17:29:17 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 13:20:05 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ static int		coma_and_space(char *line)
 		i++;
 	}
 	if (coma != 1 || (line[i] != ',' && !(ft_isdigit(line[i]))))
-	{
-		ft_putstr("ERROR\nMore/less commas that required or spaces beetween arguments\n");
-		exit(0);
-	}
+		ft_error(5);
 	return (i);
 }
 
@@ -87,21 +84,9 @@ void			pars_floor(char *line, t_struct *global)
 			global->colors->b_floor = ft_atoi((char *)&line[i]);
 	}
 	else
-	{
-		ft_putstr("Error\nCeilling arguments wrong\n");
-		exit(0);
-	}
+		ft_error(6);
 	if (global->colors->r_floor < 0 || global->colors->r_floor > 255 ||
 	global->colors->g_floor < 0 || global->colors->g_floor > 255 ||
 	global->colors->b_floor < 0 || global->colors->b_floor > 255 )
-	{
-		ft_putstr("Error\nRGB arguments wrong\n");
-		exit(0);
-	}
-	// i += skip_digits((char *)&line[i + 1]);
-	// if (line[i + 1] != '\0' && !(ft_isspaces(line[i + 1])))
-	// {
-	// 	ft_putstr("Error\nSome trash in the end of the string\n");
-	// 	exit(0);
-	// }
+		ft_error(3);
 }

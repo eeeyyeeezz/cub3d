@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/27 20:55:29 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 16:42:31 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,40 @@
 
 static	void	check_map(t_struct *global)
 {
+	int len;
 	int i;
 	int j;
 
-	i = 0;
+	i = 1;
 	j = 0;
-	while (global->cub_map[i][j] == '1')
+	while (global->cub_map[0][j] == '1' || global->cub_map[i][j] == ' ')
 		j++;
-	if (global->cub_map[i][j] != '\0')
+	if (global->cub_map[0][j] != '\0')
+		ft_error(12);
+	while (i < global->map.map_num_y - 1)
 	{
-		ft_putstr("Error\nMap is not closed\n");
-		exit(0);
+		j = 0;
+		len = ft_strlen(global->cub_map[i]) - 1;
+		if (global->cub_map[i][0] != '1' || global->cub_map[i][len] != '1')
+			ft_error(12);
+		while ((global->cub_map[i][j] == '1' || global->cub_map[i][j] == '0') && global->cub_map[i][j] != '\0')
+		{
+			if (global->cub_map[i][j] == '0')
+			{
+				if (global->cub_map[i][j + 1] == ' ' || global->cub_map[i][j - 1] == ' ' ||
+				global->cub_map[i + 1][j] == ' ' || global->cub_map[i - 1][j] == ' ')
+					ft_error(15);
+			}
+			j++;
+		}
+		i++;
 	}
-	j = ft_strlen(global->cub_map[0]) - 1;
-	printf("eto j [%d]\n", j);
-	while (global->cub_map[i][j] == '1' && i != global->map.map_num_y - 1)
-		i++;
-	i = 0;
 	j = 0;
-	while (global->cub_map[i][j] == '1' && i != global->map.map_num_y - 1)
-		i++;
-	while (global->cub_map[i][j] == '1')
+	i = global->map.map_num_y - 1;
+	while (global->cub_map[i][j] == '1' || global->cub_map[i][j] == ' ')
 		j++;
+	if (j != ft_strlen(global->cub_map[i]))
+		ft_error(12);
 }
 
 static	void	diff_pars(char *line, t_struct *global, int fd)
@@ -64,5 +76,5 @@ void		pars(t_struct *global, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 		diff_pars(line, global, fd);
-	check_map(global);
+	// check_map(global);
 }

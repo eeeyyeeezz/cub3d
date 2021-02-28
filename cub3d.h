@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/27 20:48:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 14:43:04 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,10 +148,9 @@ void		pars_resolution(char *line, t_struct *global);
 void		pars_ceilling(char *line, t_struct *global);
 void		pars_floor(char *line, t_struct *global);
 void		pars_textures(char *line, t_struct *global);
-// void		pars_north(char *line, t_struct *global);
-// void		pars_south(char *line, t_struct *global);
-// void		pars_west(char *line, t_struct *global);
-// void		pars_east(char *line, t_struct *global);
+void		sprite_parser_count(t_struct *global);
+int			sprite_parser(t_struct *global);
+void		ft_error(int error);
 void		pars_map(char *line, t_struct *global, int fd);
 int			get_next_line(int fd, char **line);
 void		up_down(t_struct *global);
