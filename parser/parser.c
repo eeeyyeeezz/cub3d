@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 18:03:37 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 19:52:46 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,34 @@ static	void	line_error(char *line)
 		ft_error(16);
 }
 
+static	void	check_error_cub(char *line)
+{
+	if (!ft_ft_strnstr(line, ".cub"))
+		ft_error(17);
+}
+
+static void		spaces_zero(t_struct *global, int i, int j)
+{
+	if (global->cub_map[i][j] == '0' || global->cub_map[i][j] == '2' || global->cub_map[i][j] == 'S' ||
+	global->cub_map[i][j] == 'W' || global->cub_map[i][j] == 'N' || global->cub_map[i][j] == 'E')
+	{
+		if (global->cub_map[i][j + 1] == ' ' || global->cub_map[i][j - 1] == ' ' ||
+		global->cub_map[i + 1][j] == ' ' || global->cub_map[i - 1][j] == ' ' ||
+		global->cub_map[i + 1][j - 1] == ' ' || global->cub_map[i + 1][j + 1] == ' ' ||
+		global->cub_map[i - 1][j - 1] == ' ' || global->cub_map[i - 1][j + 1] == ' ')
+			ft_error(15);
+	}
+}
+
 
 static	void	check_map(t_struct *global)
 {
+	int zero;
 	int len;
 	int i;
 	int j;
 
+	zero = 0;
 	i = 1;
 	j = 0;
 	while (global->cub_map[0][j] == '1' || global->cub_map[i][j] == ' ')
@@ -37,16 +58,13 @@ static	void	check_map(t_struct *global)
 	{
 		j = 0;
 		len = ft_strlen(global->cub_map[i]) - 1;
-		if (global->cub_map[i][0] != '1' || global->cub_map[i][len] != '1')
+		if (!(global->cub_map[i][0] == '1' || global->cub_map[i][0] == ' ') || !(global->cub_map[i][len] == '1' || global->cub_map[i][len] == ' '))
 			ft_error(12);
-		while ((global->cub_map[i][j] == '1' || global->cub_map[i][j] == '0') && global->cub_map[i][j] != '\0')
+		while (global->cub_map[i][j] != '\0')
 		{
-			if (global->cub_map[i][j] == '0')
-			{
-				if (global->cub_map[i][j + 1] == ' ' || global->cub_map[i][j - 1] == ' ' ||
-				global->cub_map[i + 1][j] == ' ' || global->cub_map[i - 1][j] == ' ')
-					ft_error(15);
-			}
+			spaces_zero(global, i, j);
+			if (global->cub_map[i][j] == ' ' && global->cub_map[i][j + 1] == '0')
+				ft_error(19);
 			j++;
 		}
 		i++;
@@ -83,9 +101,10 @@ void		pars(t_struct *global, char **argv)
 	int fd;
 	char *line;
 
-	line = NULL;
 	i = 0;
+	line = NULL;
 	fd = open(argv[1], O_RDONLY);
+	check_error_cub(argv[1]);
 	while (get_next_line(fd, &line) == 1)
 		diff_pars(line, global, fd);
 	check_map(global);

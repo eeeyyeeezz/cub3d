@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 13:12:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 18:03:12 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 18:52:22 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ void		ft_error(int error)
 		ft_putstr("Error\nSpaces inside the map\n");
 	else if (error == 16)
 		ft_putstr("Error\nSome trash in the .cub\n");
+	else if (error == 17)
+		ft_putstr("Error\nNo .cub\n");
+	else if (error == 18)
+		ft_putstr("Error\nSpaces blyat\n");
+	else if (error == 19)
+		ft_putstr("Error\nSpaces\n");
 	exit(0);
 }
 
