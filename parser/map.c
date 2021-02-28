@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 20:30:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/27 20:49:44 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void		pars_map(char *line, t_struct *global, int fd)
 	{
 		free(line);
 		get_next_line(fd, &line);
+		global->map.map_num_y++;
 		new_line = ft_strjoin_new(new_line, line);
 		new_line = ft_strjoin_new(new_line, "*");
 	}
@@ -63,9 +64,14 @@ void		pars_map(char *line, t_struct *global, int fd)
 	num_player = to_find_player(global);
 	sprite_parser_count(global);
 	sprite_parser(global);
-	if (global->map.is_player == '!' || num_player != 1 || global->map.map_to_pars != 8)
+	if (global->map.is_player == '!' || num_player != 1)
 	{
-		write(1, "No player is on map or too many\n", 32);
+		write(1, "\nError\nNo player is on map or too many\n", 32);
+		exit(0);
+	}
+	if (global->map.map_to_pars != 8)
+	{
+		ft_putstr("\nError\nMap is not in the end of the .cub\n");
 		exit(0);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 20:22:05 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/27 20:48:25 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct		s_sprites
 
 typedef		struct s_map
 {
+	int			map_num_y;
 	int			map_to_pars;
 	int			width;
 	int			height;

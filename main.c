@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 20:43:12 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/27 20:48:39 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 static void		get_zero(t_struct *global)
 {
+	global->map.map_num_y = 0;
 	global->map.map_to_pars = 0;
 	global->map.width = 0;
 	global->map.height = 0;
@@ -418,7 +419,6 @@ int		main(int argc, char **argv)
 	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
 	textures_draw(&global);
 	draw(&global);
-	// printf("im here\n");
 	mlx_hook(global.mlx_win, 2, 1L << 0, &press_key, &global);
 	mlx_key_hook(global.mlx_win, &release_key, &global);
 	mlx_loop_hook(global.mlx, &key_hook, &global);

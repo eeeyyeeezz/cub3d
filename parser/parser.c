@@ -6,11 +6,37 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/26 20:21:31 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/27 20:55:29 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
+
+static	void	check_map(t_struct *global)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (global->cub_map[i][j] == '1')
+		j++;
+	if (global->cub_map[i][j] != '\0')
+	{
+		ft_putstr("Error\nMap is not closed\n");
+		exit(0);
+	}
+	j = ft_strlen(global->cub_map[0]) - 1;
+	printf("eto j [%d]\n", j);
+	while (global->cub_map[i][j] == '1' && i != global->map.map_num_y - 1)
+		i++;
+	i = 0;
+	j = 0;
+	while (global->cub_map[i][j] == '1' && i != global->map.map_num_y - 1)
+		i++;
+	while (global->cub_map[i][j] == '1')
+		j++;
+}
 
 static	void	diff_pars(char *line, t_struct *global, int fd)
 {
@@ -37,13 +63,6 @@ void		pars(t_struct *global, char **argv)
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
-	{
-		// printf("line [%s] \n", line);
 		diff_pars(line, global, fd);
-	}
-	// if (get_next_line(fd, &line) == 1)			// no
-	// {
-	// 	write(1, "\nMore than one empty line at the end\n", 37);
-	// 	exit(0);
-	// }
+	check_map(global);
 }
