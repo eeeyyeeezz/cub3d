@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/02/20 15:40:32 by gmorra           ###   ########.fr        #
+#    Updated: 2021/02/28 17:22:33 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ DESTROY:
 
 RUN:
 	@echo $(RED)"Compiling $(NAME)..."$(NORMAL)
-	@${CC} -g main.c $(COMPILE_SRC) libmlx.dylib -o $(NAME)
+	@${CC} -g ${FRAMEWORK} -Imlx main.c $(COMPILE_SRC) libmlx.dylib -o $(NAME)
 	@echo $(YELLOW)"Compile Completed!"$(NORMAL)
 	@./cub3D map.cub
 

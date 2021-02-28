@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 13:16:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 17:24:59 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-static int		skip_digits(char *line)
+static int			skip_digits(char *line)
 {
 	int i;
 
@@ -22,7 +22,7 @@ static int		skip_digits(char *line)
 	return (i);
 }
 
-static int		check_count(char *line)
+static int			check_count(char *line)
 {
 	int i;
 	int count;
@@ -41,17 +41,27 @@ static int		check_count(char *line)
 	return (count);
 }
 
-void		pars_resolution(char *line, t_struct *global)
+static	void		big_screen_size(t_struct *global, int x, int y)
 {
-	static	int		times = 0;
-	int 			count;
-	int 			i;
+	if (global->map.width > x)
+		global->map.width = x;
+	if (global->map.height > y)
+		global->map.height = y;
+}
+
+void				pars_resolution(char *line, t_struct *global)
+{
+	int 	count;
+	int		size;
+	int		x;
+	int		y;
+	int 	i;
 
 	i = 1;
-	times++;
 	count = check_count(line);
+	mlx_get_screen_size(global->mlx, &x, &y);
 	global->map.map_to_pars++;
-	if (count == 2 && times == 1 && line[0] == 'R')
+	if (count == 2 && line[0] == 'R')
 	{
 		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
@@ -66,4 +76,5 @@ void		pars_resolution(char *line, t_struct *global)
 		ft_error(1);
 	if (global->map.width <= 0 || global->map.height <= 0)
 		ft_error(2);
+	big_screen_size(global, x, y);
 }

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 14:40:50 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 17:53:01 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,6 +374,11 @@ int			key_hook(t_struct *global)
 	return (1);
 }
 
+int		ft_close(void)
+{
+	exit(0);
+	return (0);
+}
 
 int		main(int argc, char **argv)
 {
@@ -403,6 +408,7 @@ int		main(int argc, char **argv)
 	global.data.addr = mlx_get_data_addr(global.data.img, &global.data.bpp, &global.data.length, &global.data.end);
 	textures_draw(&global);
 	draw(&global);
+	mlx_hook(global.mlx_win, 17, 1L << 5, ft_close, &global);
 	mlx_hook(global.mlx_win, 2, 1L << 0, &press_key, &global);
 	mlx_key_hook(global.mlx_win, &release_key, &global);
 	mlx_loop_hook(global.mlx, &key_hook, &global);
@@ -410,3 +416,10 @@ int		main(int argc, char **argv)
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
 	mlx_loop(global.mlx);
 }
+
+
+/*
+1) xpm в названии текстуры
+2) резолюшн максимальный инт
+3) пробел в строке
+*/

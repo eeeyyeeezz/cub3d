@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 16:43:08 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/02/28 17:34:56 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ static	int		to_find_player(t_struct *global)
 			if (global->cub_map[i][a] == 'N' || global->cub_map[i][a] == 'S' ||
 			global->cub_map[i][a] == 'W' || global->cub_map[i][a] == 'E')
 			{
-				global->map.pos_y = (float)i + 0.5;
-				global->map.pos_x = (float)a + 0.5;
+				global->map.pos_y = (float)a + 0.5;
+				global->map.pos_x = (float)i + 0.5;
 				global->map.is_player = global->cub_map[i][a];
+				global->cub_map[i][a] = '0';
 				num_player++;
 			}
 			a++;
@@ -46,7 +47,7 @@ void		pars_map(char *line, t_struct *global, int fd)
 
 	new_line = ft_strdup(line);
 	new_line = ft_strjoin_new(new_line, "*");
-	while (line[0] == '1' || line[0] == ' ')
+	while (line[0] == '1' || line[0] == ' ' || line[0] == '0')
 	{
 		free(line);
 		get_next_line(fd, &line);
@@ -60,9 +61,6 @@ void		pars_map(char *line, t_struct *global, int fd)
 	num_player = to_find_player(global);
 	sprite_parser_count(global);
 	sprite_parser(global);
-	printf("is player [%c] numplayer [%d]\n", global->map.is_player, num_player);
-	for (int i = 0; global->cub_map[i] != '\0'; i++)
-		printf("eto map [%s]\n", global->cub_map[i]);
 	if (global->map.is_player == '!' || num_player != 1)
 		ft_error(13);
 	if (global->map.map_to_pars != 8)
