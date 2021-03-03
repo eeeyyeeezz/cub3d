@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 13:12:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 18:52:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 11:46:02 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void		ft_error(int error)
 		ft_putstr("Error\nSpaces blyat\n");
 	else if (error == 19)
 		ft_putstr("Error\nSpaces\n");
+	else if (error == 20)
+		ft_putstr("Error\nNo xpm expansion\n");
 	exit(0);
 }
 
