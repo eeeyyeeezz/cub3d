@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 20:16:06 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 20:17:45 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static	void	check_error_cub(char *line)
 
 static	void	check_error_textures(t_struct *global)
 {
-	if (global->crutch.no_times == 2 ||
-		global->crutch.so_times == 2 ||
-		global->crutch.we_times == 2 ||
-		global->crutch.ea_times == 2 ||
-		global->crutch.sp_times == 2)
+	if (global->textures->north == NULL ||
+		global->textures->south == NULL ||
+		global->textures->west == NULL ||
+		global->textures->east == NULL ||
+		global->textures->sprite == NULL)
 		ft_error(22);
 	if (!ft_ft_strnstr(global->textures->north, ".xpm"))
 		ft_error(20);

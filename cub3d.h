@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 19:25:52 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 20:19:17 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,6 @@ typedef		struct s_key
 	int right;
 }					t_key;
 
-typedef		struct	s_crutch
-{
-	int		no_times;
-	int		so_times;
-	int		we_times;
-	int		ea_times;
-	int		sp_times;
-}					t_crutch;
-
 typedef		struct	s_draw
 {
 	int hit;
@@ -139,7 +130,6 @@ typedef		struct s_whole
 	t_data		textures_east;
 	t_data		sprite_draw;
 	t_key		key;
-	t_crutch	crutch;
 	t_colors	*colors;
 	t_textures	*textures;
 	t_sprites	*sprites;
