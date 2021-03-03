@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 16:39:21 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 15:14:07 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 15:14:46 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int				ft_strnstr(char *big, char *little)
 
 	flag = 0;
 	i = 0;
-	// if (little[0] == '\0')
-		// return ((char *)big);
 	if (ft_isspaces(big[ft_strlen(little) + i]))
 		flag = 1;
 	while (big[ft_strlen(little) + i - 1])
@@ -47,8 +45,6 @@ int				ft_ft_strnstr(char *big, char *little)
 	size_t	i;
 
 	i = 0;
-	// if (little[0] == '\0')
-		// return ((char *)big);
 	while (big[ft_strlen(little) + i - 1])
 	{
 		if (ft_ft_strncmp(&big[i], little) == 0)

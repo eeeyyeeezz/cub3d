@@ -6,14 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 19:50:24 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/24 17:18:00 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:12:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
-#define texWidth 64
-#define texHeight 64
-
 
 void			first_ifs(t_struct *global)
 {
@@ -79,11 +76,11 @@ void			third_ifs(t_struct *global)
 	else
 		global->draw.wall_x = global->map.pos_x + global->draw.perp_wall_dist * global->draw.ray_dir_x;
 	global->draw.wall_x -= floor((global->draw.wall_x));
-	global->draw.tex_x = (int)(global->draw.wall_x * (double)(texWidth));
+	global->draw.tex_x = (int)(global->draw.wall_x * (double)(64));
 	if(global->draw.side == 0 && global->draw.ray_dir_x > 0)
-		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
+		global->draw.tex_x = 64 - global->draw.tex_x - 1;
 	if(global->draw.side == 1 && global->draw.ray_dir_y < 0)
-		global->draw.tex_x = texWidth - global->draw.tex_x - 1;
-	global->draw.step = 1.0 * texHeight / global->draw.line_height;
+		global->draw.tex_x = 64 - global->draw.tex_x - 1;
+	global->draw.step = 1.0 * 64 / global->draw.line_height;
 	global->draw.tex_pos = (global->draw.draw_start - global->map.height / 2 + global->draw.line_height / 2) * global->draw.step;
 }

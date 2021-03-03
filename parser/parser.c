@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 13:39:42 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 20:16:06 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,19 @@ static	void	line_error(char *line)
 
 static	void	check_error_cub(char *line)
 {
-	if (!ft_ft_strnstr(line, ".cub"))
+	if (!ft_ft_strnstr(line, ".cub") || ft_strlen(line) <= 4)
 		ft_error(17);
+
 }
 
 static	void	check_error_textures(t_struct *global)
 {
+	if (global->crutch.no_times == 2 ||
+		global->crutch.so_times == 2 ||
+		global->crutch.we_times == 2 ||
+		global->crutch.ea_times == 2 ||
+		global->crutch.sp_times == 2)
+		ft_error(22);
 	if (!ft_ft_strnstr(global->textures->north, ".xpm"))
 		ft_error(20);
 	else if (!ft_ft_strnstr(global->textures->south, ".xpm"))
@@ -40,8 +47,12 @@ static	void	check_error_textures(t_struct *global)
 
 static void		spaces_zero(t_struct *global, int i, int j)
 {
-	if (global->cub_map[i][j] == '0' || global->cub_map[i][j] == '2' || global->cub_map[i][j] == 'S' ||
-	global->cub_map[i][j] == 'W' || global->cub_map[i][j] == 'N' || global->cub_map[i][j] == 'E')
+	if (global->cub_map[i][j] == '0' ||
+	global->cub_map[i][j] == '2' ||
+	global->cub_map[i][j] == 'S' ||
+	global->cub_map[i][j] == 'W' ||
+	global->cub_map[i][j] == 'N' ||
+	global->cub_map[i][j] == 'E')
 	{
 		if (ft_strlen(global->cub_map[i - 1]) < j)
 			ft_error(12);
@@ -75,13 +86,8 @@ static	void	check_map(t_struct *global)
 		if (!(global->cub_map[i][0] == '1' || global->cub_map[i][0] == ' ') ||
 			!(global->cub_map[i][len] == '1' || global->cub_map[i][len] == ' '))		// проверка первого и последнего символа
 			ft_error(12);
-		while (global->cub_map[i][j] != '\0')
-		{
+		while (global->cub_map[i][j++] != '\0')
 			spaces_zero(global, i, j);
-			// if (global->cub_map[i][j] == ' ' && global->cub_map[i][j + 1] == '0')
-			// 	ft_error(19);
-			j++;
-		}
 		i++;
 	}
 	j = 0;
@@ -103,7 +109,8 @@ static	void	diff_pars(char *line, t_struct *global, int fd)
 	else if (ft_strnstr(line, "NO") || ft_strnstr(line, "SO") ||
 	ft_strnstr(line, "WE") || ft_strnstr(line, "EA") || ft_strnstr(line, "S"))
 		pars_textures(line, global);
-	else if (ft_ft_strnstr(line, "1") || ft_ft_strnstr(line, "0") || ft_ft_strnstr(line, " "))
+	else if (ft_ft_strnstr(line, "1") || ft_ft_strnstr(line, "0") ||
+		ft_ft_strnstr(line, " "))
 		pars_map(line, global, fd);
 	else if (line)
 		line_error(line);
@@ -124,4 +131,5 @@ void		pars(t_struct *global, char **argv)
 		diff_pars(line, global, fd);
 	check_error_textures(global);
 	check_map(global);
+	free(line);
 }

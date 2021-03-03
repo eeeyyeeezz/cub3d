@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 17:24:59 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/03 18:59:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,19 @@ static	void		big_screen_size(t_struct *global, int x, int y)
 
 void				pars_resolution(char *line, t_struct *global)
 {
-	int 	count;
-	int		size;
-	int		x;
-	int		y;
-	int 	i;
+	static int		times = 0;
+	int				count;
+	int				size;
+	int				x;
+	int				y;
+	int				i;
 
 	i = 1;
+	times++;
 	count = check_count(line);
 	mlx_get_screen_size(global->mlx, &x, &y);
 	global->map.map_to_pars++;
-	if (count == 2 && line[0] == 'R')
+	if (count == 2 && line[0] == 'R' && times == 1)
 	{
 		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
