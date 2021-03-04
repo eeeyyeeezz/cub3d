@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 14:54:55 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 17:20:58 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,25 +121,46 @@ typedef		struct	s_draw
 	double perp_wall_dist;
 }					t_draw;
 
+typedef		struct	s_sprites_draw
+{
+	int			stripe;
+	int			sprite_width;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			draw_start_y;
+	int			draw_end_y;
+	int			sprite_height;
+	int			sprite_screen_x;
+	double		sprite_x;
+	double		sprite_y;
+	double		inv_det;
+	double		transform_x;
+	double		transform_y;
+
+}					t_sprites_draw;
+
+
+
 typedef		struct s_whole
 {
-	t_data		data;
-	t_data		textures_north;
-	t_data		textures_south;
-	t_data		textures_west;
-	t_data		textures_east;
-	t_data		sprite_draw;
-	t_key		key;
-	t_colors	*colors;
-	t_textures	*textures;
-	t_sprites	*sprites;
-	t_map_res	map;
-	t_draw		draw;
-	void 		*mlx;
-	void 		*mlx_win;
-	char		**cub_map;
-	float		*x_pos_sprite;
-	float		*y_pos_sprite;
+	t_data			data;
+	t_data			textures_north;
+	t_data			textures_south;
+	t_data			textures_west;
+	t_data			textures_east;
+	t_data			sprite_draw;
+	t_key			key;
+	t_colors		*colors;
+	t_textures		*textures;
+	t_sprites		*sprites;
+	t_map_res		map;
+	t_draw			draw;
+	t_sprites_draw 	d_spr;
+	void 			*mlx;
+	void 			*mlx_win;
+	char			**cub_map;
+	float			*x_pos_sprite;
+	float			*y_pos_sprite;
 }					t_struct;
 
 void			line_error(char *line);

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:05:54 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 17:28:25 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 17:23:32 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,22 @@ void			draw(t_struct *global)
 		int drawStartX = -spriteWidth / 2 + spriteScreenX;
 		if(drawStartX < 0) drawStartX = 0;
 		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= global->map.width) drawEndX = global->map.width - 1;
-
-			for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+		if(drawEndX >= global->map.width)
+			drawEndX = global->map.width - 1;
+		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+		{
+		int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256;
+			if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
 			{
-			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256;
-				if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
+				for(int y = drawStartY; y < drawEndY; y++)
 				{
-					for(int y = drawStartY; y < drawEndY; y++)
-					{
-						int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128;
-						int texY = ((d * 64) / spriteHeight) / 256;
-						int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
-						if (color)
-							my_mlx_pixel_put(&global->data, stripe, y, color);
-					}
+					int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128;
+					int texY = ((d * 64) / spriteHeight) / 256;
+					int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
+					if (color)
+						my_mlx_pixel_put(&global->data, stripe, y, color);
 				}
 			}
+		}
 	}
 }
