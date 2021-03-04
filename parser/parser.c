@@ -6,46 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 20:17:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 15:19:11 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-static	void	line_error(char *line)
-{
-	if (line[0] == '\0')
-		return ;
-	else
-		ft_error(16);
-}
-
-static	void	check_error_cub(char *line)
-{
-	if (!ft_ft_strnstr(line, ".cub") || ft_strlen(line) <= 4)
-		ft_error(17);
-
-}
-
-static	void	check_error_textures(t_struct *global)
-{
-	if (global->textures->north == NULL ||
-		global->textures->south == NULL ||
-		global->textures->west == NULL ||
-		global->textures->east == NULL ||
-		global->textures->sprite == NULL)
-		ft_error(22);
-	if (!ft_ft_strnstr(global->textures->north, ".xpm"))
-		ft_error(20);
-	else if (!ft_ft_strnstr(global->textures->south, ".xpm"))
-		ft_error(20);
-	else if (!ft_ft_strnstr(global->textures->west, ".xpm"))
-		ft_error(20);
-	else if (!ft_ft_strnstr(global->textures->east, ".xpm"))
-		ft_error(20);
-}
-
-static void		spaces_zero(t_struct *global, int i, int j)
+static void			spaces_zero(t_struct *global, int i, int j)
 {
 	if (global->cub_map[i][j] == '0' ||
 	global->cub_map[i][j] == '2' ||
@@ -58,16 +25,32 @@ static void		spaces_zero(t_struct *global, int i, int j)
 			ft_error(12);
 		if (ft_strlen(global->cub_map[i + 1]) < j)
 			ft_error(12);
-		if (global->cub_map[i][j + 1] == ' ' || global->cub_map[i][j - 1] == ' ' ||
-		global->cub_map[i + 1][j] == ' ' || global->cub_map[i - 1][j] == ' ' ||
-		global->cub_map[i + 1][j - 1] == ' ' || global->cub_map[i + 1][j + 1] == ' ' ||
-		global->cub_map[i - 1][j - 1] == ' ' || global->cub_map[i - 1][j + 1] == ' ')
+		if (global->cub_map[i][j + 1] == ' ' ||
+		global->cub_map[i][j - 1] == ' ' ||
+		global->cub_map[i + 1][j] == ' ' ||
+		global->cub_map[i - 1][j] == ' ' ||
+		global->cub_map[i + 1][j - 1] == ' ' ||
+		global->cub_map[i + 1][j + 1] == ' ' ||
+		global->cub_map[i - 1][j - 1] == ' ' ||
+		global->cub_map[i - 1][j + 1] == ' ')
 			ft_error(15);
 	}
 }
 
+static	void		norme_check(t_struct *global)
+{
+	int i;
+	int j;
 
-static	void	check_map(t_struct *global)
+	j = 0;
+	i = global->map.map_num_y - 1;
+	while (global->cub_map[i][j] == '1' || global->cub_map[i][j] == ' ')
+		j++;
+	if (j != ft_strlen(global->cub_map[i]))
+		ft_error(12);
+}
+
+static	void		check_map(t_struct *global)
 {
 	int len;
 	int i;
@@ -79,26 +62,20 @@ static	void	check_map(t_struct *global)
 		j++;
 	if (global->cub_map[0][j] != '\0')
 		ft_error(12);
-	while (i < global->map.map_num_y - 1)
+	while (i++ < global->map.map_num_y - 1)
 	{
 		j = 0;
 		len = ft_strlen(global->cub_map[i]) - 1;
 		if (!(global->cub_map[i][0] == '1' || global->cub_map[i][0] == ' ') ||
-			!(global->cub_map[i][len] == '1' || global->cub_map[i][len] == ' '))		// проверка первого и последнего символа
+			!(global->cub_map[i][len] == '1' || global->cub_map[i][len] == ' '))
 			ft_error(12);
 		while (global->cub_map[i][j++] != '\0')
 			spaces_zero(global, i, j);
-		i++;
 	}
-	j = 0;
-	i = global->map.map_num_y - 1;
-	while (global->cub_map[i][j] == '1' || global->cub_map[i][j] == ' ')
-		j++;
-	if (j != ft_strlen(global->cub_map[i]))
-		ft_error(12);
+	norme_check(global);
 }
 
-static	void	diff_pars(char *line, t_struct *global, int fd)
+static	void		diff_pars(char *line, t_struct *global, int fd)
 {
 	if (ft_strnstr(line, "R"))
 		pars_resolution(line, global);
@@ -114,14 +91,13 @@ static	void	diff_pars(char *line, t_struct *global, int fd)
 		pars_map(line, global, fd);
 	else if (line)
 		line_error(line);
-
 }
 
-void		pars(t_struct *global, char **argv)
+void				pars(t_struct *global, char **argv)
 {
-	int i;
-	int fd;
-	char *line;
+	int		i;
+	int		fd;
+	char	*line;
 
 	i = 0;
 	line = NULL;
@@ -131,5 +107,6 @@ void		pars(t_struct *global, char **argv)
 		diff_pars(line, global, fd);
 	check_error_textures(global);
 	check_map(global);
+	check_map_trash(global);
 	free(line);
 }

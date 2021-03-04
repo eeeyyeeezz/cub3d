@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 20:19:17 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:54:55 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,17 @@ typedef		struct s_whole
 	float		*y_pos_sprite;
 }					t_struct;
 
+void			line_error(char *line);
+void			check_error_cub(char *line);
+void			check_map_trash(t_struct *global);
+void			check_error_textures(t_struct *global);
 int				ft_close(void);
 void			get_zero(t_struct *global);
 void			pars(t_struct *global, char **argv);
+void			big_screen_size(t_struct *global);
 void			pars_resolution(char *line, t_struct *global);
+int				while_first(t_struct *global, char *line, int res);
+void			while_second(t_struct *global, char *line, int i, int res);
 void			pars_ceilling(char *line, t_struct *global);
 void			pars_floor(char *line, t_struct *global);
 void			pars_textures(char *line, t_struct *global);

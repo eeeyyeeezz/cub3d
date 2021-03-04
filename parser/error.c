@@ -6,37 +6,15 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 13:12:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 19:38:27 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:48:04 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void		ft_error(int error)
+static	void	ft_error_two(int error)
 {
-	if (error == 1)
-		ft_putstr("Error\nWrong resolution arguments\n");
-	else if (error == 2)
-		ft_putstr("Error\nResolution params wrong\n");
-	else if (error == 3)
-		ft_putstr("Error\nCeilling arguments wrong\n");
-	else if (error == 4)
-		ft_putstr("Error\nRGB arguments wrong\n");
-	else if (error == 5)
-		ft_putstr("Error\nMore/less commas that required or spaces beetween arguments\n");
-	else if (error == 6)
-		ft_putstr("Error\nCeilling arguments wrong\n");
-	else if (error == 7)
-		ft_putstr("Error\nWrong north texture\n");
-	else if (error == 8)
-		ft_putstr("Error\nWrong south texture\n");
-	else if (error == 9)
-		ft_putstr("Error\nWrong east texture\n");
-	else if (error == 10)
-		ft_putstr("Error\nWrong west texture\n");
-	else if (error == 11)
-		ft_putstr("Error\nWrong sprite texture\n");
-	else if (error == 12)
+	if (error == 12)
 		ft_putstr("Error\nMap is not closed\n");
 	else if (error == 13)
 		ft_putstr("Error\nNo player is on map or too many\n");
@@ -58,6 +36,35 @@ void		ft_error(int error)
 		ft_putstr("Error\nFloor arguments wrong\n");
 	else if (error == 22)
 		ft_putstr("Error\nTextures wrong\n");
+	else if (error == 23)
+		ft_putstr("Error\nTrash in map\n");
 	exit(0);
 }
 
+void			ft_error(int error)
+{
+	if (error == 1)
+		ft_putstr("Error\nWrong resolution arguments\n");
+	else if (error == 2)
+		ft_putstr("Error\nResolution params wrong\n");
+	else if (error == 3)
+		ft_putstr("Error\nCeilling arguments wrong\n");
+	else if (error == 4)
+		ft_putstr("Error\nRGB arguments wrong\n");
+	else if (error == 5)
+		ft_putstr("Error\nCommas\n");
+	else if (error == 6)
+		ft_putstr("Error\nCeilling arguments wrong\n");
+	else if (error == 7)
+		ft_putstr("Error\nWrong north texture\n");
+	else if (error == 8)
+		ft_putstr("Error\nWrong south texture\n");
+	else if (error == 9)
+		ft_putstr("Error\nWrong east texture\n");
+	else if (error == 10)
+		ft_putstr("Error\nWrong west texture\n");
+	else if (error == 11)
+		ft_putstr("Error\nWrong sprite texture\n");
+	ft_error_two(error);
+	exit(0);
+}

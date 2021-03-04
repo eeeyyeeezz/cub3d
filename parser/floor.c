@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 19:41:33 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 20:11:28 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:48:15 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,6 @@ void			pars_floor(char *line, t_struct *global)
 		ft_error(21);
 	if (global->colors->r_floor < 0 || global->colors->r_floor > 255 ||
 	global->colors->g_floor < 0 || global->colors->g_floor > 255 ||
-	global->colors->b_floor < 0 || global->colors->b_floor > 255 )
+	global->colors->b_floor < 0 || global->colors->b_floor > 255)
 		ft_error(3);
 }

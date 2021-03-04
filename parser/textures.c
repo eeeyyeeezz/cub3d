@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:16:08 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 20:18:49 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:50:13 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void			pars_textures(char *line, t_struct *global)
 {
-	int 		i;
+	int		i;
 
 	i = 0;
 	global->map.map_to_pars++;

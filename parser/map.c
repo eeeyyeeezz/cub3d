@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 15:13:47 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:52:10 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static	int		to_find_player(t_struct *global)
 {
-	int 		i;
-	int 		a;
+	int			i;
+	int			a;
 	static	int num_player = 0;
 
 	i = 0;
@@ -40,31 +40,39 @@ static	int		to_find_player(t_struct *global)
 	return (num_player);
 }
 
-void		pars_map(char *line, t_struct *global, int fd)
+static	void	init_norme(t_struct *global, int num_player)
 {
-	char *new_line;
-	int num_player;
-
-	new_line = ft_strdup(line);
-	new_line = ft_strjoin_new(new_line, "*");
-	while (line[0] == '1' || line[0] == ' ' || line[0] == '0')
-	{
-		free(line);
-		get_next_line(fd, &line);
-		global->map.map_num_y++;
-		new_line = ft_strjoin_new(new_line, line);
-		new_line = ft_strjoin_new(new_line, "*");
-	}
-	if ((line[0] != '1' || line[0] != '0' || line[0] != ' ') && line[0] != '\0')
-		ft_error(16);
-	free(line);
-	global->cub_map = ft_split(new_line, '*');
-	free(new_line);
-	num_player = to_find_player(global);
 	sprite_parser_count(global);
 	sprite_parser(global);
 	if (global->map.is_player == '!' || num_player != 1)
 		ft_error(13);
 	if (global->map.map_to_pars != 8)
 		ft_error(14);
+}
+
+void			pars_map(char *line, t_struct *global, int fd)
+{
+	int		br;
+	char	*new_line;
+	int		num_player;
+
+	new_line = ft_strdup(line);
+	new_line = ft_strjoin_new(new_line, "*");
+	while (line[0] == '1' || line[0] == ' ' || line[0] == '0')
+	{
+		free(line);
+		br = get_next_line(fd, &line);
+		global->map.map_num_y++;
+		new_line = ft_strjoin_new(new_line, line);
+		new_line = ft_strjoin_new(new_line, "*");
+	}
+	if (br != 0)
+		ft_error(16);
+	if ((line[0] != '1' || line[0] != '0' || line[0] != ' ') && line[0] != '\0')
+		ft_error(16);
+	free(line);
+	global->cub_map = ft_split(new_line, '*');
+	free(new_line);
+	num_player = to_find_player(global);
+	init_norme(global, num_player);
 }

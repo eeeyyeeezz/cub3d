@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 14:35:46 by gmorra            #+#    #+#             */
-/*   Updated: 2021/02/28 14:35:52 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:59:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void		sprite_parser_count(t_struct *global)
+void			sprite_parser_count(t_struct *global)
 {
 	int x;
 	int y;
@@ -21,7 +21,7 @@ void		sprite_parser_count(t_struct *global)
 	while (global->cub_map[y])
 	{
 		x = 0;
-		while(global->cub_map[y][x])
+		while (global->cub_map[y][x])
 		{
 			if (global->cub_map[y][x] == '2')
 				global->map.num_sprites++;
@@ -31,7 +31,13 @@ void		sprite_parser_count(t_struct *global)
 	}
 }
 
-int		sprite_parser(t_struct *global)
+static	void	init_norme(t_struct *global, int count, int x, int y)
+{
+	global->sprites[count].y = (float)x + 0.5f;
+	global->sprites[count].x = (float)y + 0.5f;
+}
+
+int				sprite_parser(t_struct *global)
 {
 	int x;
 	int y;
@@ -50,8 +56,7 @@ int		sprite_parser(t_struct *global)
 		{
 			if (global->cub_map[y][x] == '2')
 			{
-				global->sprites[count].y = (float)x + 0.5f;
-				global->sprites[count].x = (float)y + 0.5f;
+				init_norme(global, count, x, y);
 				count++;
 			}
 			x++;

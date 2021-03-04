@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 18:59:11 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/04 14:24:59 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,42 +41,28 @@ static int			check_count(char *line)
 	return (count);
 }
 
-static	void		big_screen_size(t_struct *global, int x, int y)
-{
-	if (global->map.width > x)
-		global->map.width = x;
-	if (global->map.height > y)
-		global->map.height = y;
-}
-
 void				pars_resolution(char *line, t_struct *global)
 {
 	static int		times = 0;
-	int				count;
-	int				size;
-	int				x;
-	int				y;
+	int				res;
 	int				i;
 
 	i = 1;
+	res = 0;
 	times++;
-	count = check_count(line);
-	mlx_get_screen_size(global->mlx, &x, &y);
 	global->map.map_to_pars++;
-	if (count == 2 && line[0] == 'R' && times == 1)
+	if (check_count(line) == 2 && line[0] == 'R' && times == 1)
 	{
 		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
-		if (line[i] != '\0')
-			global->map.width = ft_atoi((char *)&line[i]);
-		i += 1;
-		i += skip_digits((char *)&line[i]);
-		if (line[i] != '\0')
-			global->map.height = ft_atoi((char *)&line[i]);
+		i += while_first(global, (char *)&line[i], res);
+		i += ft_isspaces(line[i]);
+		res = 0;
+		while_second(global, line, i, res);
 	}
 	else
 		ft_error(1);
 	if (global->map.width <= 0 || global->map.height <= 0)
 		ft_error(2);
-	big_screen_size(global, x, y);
+	big_screen_size(global);
 }
