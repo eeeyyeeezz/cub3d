@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 14:53:32 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 14:56:37 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 19:42:37 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	line_error(char *line)
 {
 	if (line[0] == '\0')
+	{
+		free(line);
 		return ;
+	}
 	else
 		ft_error(16);
 }

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 14:24:59 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 19:41:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void				pars_resolution(char *line, t_struct *global)
 		ft_error(1);
 	if (global->map.width <= 0 || global->map.height <= 0)
 		ft_error(2);
+	free(line);
 	big_screen_size(global);
 }

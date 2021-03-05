@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:46:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 19:31:09 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 19:42:06 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,5 @@ void			pars_ceilling(char *line, t_struct *global)
 		ft_error(4);
 	global->colors->cell_hex = (global->colors->r_cell * 65536) +
 	(global->colors->g_cell * 256) + global->colors->b_cell;
+	free(line);
 }

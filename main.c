@@ -6,12 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 19:38:01 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 19:44:22 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
 
 static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 {
@@ -34,7 +33,8 @@ static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 		mlx_hook(global.mlx_win, 2, 1L << 0, &press_key, &global);
 		mlx_key_hook(global.mlx_win, &release_key, &global);
 		mlx_loop_hook(global.mlx, &key_hook, &global);
-		mlx_put_image_to_window(global.mlx, global.mlx_win, global.data.img, 0, 0);
+		mlx_put_image_to_window(global.mlx,
+		global.mlx_win, global.data.img, 0, 0);
 	}
 	else
 		ft_error(18);
@@ -63,16 +63,3 @@ int					main(int argc, char **argv)
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
 	mlx_loop(global.mlx);
 }
-
-/*
-1111) Цвета в шестнадцатиричную систему	все гуд в общем
-!!!!)) ЛИКИ!
-@@@) поменять сортировку
-1) xpm в названии текстуры
-2) резолюшн максимальный инт ок
-3) пробел в строке		ок
-4) F и C если больше 3 числе сосать + лежать и скипнуть нули
-5) 2 пустых строки
-6) пустая строка и 1 в конце
-7) Если одну текстуру вместо второй к примеру два NO и нет SO сегфолт
-*/
