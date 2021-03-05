@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 13:12:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 14:48:04 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 18:21:16 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static	void	ft_error_two(int error)
 	else if (error == 17)
 		ft_putstr("Error\nNo .cub\n");
 	else if (error == 18)
-		ft_putstr("Error\nSpaces blyat\n");
+		ft_putstr("Error\nSome error fix bro\n");
 	else if (error == 19)
 		ft_putstr("Error\nSpaces\n");
 	else if (error == 20)

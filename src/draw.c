@@ -6,83 +6,104 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:05:54 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 17:23:32 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 16:18:22 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void			draw(t_struct *global)
+static	void	sprite_first_norme(t_struct *global, int i)
 {
-	int x;
-	int y;
+	global->d_spr.sprite_x = global->sprites[i].x - global->map.pos_x;
+	global->d_spr.sprite_y = global->sprites[i].y - global->map.pos_y;
+	global->d_spr.inv_det = 1.0 / (global->draw.plane_x * global->draw.dir_y -
+	global->draw.dir_x * global->draw.plane_y);
+	global->d_spr.transform_x = global->d_spr.inv_det * (global->draw.dir_y *
+	global->d_spr.sprite_x - global->draw.dir_x * global->d_spr.sprite_y);
+	global->d_spr.transform_y = global->d_spr.inv_det * (-global->draw.plane_y *
+	global->d_spr.sprite_x + global->draw.plane_x * global->d_spr.sprite_y);
+	global->d_spr.sprite_screen_x = (int)((global->map.width / 2) *
+	(1 + global->d_spr.transform_x / global->d_spr.transform_y));
+	global->d_spr.sprite_height = abs((int)(global->map.height /
+	(global->d_spr.transform_y)));
+	global->d_spr.draw_start_y = -global->d_spr.sprite_height /
+	2 + global->map.height / 2;
+}
 
-	x = 0;
-	while (x < global->map.width)
+static	void	sprite_second_norme(t_struct *global)
+{
+	if (global->d_spr.draw_start_y < 0)
+		global->d_spr.draw_start_y = 0;
+	global->d_spr.draw_end_y = global->d_spr.sprite_height
+	/ 2 + global->map.height / 2;
+	if (global->d_spr.draw_end_y >= global->map.height)
+		global->d_spr.draw_end_y = global->map.height - 1;
+	global->d_spr.sprite_width = abs((int)(global->map.height
+	/ (global->d_spr.transform_y)));
+	global->d_spr.draw_start_x = -global->d_spr.sprite_width
+	/ 2 + global->d_spr.sprite_screen_x;
+	if (global->d_spr.draw_start_x < 0)
+		global->d_spr.draw_start_x = 0;
+	global->d_spr.draw_end_x = global->d_spr.sprite_width
+	/ 2 + global->d_spr.sprite_screen_x;
+	if (global->d_spr.draw_end_x >= global->map.width)
+		global->d_spr.draw_end_x = global->map.width - 1;
+}
+
+static	void	norme_while(t_struct *global, int depth, int color, int y)
+{
+	global->d_spr.s_tex_x = (int)(256 *
+	(global->d_spr.stripe - (-global->d_spr.sprite_width / 2 +
+	global->d_spr.sprite_screen_x)) * 64
+	/ global->d_spr.sprite_width) / 256;
+	if (global->d_spr.transform_y > 0 &&
+	global->d_spr.stripe > 0 && global->d_spr.stripe <
+	global->map.width && global->d_spr.transform_y <
+	global->map.every_dist[global->d_spr.stripe])
 	{
-		y = 0;
-		init_all(global, x);
-		first_ifs(global);
-		second_ifs(global, x);
-		third_ifs(global);
-		while (y < global->map.height)
+		y = global->d_spr.draw_start_y;
+		while (y < global->d_spr.draw_end_y)
 		{
-			if (y < global->draw.draw_start)
-				my_mlx_pixel_put(&global->data, x, y, 0xFFFFFF);
-			if (y >= global->draw.draw_start && y <= global->draw.draw_end)
-				fourth_ifs(global, x, y);
-			if (y > global->draw.draw_end)
-				my_mlx_pixel_put(&global->data, x, y, 0x12376d);
+			depth = (y) * 256 - global->map.height *
+			128 + global->d_spr.sprite_height * 128;
+			global->d_spr.s_tex_y = ((depth * 64) /
+			global->d_spr.sprite_height) / 256;
+			color = my_mlx_pixel_take(&global->sprite_draw,
+			global->d_spr.s_tex_x, global->d_spr.s_tex_y);
+			if (color)
+				my_mlx_pixel_put(&global->data,
+				global->d_spr.stripe, y, color);
 			y++;
 		}
-	x++;
 	}
-	for(int i = 0; i < global->map.num_sprites; i++)
+}
+
+static	void	sprite_third_norme(t_struct *global)
+{
+	int	depth;
+	int	color;
+	int y;
+
+	global->d_spr.stripe = global->d_spr.draw_start_x;
+	while (global->d_spr.stripe < global->d_spr.draw_end_x)
 	{
-		global->sprites[i].distance = ((global->map.pos_x - global->sprites[i].x) * (global->map.pos_x - global->sprites[i].x) +
-			(global->map.pos_y - global->sprites[i].y) * (global->map.pos_y - global->sprites[i].y));
+		norme_while(global, depth, color, y);
+		global->d_spr.stripe++;
 	}
-	sort_sprites(global);
+}
 
-	for(int i = 0; i < global->map.num_sprites; i++)
+void			draw(t_struct *global)
+{
+	int i;
+
+	i = 0;
+	first_draw_while(global);
+	get_sprites_right(global);
+	while (i < global->map.num_sprites)
 	{
-		double spriteX = global->sprites[i].x - global->map.pos_x;
-		double spriteY = global->sprites[i].y - global->map.pos_y;
-		double invDet = 1.0 / (global->draw.plane_x * global->draw.dir_y - global->draw.dir_x * global->draw.plane_y);
-
-		double transformX = invDet * (global->draw.dir_y * spriteX - global->draw.dir_x * spriteY);
-		double transformY = invDet * (-global->draw.plane_y * spriteX + global->draw.plane_x * spriteY);
-
-		int spriteScreenX = (int)((global->map.width / 2) * (1 + transformX / transformY));
-
-		int spriteHeight = abs((int)(global->map.height / (transformY)));
-		int drawStartY = -spriteHeight / 2 + global->map.height / 2;
-		if(drawStartY < 0)
-			drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + global->map.height / 2;
-		if(drawEndY >= global->map.height)
-			drawEndY = global->map.height - 1;
-
-		int spriteWidth = abs((int) (global->map.height / (transformY)));
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) drawStartX = 0;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= global->map.width)
-			drawEndX = global->map.width - 1;
-		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-		{
-		int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * 64 / spriteWidth) / 256;
-			if(transformY > 0 && stripe > 0 && stripe < global->map.width && transformY < global->map.every_dist[stripe])
-			{
-				for(int y = drawStartY; y < drawEndY; y++)
-				{
-					int d = (y) * 256 - global->map.height * 128 + spriteHeight * 128;
-					int texY = ((d * 64) / spriteHeight) / 256;
-					int color = my_mlx_pixel_take(&global->sprite_draw, texX, texY);
-					if (color)
-						my_mlx_pixel_put(&global->data, stripe, y, color);
-				}
-			}
-		}
+		sprite_first_norme(global, i);
+		sprite_second_norme(global);
+		sprite_third_norme(global);
+		i++;
 	}
 }

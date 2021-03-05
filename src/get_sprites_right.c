@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_sprites_right.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/10 14:22:48 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 17:07:09 by gmorra           ###   ########.fr       */
+/*   Created: 2021/03/05 14:20:21 by gmorra            #+#    #+#             */
+/*   Updated: 2021/03/05 17:52:13 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../cub3D.h"
 
-char		*ft_strjoin_new(char *s1, char *s2)
+void			get_sprites_right(t_struct *global)
 {
-	char	*ptr_free;
+	int i;
 
-	ptr_free = s1;
-	if (!(s1 = ft_strjoin(s1, s2)))
-		return (NULL);
-	free(ptr_free);
-	return (s1);
-}
-
-char		*ft_strchr_gnl(const char *s, int c)
-{
-	char	*temp;
-
-	temp = (char *)s;
-	while (*temp != c)
+	i = -1;
+	while (++i < global->map.num_sprites)
 	{
-		if (*temp == '\0')
-			return (NULL);
-		temp++;
+		global->sprites[i].distance =
+		((global->map.pos_x - global->sprites[i].x) *
+		(global->map.pos_x - global->sprites[i].x) +
+			(global->map.pos_y - global->sprites[i].y) *
+			(global->map.pos_y - global->sprites[i].y));
 	}
-	return (temp);
+	sort_sprites(global);
 }

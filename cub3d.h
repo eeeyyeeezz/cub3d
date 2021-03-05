@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 17:20:58 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/05 19:26:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ typedef		struct s_colors
 	int		r_cell;
 	int		g_cell;
 	int		b_cell;
+	int		floor_hex;
+	int		cell_hex;
 }					t_colors;
 
 typedef		struct s_textures
@@ -123,8 +125,11 @@ typedef		struct	s_draw
 
 typedef		struct	s_sprites_draw
 {
+	int			s_tex_x;
+	int			s_tex_y;
 	int			stripe;
 	int			sprite_width;
+	int			sprite_sreeen_x;
 	int			draw_start_x;
 	int			draw_end_x;
 	int			draw_start_y;
@@ -163,43 +168,47 @@ typedef		struct s_whole
 	float			*y_pos_sprite;
 }					t_struct;
 
-void			line_error(char *line);
-void			check_error_cub(char *line);
-void			check_map_trash(t_struct *global);
-void			check_error_textures(t_struct *global);
-int				ft_close(void);
-void			get_zero(t_struct *global);
-void			pars(t_struct *global, char **argv);
-void			big_screen_size(t_struct *global);
-void			pars_resolution(char *line, t_struct *global);
-int				while_first(t_struct *global, char *line, int res);
-void			while_second(t_struct *global, char *line, int i, int res);
-void			pars_ceilling(char *line, t_struct *global);
-void			pars_floor(char *line, t_struct *global);
-void			pars_textures(char *line, t_struct *global);
-void			sprite_parser_count(t_struct *global);
-int				sprite_parser(t_struct *global);
-void			ft_error(int error);
-void			pars_map(char *line, t_struct *global, int fd);
-int				get_next_line(int fd, char **line);
-int				key_hook(t_struct *global);
-int				press_key(int keycode, t_struct *global);
-int				release_key(int keycode, t_struct *global);
-void			go_fast(t_struct *global);
-void			up_down(t_struct *global);
-void			right_left(t_struct *global);
-void			left_rotate(t_struct *global);
-void			right_rotate(t_struct *global);
-void			first_ifs(t_struct *global);
-void			second_ifs(t_struct *global, int x);
-void			third_ifs(t_struct *global);
-void			fourth_ifs(t_struct *global, int x, int y);
-void			init_all(t_struct *global, int x);
-void			sort_sprites(t_struct *global);
-void			bubble_position_sprite(t_struct *global, int i, int j);
-void			draw(t_struct *global);
-void			textures_draw(t_struct *global);
-unsigned int	my_mlx_pixel_take(t_data *img, int x, int y);
-void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void				screenshot(t_struct global, char *line);
+void				direction_sight(t_struct *global);
+void				line_error(char *line);
+void				check_error_cub(char *line);
+void				check_map_trash(t_struct *global);
+void				check_error_textures(t_struct *global);
+int					ft_close(void);
+void				get_zero(t_struct *global);
+void				pars(t_struct *global, char **argv);
+void				big_screen_size(t_struct *global);
+void				pars_resolution(char *line, t_struct *global);
+void				first_draw_while(t_struct *global);
+int					while_first(t_struct *global, char *line, int res);
+void				while_second(t_struct *global, char *line, int i, int res);
+void				pars_ceilling(char *line, t_struct *global);
+void				pars_floor(char *line, t_struct *global);
+void				pars_textures(char *line, t_struct *global);
+void				get_sprites_right(t_struct *global);
+void				sprite_parser_count(t_struct *global);
+int					sprite_parser(t_struct *global);
+void				ft_error(int error);
+void				pars_map(char *line, t_struct *global, int fd);
+int					get_next_line(int fd, char **line);
+int					key_hook(t_struct *global);
+int					press_key(int keycode, t_struct *global);
+int					release_key(int keycode, t_struct *global);
+void				go_fast(t_struct *global);
+void				up_down(t_struct *global);
+void				right_left(t_struct *global);
+void				left_rotate(t_struct *global);
+void				right_rotate(t_struct *global);
+void				first_ifs(t_struct *global);
+void				second_ifs(t_struct *global, int x);
+void				third_ifs(t_struct *global);
+void				fourth_ifs(t_struct *global, int x, int y);
+void				init_all(t_struct *global, int x);
+void				sort_sprites(t_struct *global);
+void				bubble_position_sprite(t_struct *global, int i, int j);
+void				draw(t_struct *global);
+void				textures_draw(t_struct *global);
+unsigned int		my_mlx_pixel_take(t_data *img, int x, int y);
+void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif
