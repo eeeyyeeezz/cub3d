@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/03/06 16:46:54 by gmorra           ###   ########.fr        #
+#    Updated: 2021/03/06 18:56:06 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,11 @@ ${NAME}: ${OBJ} ${OBJ_2} ${OBJ_3} ${HEADERS}
 	@echo ${RED}"Assembly mlx..."${NORMAL}
 	@${MAKE} -C ./mlx
 	@echo ${YELLOW}"Assembling Completed!"${NORMAL}
-
-RUN:
 	@echo ${RED}"Compiling ${NAME}..."${NORMAL}
 	@${CC} ${CFLAGS} -g -o ${NAME} ${FRAMEWORK} -Imlx main.c ${PARSER_SRC} ${COMPILE_SRC} ${SRC_LIBFT} libmlx.dylib
-	@echo ${YELLOW}"Compile Completed!"${NORMAL}
+	@echo ${GREEN}"Compile Completed!"${NORMAL}
+
+RUN:
 	@./cub3D maps/map.cub
 
 WRONG_MAPS:

@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:26:21 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 19:00:34 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int					main(int argc, char **argv)
 	global.colors = &colors;
 	global.textures = &texures;
 	global.sprites = &sprites_pars;
+	if (argc == 1)
+		ft_error(18);
 	get_zero(&global);
 	pars(&global, argv);
 	direction_sight(&global);
