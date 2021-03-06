@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:07:27 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 18:24:00 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 void			bubble_position_sprite(t_struct *global, int i, int j)
 {

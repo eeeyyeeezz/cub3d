@@ -6,14 +6,15 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 16:38:53 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 16:39:02 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 int		ft_close(void)
 {
+	system("killall afplay");
 	exit(0);
 	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 15:23:51 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 17:10:45 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 static	void	fifth_ifs(t_struct *global, int x, int y)
 {

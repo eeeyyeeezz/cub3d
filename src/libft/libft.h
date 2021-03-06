@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 14:42:47 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 16:26:14 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:40:32 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef	struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-size_t				ft_strlen(const char *s);
+int					ft_strlen(const char *s);
 int					ft_strnstr(char *big, char *little);
 int					ft_ft_strnstr(char *big, char *little);
 int					ft_strncmp(char *s1, char *s2, unsigned int n);
@@ -34,7 +34,7 @@ void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *str);
 
 int					ft_strchr(char *line, char c);
-char				*ft_substr(char const *s, unsigned int start, size_t len);
+char				*ft_substr(char const *s, int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));

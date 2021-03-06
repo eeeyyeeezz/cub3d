@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 18:26:16 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/04 15:22:08 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 static	void		get_zero_two(t_struct *global)
 {

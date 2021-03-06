@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:16:11 by gmorra            #+#    #+#             */
-/*   Updated: 2021/01/25 15:07:46 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 12:44:57 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int		ft_isspaces(char word)
 {
-	if (word == ' ' || word == '\t' || word == '\n' ||
-	word == '\r' || word == '\v' || word == '\f')
+	if (word == ' ')
 		return (1);
 	return (0);
 }

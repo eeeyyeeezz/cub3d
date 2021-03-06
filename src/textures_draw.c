@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:03:32 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 17:20:33 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 static	void	textures_draw_second(t_struct *global)
 {

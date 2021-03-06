@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 13:35:05 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 17:06:48 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:17:37 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 int			get_next_line(int fd, char **line);
 char		*ft_strjoin_new(char *s1, char *s2);
 char		*ft_strdup(const char *str);
-size_t		ft_strlen(const char *s);
+int			ft_strlen(const char *s);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strjoin_new(char *s1, char *s2);
 char		*ft_strchr_gnl(const char *s, int c);

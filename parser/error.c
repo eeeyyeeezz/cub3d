@@ -6,11 +6,17 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/28 13:12:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 18:21:16 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
+
+static	void	static_exit(void)
+{
+	system("killall afplay");
+	exit(0);
+}
 
 static	void	ft_error_two(int error)
 {
@@ -38,7 +44,7 @@ static	void	ft_error_two(int error)
 		ft_putstr("Error\nTextures wrong\n");
 	else if (error == 23)
 		ft_putstr("Error\nTrash in map\n");
-	exit(0);
+	static_exit();
 }
 
 void			ft_error(int error)
@@ -66,5 +72,5 @@ void			ft_error(int error)
 	else if (error == 11)
 		ft_putstr("Error\nWrong sprite texture\n");
 	ft_error_two(error);
-	exit(0);
+	static_exit();
 }

@@ -6,21 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 19:41:26 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:19:53 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
-
-static int			skip_digits(char *line)
-{
-	int i;
-
-	i = 0;
-	while (ft_isdigit(line[i]))
-		i++;
-	return (i);
-}
+#include "../cub3d.h"
 
 static int			check_count(char *line)
 {
@@ -56,7 +46,8 @@ void				pars_resolution(char *line, t_struct *global)
 		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
 		i += while_first(global, (char *)&line[i], res);
-		i += ft_isspaces(line[i]);
+		while (ft_isspaces(line[i]) && line[i] != '\0')
+			i++;
 		res = 0;
 		while_second(global, line, i, res);
 	}

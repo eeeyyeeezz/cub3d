@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 19:44:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:26:21 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 {
@@ -43,12 +43,10 @@ static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 int					main(int argc, char **argv)
 {
 	t_struct	global;
-	t_map_res	map_res;
 	t_colors	colors;
 	t_textures	texures;
 	t_sprites	sprites_pars;
 
-	global.map = map_res;
 	global.colors = &colors;
 	global.textures = &texures;
 	global.sprites = &sprites_pars;

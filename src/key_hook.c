@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:00:49 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/03 17:14:38 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 int			key_hook(t_struct *global)
 {
@@ -34,7 +34,7 @@ int			key_hook(t_struct *global)
 int			press_key(int keycode, t_struct *global)
 {
 	if (keycode == 53)
-		exit(0);
+		ft_error(50);
 	if (keycode == 13)
 		global->key.w_key = 1;
 	if (keycode == 0)
@@ -51,6 +51,10 @@ int			press_key(int keycode, t_struct *global)
 		global->key.q_key = 1;
 	if (keycode == 14)
 		global->key.e_key = 1;
+	if (keycode == 46)
+		system("afplay Anthem.mp3 &");
+	if (keycode == 45)
+		system("killall afplay");
 	return (1);
 }
 

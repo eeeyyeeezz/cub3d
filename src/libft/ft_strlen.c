@@ -6,13 +6,13 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 14:57:56 by gmorra            #+#    #+#             */
-/*   Updated: 2020/11/02 18:54:35 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:17:12 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strlen(const char *s)
+int			ft_strlen(const char *s)
 {
 	int a;
 

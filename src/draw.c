@@ -6,11 +6,11 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:05:54 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/05 16:18:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:15:10 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "../cub3d.h"
 
 static	void	sprite_first_norme(t_struct *global, int i)
 {
@@ -84,6 +84,9 @@ static	void	sprite_third_norme(t_struct *global)
 	int	color;
 	int y;
 
+	depth = 0;
+	color = 0;
+	y = 0;
 	global->d_spr.stripe = global->d_spr.draw_start_x;
 	while (global->d_spr.stripe < global->d_spr.draw_end_x)
 	{
