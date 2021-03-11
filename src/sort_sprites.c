@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 17:07:27 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/11 15:48:37 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ void			sort_sprites(t_struct *global)
 	int i;
 	int j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (i++ < global->map.num_sprites)
+	while (++i < global->map.num_sprites)
 	{
-		while (j++ < global->map.num_sprites)
+		while (j < global->map.num_sprites)
 		{
 			if (global->sprites[i].distance > global->sprites[j].distance)
 				bubble_position_sprite(global, i, j);
+			j++;
 		}
 		j = 0;
 	}
