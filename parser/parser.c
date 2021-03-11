@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:41:22 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/11 15:34:47 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 static void			spaces_zero(t_struct *global, int i, int j)
 {
-	if (global->cub_map[i][j] == '0' ||
+	if ((global->cub_map[i][j] == '0' ||
 	global->cub_map[i][j] == '2' ||
 	global->cub_map[i][j] == 'S' ||
 	global->cub_map[i][j] == 'W' ||
 	global->cub_map[i][j] == 'N' ||
-	global->cub_map[i][j] == 'E')
+	global->cub_map[i][j] == 'E') &&
+	i != global->map.map_num_y - 1)
 	{
 		if (ft_strlen(global->cub_map[i - 1]) < j)
 			ft_error(12);
@@ -56,20 +57,20 @@ static	void		check_map(t_struct *global)
 	int i;
 	int j;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	while (global->cub_map[0][j] == '1' || global->cub_map[0][j] == ' ')
 		j++;
 	if (global->cub_map[0][j] != '\0')
 		ft_error(12);
-	while (i++ < global->map.map_num_y - 1)
+	while (++i < global->map.map_num_y - 1)
 	{
-		j = 0;
+		j = -1;
 		len = ft_strlen(global->cub_map[i]) - 1;
 		if (!(global->cub_map[i][0] == '1' || global->cub_map[i][0] == ' ') ||
 			!(global->cub_map[i][len] == '1' || global->cub_map[i][len] == ' '))
 			ft_error(12);
-		while (global->cub_map[i][j++] != '\0')
+		while (global->cub_map[i][++j] != '\0')
 			spaces_zero(global, i, j);
 	}
 	norme_check(global);
