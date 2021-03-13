@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 21:16:08 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/13 16:14:45 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ void			pars_textures(char *line, t_struct *global)
 {
 	int		i;
 
-	i = 0;
+	i = 2;
 	global->map.map_to_pars++;
 	while (line[i] != '.')
+	{
+		if (line[i] != ' ')
+			ft_error(22);
 		i++;
+	}
 	if (ft_strnstr(line, "NO"))
 		global->textures->north = (char *)&line[i];
 	if (ft_strnstr(line, "SO"))

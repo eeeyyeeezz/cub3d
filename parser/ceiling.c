@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:46:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/13 16:01:48 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ static int		check_count(char *line)
 
 	i = 0;
 	count = 0;
+	while (line[++i] != '\0')
+	{
+		if (line[i] != ' ' && line[i] != ','
+		&& line[i] != '\0' && !ft_isdigit(line[i]))
+			ft_error(6);
+	}
+	i = 1;
 	while (line[i] != '\0')
 	{
 		while (!ft_isdigit(line[i]) && line[i] != '\0')

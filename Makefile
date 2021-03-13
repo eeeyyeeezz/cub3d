@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/03/11 15:32:42 by gmorra           ###   ########.fr        #
+#    Updated: 2021/03/13 15:12:46 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ src/get_zero.c src/init_all.c src/key_hook.c src/movement.c src/get_sprites_righ
 src/rotate.c src/screenshot.c src/sort_sprites.c src/textures_draw.c src/my_mlx_pixel_put.c\
 
 SRC_LIBFT =  src/libft/ft_atoi.c src/libft/ft_isalpha.c src/libft/ft_isdigit.c src/libft/ft_substr.c\
-src/libft/ft_strdup.c src/libft/ft_strjoin.c src/libft/ft_strlen.c src/libft/ft_strnstr.c\
+src/libft/ft_strdup.c src/libft/ft_strjoin.c src/libft/ft_strlen.c src/libft/ft_strnstr.c src/libft/ft_isletter_trash.c\
 src/libft/ft_split.c src/libft/ft_strchr.c src/libft/ft_isspaces.c src/libft/ft_putstr.c\
 
 FRAMEWORK = -Lmlx -lmlx -framework OpenGL -framework AppKit

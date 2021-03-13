@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 14:53:32 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/13 15:05:58 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@ void	line_error(char *line)
 
 void	check_error_cub(char *line)
 {
+	int len;
+
+	len = ft_strlen(line);
 	if (!ft_ft_strnstr(line, ".cub") || ft_strlen(line) <= 4)
+		ft_error(17);
+	if (line[len - 1] != 'b' && line[len - 2] != 'u'
+	&& line[len - 2] != 'c' && line[len - 3] != '.')
 		ft_error(17);
 }
 
