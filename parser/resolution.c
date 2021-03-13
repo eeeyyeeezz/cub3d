@@ -6,11 +6,28 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:19:53 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/13 17:39:20 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+static int			check_trash_map(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[++i])
+	{
+		if (line[i] != ' ' && !ft_isdigit(line[i]))
+		{
+			printf("i [%d] and [%c]\n", i, line[i]);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 static int			check_count(char *line)
 {
@@ -41,7 +58,8 @@ void				pars_resolution(char *line, t_struct *global)
 	res = 0;
 	times++;
 	global->map.map_to_pars++;
-	if (check_count(line) == 2 && line[0] == 'R' && times == 1)
+	if (check_count(line) == 2 && line[0] == 'R'
+	&& times == 1 && check_trash_map(line))
 	{
 		while (ft_isspaces(line[i]) && line[i] != '\0')
 			i++;
