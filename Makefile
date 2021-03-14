@@ -6,7 +6,7 @@
 #    By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 18:58:37 by gmorra            #+#    #+#              #
-#    Updated: 2021/03/13 15:12:46 by gmorra           ###   ########.fr        #
+#    Updated: 2021/03/14 12:44:57 by gmorra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ MAKE_SCREENSHOT:
 	@./cub3D maps/map.cub --save
 
 NORM:
-	@norminette_old ${SRC_LIBFT} ${PARSER_SRC} ${COMPILE_SRC} ${HEADERS}
+	@norminette_old main.c ${SRC_LIBFT} ${PARSER_SRC} ${COMPILE_SRC} ${HEADERS}
 
 DESTROY:
 	@rm -rf *.dSYM

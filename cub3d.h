@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 13:53:06 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/13 16:17:18 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:49:31 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ typedef	struct		s_whole
 	t_map_res		map;
 	t_draw			draw;
 	t_sprites_draw	d_spr;
+	int				flag_map;
 	void			*mlx;
 	void			*mlx_win;
 	char			**cub_map;

@@ -1,7 +1,7 @@
-R     700   700
-C     250,33,44
 
 F     0,45,70
+C     250,33,44
+
 
 
 NO     ./textures/kim.xpm
@@ -11,7 +11,7 @@ SO       ./textures/lenin.xpm
 WE ./textures/soviet.xpm
 EA ./textures/flag.xpm
 S   ./textures/kgb.xpm
-
+R     700   700
 
                                          11111
                                         11020111111111

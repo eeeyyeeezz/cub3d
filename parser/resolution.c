@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:16:29 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/13 17:39:20 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:02:07 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static int			check_trash_map(char *line)
 	while (line[++i])
 	{
 		if (line[i] != ' ' && !ft_isdigit(line[i]))
-		{
-			printf("i [%d] and [%c]\n", i, line[i]);
 			return (0);
-		}
 		i++;
 	}
 	return (1);

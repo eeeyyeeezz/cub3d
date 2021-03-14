@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 18:26:16 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:49:50 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static	void		get_zero_two(t_struct *global)
 
 void				get_zero(t_struct *global)
 {
+	global->flag_map = 0;
 	global->map.map_num_y = 0;
 	global->map.map_to_pars = 0;
 	global->map.width = 0;

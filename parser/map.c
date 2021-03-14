@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:59:40 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/06 13:08:40 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:50:12 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void			pars_map(char *line, t_struct *global, int fd)
 	char	*new_line;
 	int		num_player;
 
+	global->flag_map = 1;
 	new_line = ft_strdup(line);
 	new_line = ft_strjoin_new(new_line, "*");
 	while (line[0] == '1' || line[0] == ' ' || line[0] == '0')

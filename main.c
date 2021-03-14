@@ -6,11 +6,19 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:35:28 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/13 14:51:29 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:57:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static	int			paranoya_check(char *line)
+{
+	if (line[0] != '-' && line[1] != '-' && line[2] != 's'
+	&& line[3] != 'a' && line[4] != 'v' && line[5] != 'e')
+		ft_error(18);
+	return (1);
+}
 
 static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 {
@@ -22,6 +30,7 @@ static	void		do_mlx_stuff(t_struct global, int argc, char **argv)
 	&global.data.bpp, &global.data.length, &global.data.end);
 	if (argc == 3)
 	{
+		paranoya_check(argv[2]);
 		textures_draw(&global);
 		draw(&global);
 		screenshot(global, argv[2]);
@@ -63,8 +72,3 @@ int					main(int argc, char **argv)
 	write(1, "\033[0;32mcub3D open!\033[0m\n", 23);
 	mlx_loop(global.mlx);
 }
-
-
-// 1) .xpm в конце мусор фикс
-// 2) .cub в конце мусор
-// 3) в F и C в конце мусор

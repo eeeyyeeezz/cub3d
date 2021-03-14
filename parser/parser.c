@@ -6,7 +6,7 @@
 /*   By: gmorra <gmorra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:47:50 by gmorra            #+#    #+#             */
-/*   Updated: 2021/03/11 15:34:47 by gmorra           ###   ########.fr       */
+/*   Updated: 2021/03/14 12:50:26 by gmorra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static	void		diff_pars(char *line, t_struct *global, int fd)
 void				pars(t_struct *global, char **argv)
 {
 	int		i;
+	int		br;
 	int		fd;
 	char	*line;
 
@@ -104,8 +105,10 @@ void				pars(t_struct *global, char **argv)
 	line = NULL;
 	fd = open(argv[1], O_RDONLY);
 	check_error_cub(argv[1]);
-	while (get_next_line(fd, &line) == 1)
+	while ((br = get_next_line(fd, &line) == 1))
 		diff_pars(line, global, fd);
+	if (br == 0 && global->flag_map == 0)
+		ft_error(14);
 	check_error_textures(global);
 	check_map(global);
 	check_map_trash(global);
